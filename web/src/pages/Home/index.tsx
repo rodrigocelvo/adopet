@@ -15,10 +15,18 @@ import {
   SubTitle,
   Text,
   CardContainer,
+  AnimalContainer,
+  AnimalContent,
+  ButtonContainer,
   BannerContainer,
 } from './styles';
 import { Banner } from '../../components/Banner';
-import { Card } from '../../components/Card';
+import { InfoCard } from '../../components/InfoCard';
+import { AnimalCard } from '../../components/AnimalCard';
+
+import { ANIMALS } from '../../utils/animals';
+import { Button } from '../../components/Button';
+import { Link } from 'react-router-dom';
 
 export function Home() {
   return (
@@ -26,17 +34,17 @@ export function Home() {
       <Main>
         <Intro>
           <Title>
-            Olá, Humano <br /> Você precisa de um <TitleSpan>amigo?</TitleSpan>
+            Olá, Humano. <br /> Você precisa de um <TitleSpan>amigo?</TitleSpan>
           </Title>
           <Description>
-            tente adotar um bichinho de estimação e você vai ser muito feliz eu prometo.
+            tente adotar um bichinho e você vai ser muito feliz, eu prometo.
           </Description>
         </Intro>
         <Animal src={catImg} />
       </Main>
       <img src={waveImg} />
       <Content>
-        <SubTitle>Conheça fenomenal</SubTitle>
+        <SubTitle>Conheça a Orion</SubTitle>
         <Text>
           Nós fazemos a conexão entre quem deseja adotar um pet com às ongs. Aqui você pode
           encontrar seu amiguinho. Adote seu pet e torne seu mundo mais feliz Lorem ipsum dolor, sit
@@ -48,23 +56,44 @@ export function Home() {
         <SubTitle>Por quê adotar?</SubTitle>
 
         <CardContainer>
-          <Card
+          <InfoCard
             title="Nesse exato momento,"
             description="existem milhares de doguinhos e gatinhos esperando um humano para chamar de seu."
             icon="./card1.svg"
           />
-          <Card
+          <InfoCard
             title="E não há recompensa maior"
             description="do que vê-los se tornando aquela coisinha alegre e saudável depois de uma boa dose de cuidado e carinho."
             icon="./card2.svg"
           />
-          <Card
+          <InfoCard
             title="Pensando bem, a pergunta é outra:"
             description="se você pode mudar o destino de um animal de rua, por que não faria isso?"
             icon="./card3.svg"
           />
         </CardContainer>
+
+        <SubTitle>Novos bichinhos</SubTitle>
+        <AnimalContainer>
+          <AnimalContent>
+            {ANIMALS.slice(0, 8).map(animal => (
+              <AnimalCard
+                key={animal.id}
+                name={animal.name}
+                city={animal.city}
+                uf={animal.uf}
+                genre={animal.genre}
+                photo={animal.imgUrl}
+              />
+            ))}
+          </AnimalContent>
+        </AnimalContainer>
       </Content>
+      <Link to="/adoption">
+        <ButtonContainer>
+          <Button>Quero Adotar</Button>
+        </ButtonContainer>
+      </Link>
     </Container>
   );
 }

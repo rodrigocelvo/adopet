@@ -29,7 +29,7 @@ export function Navbar() {
         <Link to="/">
           <LeftContainer>
             <Logo src={LogoImg}></Logo>
-            <Title>Fenomenal</Title>
+            <Title>Orion</Title>
           </LeftContainer>
         </Link>
 

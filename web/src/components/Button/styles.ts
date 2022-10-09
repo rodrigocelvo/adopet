@@ -10,14 +10,18 @@ export const Container = styled.button`
   padding: 0 16px;
   color: ${THEME.COLORS.HEADING};
   width: 100%;
+  max-width: 620px;
   margin: 0 1px;
   font-weight: 500;
 
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   cursor: pointer;
 
   &:hover {
-    background: ${THEME.COLORS.PRIMARY_100};
-    color: ${THEME.COLORS.TEXT};
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 300px;
   }
 `;

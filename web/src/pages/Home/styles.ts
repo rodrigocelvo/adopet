@@ -101,3 +101,34 @@ export const CardContainer = styled.div`
     justify-content: center;
   }
 `;
+
+export const AnimalContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const AnimalContent = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 30px;
+  margin: 0 auto;
+
+  @media (max-width: 1300px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
