@@ -54,7 +54,7 @@ export const NavbarInnerContainer = styled.div`
   width: 100%;
   height: 80px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 export const NavbarLinkContainer = styled.div`
@@ -157,7 +157,7 @@ export const ButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;

@@ -26,16 +26,17 @@ export const Main = styled.div`
   }
 `;
 
-export const Intro = styled.div``;
+export const Intro = styled.div`
+  @media (max-width: 1300px) {
+    padding: 0 30px;
+  }
+`;
 
 export const Title = styled.h1`
   font-size: 3rem;
   line-height: 1.1;
   font-weight: 900;
   color: ${THEME.COLORS.TEXT};
-  @media (max-width: 1024px) {
-    padding: 0 30px;
-  }
 `;
 
 export const TitleSpan = styled.span`
@@ -45,16 +46,17 @@ export const Description = styled.p`
   opacity: 0.8;
   font-weight: 300;
   font-size: 1rem;
-
-  @media (max-width: 1024px) {
-    padding: 0 30px;
-  }
 `;
 
 export const Animal = styled.img`
   z-index: 1;
   width: 400px;
   height: 500px;
+
+  @media (max-width: 1300px) {
+    width: 300px;
+    height: 400px;
+  }
 `;
 
 export const Content = styled.div`
@@ -131,4 +133,34 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const FaqContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 300px;
+`;
+
+export const FaqContent = styled.div`
+  width: 90%;
+  background-color: ${THEME.COLORS.PRIMARY_100};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 30px;
+  border-radius: 30px;
+
+  @media (max-width: 768px) {
+    border-radius: 0px;
+  }
+`;
+
+export const FaqTitle = styled.h3`
+  color: ${THEME.COLORS.PRIMARY_500};
+`;
+
+export const FaqDescription = styled.p`
+  opacity: 0.8;
+  color: ${THEME.COLORS.TEXT};
 `;

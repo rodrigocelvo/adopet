@@ -38,7 +38,6 @@ export function Navbar() {
             <NavbarLink to="/"> Início</NavbarLink>
             <NavbarLink to="/sobre"> Sobre</NavbarLink>
             <NavbarLink to="/faq"> FAQ</NavbarLink>
-            <NavbarLink to="/contato"> Contato</NavbarLink>
           </NavbarLinkContainer>
         </CenterContainer>
 
@@ -66,8 +65,7 @@ export function Navbar() {
         <NavbarExtendedContainer>
           <NavbarLinkExtended to="/"> Início</NavbarLinkExtended>
           <NavbarLinkExtended to="/sobre"> Sobre</NavbarLinkExtended>
-          <NavbarLinkExtended to="/faq"> FAQ</NavbarLinkExtended>
-          <NavbarLinkExtended to="/contato"> Contato</NavbarLinkExtended>
+          <NavbarLinkExtended to="/faq"> FAQ</NavbarLinkExtended>{' '}
           <NavbarLinkExtended to="/contato"> Quero adotar</NavbarLinkExtended>
           <NavbarLinkExtended to="/contato"> Entrar</NavbarLinkExtended>
         </NavbarExtendedContainer>
