@@ -133,12 +133,12 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 export const FaqContainer = styled.div`
   display: flex;
   justify-content: center;
-  height: 300px;
 `;
 
 export const FaqContent = styled.div`
@@ -150,6 +150,7 @@ export const FaqContent = styled.div`
   align-items: center;
   padding: 0px 30px;
   border-radius: 30px;
+  height: 300px;
 
   @media (max-width: 768px) {
     border-radius: 0px;
@@ -157,7 +158,7 @@ export const FaqContent = styled.div`
 `;
 
 export const FaqTitle = styled.h3`
-  color: ${THEME.COLORS.PRIMARY_500};
+  color: ${THEME.COLORS.PRIMARY_900};
 `;
 
 export const FaqDescription = styled.p`

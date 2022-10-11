@@ -33,10 +33,12 @@ import { Button } from '../../components/Button';
 import { Link } from 'react-router-dom';
 import { Footer } from '../../components/Footer';
 import { THEME } from '../../theme';
+import { Navbar } from '../../components/Navbar';
 
 export function Home() {
   return (
     <>
+      <Navbar />
       <Container>
         <Main>
           <Intro>
@@ -53,7 +55,7 @@ export function Home() {
         <img src={waveImg} />
 
         <Content>
-          <SubTitle>Conheça a Orion</SubTitle>
+          <SubTitle>Conheça a Adopet</SubTitle>
           <Text>
             Nós fazemos a conexão entre quem deseja adotar um pet com às ongs. Aqui você pode
             encontrar seu amiguinho. Adote seu pet e torne seu mundo mais feliz Lorem ipsum dolor,
@@ -84,7 +86,7 @@ export function Home() {
           <SubTitle>Novos bichinhos</SubTitle>
           <AnimalContainer>
             <AnimalContent>
-              {ANIMALS.slice(0, 8).map(animal => (
+              {ANIMALS.map(animal => (
                 <AnimalCard
                   key={animal.id}
                   name={animal.name}
@@ -98,11 +100,11 @@ export function Home() {
           </AnimalContainer>
         </Content>
 
-        <Link to="/adoption">
-          <ButtonContainer>
+        <ButtonContainer>
+          <Link to="/adoption">
             <Button>QUERO ADOTAR</Button>
-          </ButtonContainer>
-        </Link>
+          </Link>
+        </ButtonContainer>
 
         <FaqContainer>
           <FaqContent>
@@ -114,7 +116,7 @@ export function Home() {
             </FaqDescription>
 
             <ButtonContainer>
-              <Link to="/adoption">
+              <Link to="/faq">
                 <Button style={{ background: `${THEME.COLORS.TEXT}` }}>
                   IR PARA PERGUNTAS FREQUENTES
                 </Button>

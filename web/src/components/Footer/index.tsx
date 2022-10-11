@@ -28,17 +28,17 @@ export function Footer() {
         <Content>
           <App>
             <Logo src={logoImg} />
-            <Name>Orion</Name>
+            <Name>Adopet</Name>
           </App>
 
           <InformationContainer>
             <Information>
               <Ul>
                 Institucional
-                <Link to="faq">
-                  <Li>Sobre o Orion</Li>
+                <Link to="/sobre">
+                  <Li>Sobre o Adopet</Li>
                 </Link>
-                <Link to="faq">
+                <Link to="/faq">
                   <Li>FAQ</Li>
                 </Link>
               </Ul>
@@ -47,10 +47,10 @@ export function Footer() {
             <Information>
               <Ul>
                 Como Ajudar?
-                <Link to="faq">
+                <Link to="/faq">
                   <Li>Quero adotar</Li>
                 </Link>
-                <Link to="faq">
+                <Link to="/faq">
                   <Li>Quero doar</Li>
                 </Link>
               </Ul>
@@ -58,13 +58,13 @@ export function Footer() {
           </InformationContainer>
 
           <Social>
-            <Link to="faq">
+            <Link to="/faq">
               <Icon>
                 <RiFacebookFill />
               </Icon>
             </Link>
 
-            <Link to="faq">
+            <Link to="/faq">
               <Icon>
                 <RiInstagramFill />
               </Icon>

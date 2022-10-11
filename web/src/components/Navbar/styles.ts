@@ -11,15 +11,19 @@ interface ButtonProps {
   variant: string;
 }
 
-export const Container = styled.nav<NavProps>`
+export const Container = styled.header``;
+
+export const Content = styled.nav<NavProps>`
   margin: 0;
   width: 100%;
   height: ${props => (props.menuIsOpen ? 'auto' : '80px')};
-  background-color: ${THEME.COLORS.HEADING};
+  background-color: #ffffffd0;
   display: flex;
   align-items: center;
   flex-direction: column;
   position: fixed;
+  -webkit-backdrop-filter: blur(13px);
+  backdrop-filter: blur(13px);
   z-index: 9999;
 
   @media (min-width: 768px) {
@@ -119,6 +123,7 @@ export const OpenLinksButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 4px;
 
   color: ${THEME.COLORS.PRIMARY_500};
   cursor: pointer;
@@ -144,7 +149,7 @@ export const NavbarExtendedContainer = styled.div`
   align-items: center;
   padding: 10px 0;
   width: 100%;
-  border-top: 2px solid ${THEME.COLORS.BACKGROUND};
+  border-top: 1px solid ${THEME.COLORS.HEADING};
 
   @media (min-width: 768px) {
     display: none;
@@ -160,13 +165,19 @@ export const ButtonContainer = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
+  a {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export const Button = styled.button<ButtonProps>`
   background: ${({ variant }) =>
     variant === 'primary' ? `${THEME.COLORS.PRIMARY_500}` : `${THEME.COLORS.HEADING}`};
   height: 40px;
-  border-radius: 10px;
+  border-radius: 4px;
   border: 0;
   padding: 0 16px;
   color: ${({ variant }) =>

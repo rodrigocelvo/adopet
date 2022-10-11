@@ -55,3 +55,8 @@ p {
     color: #747bff;
   }
 }
+
+::selection {
+  background-color: #747bff;
+  color: #fff;
+}

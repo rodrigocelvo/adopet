@@ -7,7 +7,7 @@ export const Container = styled.div`
   width: 300px;
   height: 340px;
   text-align: start;
-  border-radius: 8px;
+  border-radius: 4px;
 `;
 
 export const Content = styled.div`

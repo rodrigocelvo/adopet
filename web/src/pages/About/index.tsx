@@ -1,9 +1,11 @@
 import { Footer } from '../../components/Footer';
+import { Navbar } from '../../components/Navbar';
 import { Container, Content, Title, Description } from './styles';
 
 export function About() {
   return (
     <>
+      <Navbar />
       <Container>
         <Content>
           <Title>Sobre nós</Title>

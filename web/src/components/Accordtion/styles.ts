@@ -16,7 +16,7 @@ export const Button = styled.button`
   font-size: 1rem;
   font-family: 'Poppins', sans-serif;
   color: ${THEME.COLORS.PRIMARY_900};
-  border-radius: 8px 8px 0 0;
+  border-radius: 4px;
 
   &:hover {
     color: ${THEME.COLORS.HEADING};
@@ -44,7 +44,7 @@ export const QuestionContent = styled.div`
   background-color: ${THEME.COLORS.HEADING};
   padding: 20px;
   display: flex;
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 4px 4px;
 `;
 
 export const QuestionDescription = styled.p`
