@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 import {
   Container,
@@ -20,10 +21,8 @@ import {
   Avatar,
   AvatarButton,
 } from './styles';
-import LogoImg from '../../assets/logo.svg';
-import { FiAlignRight, FiMenu, FiX } from 'react-icons/fi';
 
-import { Navigate } from 'react-router-dom';
+import LogoImg from '../../assets/logo.svg';
 
 interface NavbarPorps {
   loggedIn?: boolean;

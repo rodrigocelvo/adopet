@@ -1,7 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import catImg from '../../assets/cat.png';
-import waveImg from '../../assets/wave2.svg';
+import { Navbar } from '../../components/Navbar';
+import { InfoCard } from '../../components/InfoCard';
+import { AnimalCard } from '../../components/AnimalCard';
+import { Button } from '../../components/Button';
+import { Footer } from '../../components/Footer';
+
+import { ANIMALS } from '../../utils/animals';
 
 import {
   Container,
@@ -23,16 +29,9 @@ import {
   FaqTitle,
   FaqDescription,
 } from './styles';
-import { InfoCard } from '../../components/InfoCard';
-import { AnimalCard } from '../../components/AnimalCard';
 
-import { ANIMALS } from '../../utils/animals';
-import { Button } from '../../components/Button';
-import { Link, useNavigate } from 'react-router-dom';
-import { Footer } from '../../components/Footer';
-import { THEME } from '../../theme';
-import { Navbar } from '../../components/Navbar';
-
+import catImg from '../../assets/cat.png';
+import waveImg from '../../assets/wave2.svg';
 import card1Img from '../../assets/card1.svg';
 import card2Img from '../../assets/card2.svg';
 import card3Img from '../../assets/card3.svg';

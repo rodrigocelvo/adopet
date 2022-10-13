@@ -1,3 +1,8 @@
+import { BsGenderMale, BsGenderFemale } from 'react-icons/bs';
+import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+
+import { SmallButton } from '../SmallButton';
+
 import {
   Container,
   Content,
@@ -10,9 +15,6 @@ import {
   Genre,
 } from './styles';
 
-import { BsGenderMale, BsGenderFemale } from 'react-icons/bs';
-import { SmallButton } from '../SmallButton';
-import { FiEdit2, FiPenTool, FiTrash, FiTrash2 } from 'react-icons/fi';
 import { THEME } from '../../theme';
 
 interface AnimalCardProps {

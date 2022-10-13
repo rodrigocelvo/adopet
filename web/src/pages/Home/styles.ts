@@ -127,6 +127,11 @@ export const AnimalContent = styled.div`
   grid-gap: 30px;
   margin: 0 auto;
 
+  @media (max-width: 1360px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
   @media (max-width: 1300px) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);

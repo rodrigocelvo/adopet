@@ -1,6 +1,7 @@
 import React, { InputHTMLAttributes, useState, useRef } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { FiAlertCircle } from 'react-icons/fi';
+
 import { THEME } from '../../theme';
 
 import { Container, Error } from './styles';

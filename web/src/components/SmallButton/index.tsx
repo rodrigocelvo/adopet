@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconBaseProps } from 'react-icons';
+
 import { Container } from './styles';
 
 interface SmallButtonProps {

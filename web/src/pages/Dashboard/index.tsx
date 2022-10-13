@@ -1,11 +1,11 @@
 import React from 'react';
+import { Navbar } from '../../components/Navbar';
 import { AnimalCard } from '../../components/AnimalCard';
 import { Button } from '../../components/Button';
-import { Footer } from '../../components/Footer';
-import { Navbar } from '../../components/Navbar';
-import { ANIMALS } from '../../utils/animals';
-import petAdoptionImg from '../../assets/pet-adoption.svg';
 
+import { ANIMALS } from '../../utils/animals';
+
+import petAdoptionImg from '../../assets/pet-adoption.svg';
 import { Container, Header, Content, NonePet, AnimalContent } from './styles';
 
 export function Dashboard() {
@@ -36,7 +36,6 @@ export function Dashboard() {
           </AnimalContent>
         </Content>
       </Container>
-      <Footer />
     </>
   );
 }

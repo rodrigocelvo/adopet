@@ -1,10 +1,10 @@
-import { Footer } from '../../components/Footer';
+import { Navbar } from '../../components/Navbar';
 import { Accordion } from '../../components/Accordtion';
+import { Footer } from '../../components/Footer';
 
 import { QUESTIONS } from '../../utils/questions';
 
 import { Container, Content, Title } from './styles';
-import { Navbar } from '../../components/Navbar';
 
 export function Faq() {
   return (

@@ -1,13 +1,15 @@
 import { BrowserRouter, Routes as Switch, Route } from 'react-router-dom';
 
+import { PrivateRoute } from './PrivateRoute';
+
 import { Home } from '../pages/Home';
 import { About } from '../pages/About';
 import { Faq } from '../pages/Faq';
 import { Adoption } from '../pages/Adoption';
 import { SignIn } from '../pages/SignIn';
 import { SignUp } from '../pages/SignUp';
+
 import { Dashboard } from '../pages/Dashboard';
-import { PrivateRoute } from './PrivateRoute';
 
 export function Routes() {
   return (

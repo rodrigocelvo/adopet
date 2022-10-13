@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 
+import { RiFacebookFill, RiInstagramFill, RiYoutubeFill } from 'react-icons/ri';
+
 import {
   Wave,
   Container,
@@ -13,8 +15,6 @@ import {
   Copyright,
   Social,
 } from './styles';
-
-import { RiFacebookFill, RiInstagramFill, RiYoutubeFill } from 'react-icons/ri';
 
 import footerWave from '../../assets/wave.svg';
 import logoImg from '../../assets/logo.svg';

@@ -1,6 +1,10 @@
-import React, { useRef, useCallback, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiLock, FiLogIn, FiMail } from 'react-icons/fi';
+
+import { Button } from '../../components/Button';
+import { Input } from '../../components/Input';
+
 import {
   Container,
   Content,
@@ -13,9 +17,6 @@ import {
 } from './styles';
 
 import logoImg from '../../assets/logo.svg';
-
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
 
 export function SignIn() {
   const navigate = useNavigate();
