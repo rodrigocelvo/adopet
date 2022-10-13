@@ -1,14 +1,30 @@
-import React, { useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { FiLogIn } from 'react-icons/fi';
-
-import { Container, Content, AppName, Title, Logo, AnimationContainer, Background } from './styles';
+import React, { useRef, useCallback, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FiArrowLeft, FiLock, FiLogIn, FiMail } from 'react-icons/fi';
+import {
+  Container,
+  Content,
+  AppName,
+  Title,
+  Logo,
+  AnimationContainer,
+  Links,
+  Background,
+} from './styles';
 
 import logoImg from '../../assets/logo.svg';
 
 import { Button } from '../../components/Button';
+import { Input } from '../../components/Input';
 
 export function SignIn() {
+  const navigate = useNavigate();
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    navigate('/dashboard');
+  }
+
   return (
     <Container>
       <Background />
@@ -17,19 +33,25 @@ export function SignIn() {
           <Logo src={logoImg} alt="Logo" />
           <AppName>Adopet</AppName>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <Title>Faça seu login</Title>
 
-            <input name="email" placeholder="E-mail" />
-            <input name="password" type="password" placeholder="Senha" />
+            <Input name="email" placeholder="E-mail" icon={FiMail} />
+            <Input name="password" type="password" placeholder="Senha" icon={FiLock} />
             <Button type="submit">Entrar</Button>
             <Link to="/forgot-password">Esqueci minha senha</Link>
           </form>
 
-          <Link to="/signup">
-            <FiLogIn />
-            Criar conta
-          </Link>
+          <Links>
+            <Link to="/">
+              <FiArrowLeft />
+              Voltar para a Home
+            </Link>
+            <Link to="/signup">
+              <FiLogIn />
+              Criar conta
+            </Link>
+          </Links>
         </AnimationContainer>
       </Content>
     </Container>

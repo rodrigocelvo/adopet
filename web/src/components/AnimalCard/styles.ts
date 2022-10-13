@@ -4,14 +4,26 @@ import { THEME } from '../../theme';
 
 export const Container = styled.div`
   background-color: ${THEME.COLORS.HEADING};
-  width: 300px;
-  height: 340px;
+
+  height: auto;
   text-align: start;
   border-radius: 4px;
 `;
 
 export const Content = styled.div`
+  padding: 20px 10px;
+`;
+
+export const LoggedContent = styled.div`
   padding: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
 `;
 
 export const Name = styled.strong`

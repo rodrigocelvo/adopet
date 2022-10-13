@@ -3,7 +3,6 @@ import { THEME } from '../../theme';
 
 export const Container = styled.div`
   padding-top: 80px;
-  background-color: ${THEME.COLORS.BACKGROUND};
   width: 100%;
 `;
 
@@ -37,11 +36,22 @@ export const Title = styled.h1`
   line-height: 1.1;
   font-weight: 900;
   color: ${THEME.COLORS.TEXT};
+
+  span {
+    color: ${THEME.COLORS.PRIMARY_500};
+  }
 `;
 
-export const TitleSpan = styled.span`
-  color: ${THEME.COLORS.PRIMARY_500};
+export const Wave = styled.img`
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
+
 export const Description = styled.p`
   opacity: 0.8;
   font-weight: 300;
@@ -69,7 +79,7 @@ export const Content = styled.div`
 export const SubTitle = styled.h2`
   color: ${THEME.COLORS.PRIMARY_500};
   text-align: center;
-  margin-top: 80px;
+  margin: 60px 0 20px 0;
 
   @media (min-width: 768px) {
     &:nth-child(1) {
@@ -134,6 +144,23 @@ export const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+
+  button {
+    width: 630px;
+  }
+
+  @media (max-width: 768px) {
+    button {
+      width: 300px;
+    }
+  }
+
+  &:last-child {
+    button {
+      width: 300px;
+      background-color: ${THEME.COLORS.TEXT};
+    }
+  }
 `;
 
 export const FaqContainer = styled.div`

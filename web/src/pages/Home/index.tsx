@@ -8,7 +8,7 @@ import {
   Main,
   Intro,
   Title,
-  TitleSpan,
+  Wave,
   Description,
   Animal,
   Content,
@@ -18,24 +18,28 @@ import {
   AnimalContainer,
   AnimalContent,
   ButtonContainer,
-  BannerContainer,
   FaqContainer,
   FaqContent,
   FaqTitle,
   FaqDescription,
 } from './styles';
-import { Banner } from '../../components/Banner';
 import { InfoCard } from '../../components/InfoCard';
 import { AnimalCard } from '../../components/AnimalCard';
 
 import { ANIMALS } from '../../utils/animals';
 import { Button } from '../../components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Footer } from '../../components/Footer';
 import { THEME } from '../../theme';
 import { Navbar } from '../../components/Navbar';
 
+import card1Img from '../../assets/card1.svg';
+import card2Img from '../../assets/card2.svg';
+import card3Img from '../../assets/card3.svg';
+
 export function Home() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar />
@@ -43,7 +47,7 @@ export function Home() {
         <Main>
           <Intro>
             <Title>
-              Olá, Humano. <br /> Você precisa de um <TitleSpan>amigo?</TitleSpan>
+              Olá, Humano. <br /> Você precisa de um <span>amigo?</span>
             </Title>
             <Description>
               tente adotar um bichinho e você vai ser muito feliz, eu prometo.
@@ -52,7 +56,7 @@ export function Home() {
           <Animal src={catImg} />
         </Main>
 
-        <img src={waveImg} />
+        <Wave src={waveImg} />
 
         <Content>
           <SubTitle>Conheça a Adopet</SubTitle>
@@ -69,17 +73,17 @@ export function Home() {
             <InfoCard
               title="Nesse exato momento,"
               description="existem milhares de doguinhos e gatinhos esperando um humano para chamar de seu."
-              icon="./card1.svg"
+              icon={card1Img}
             />
             <InfoCard
               title="E não há recompensa maior"
               description="do que vê-los se tornando aquela coisinha alegre e saudável depois de uma boa dose de cuidado e carinho."
-              icon="./card2.svg"
+              icon={card2Img}
             />
             <InfoCard
               title="Pensando bem, a pergunta é outra:"
               description="se você pode mudar o destino de um animal de rua, por que não faria isso?"
-              icon="./card3.svg"
+              icon={card3Img}
             />
           </CardContainer>
 
@@ -101,9 +105,7 @@ export function Home() {
         </Content>
 
         <ButtonContainer>
-          <Link to="/adoption">
-            <Button>QUERO ADOTAR</Button>
-          </Link>
+          <Button onClick={() => navigate('/adoption')}>QUERO ADOTAR</Button>
         </ButtonContainer>
 
         <FaqContainer>
@@ -116,11 +118,7 @@ export function Home() {
             </FaqDescription>
 
             <ButtonContainer>
-              <Link to="/faq">
-                <Button style={{ background: `${THEME.COLORS.TEXT}` }}>
-                  IR PARA PERGUNTAS FREQUENTES
-                </Button>
-              </Link>
+              <Button onClick={() => navigate('/faq')}>IR PARA PERGUNTAS FREQUENTES</Button>
             </ButtonContainer>
           </FaqContent>
         </FaqContainer>

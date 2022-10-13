@@ -34,7 +34,6 @@ export const Content = styled.nav<NavProps>`
 export const LeftContainer = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 5%;
 `;
 
 export const RightContainer = styled.div`
@@ -42,6 +41,12 @@ export const RightContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding-right: 10px;
+
+  strong {
+    color: ${THEME.COLORS.PRIMARY_500};
+    margin-right: 10px;
+    font-size: 0.75rem;
+  }
 `;
 
 export const Title = styled.h2`
@@ -143,6 +148,24 @@ export const OpenLinksButton = styled.button`
   }
 `;
 
+export const AvatarButton = styled.button`
+  border: none;
+  cursor: pointer;
+  border-radius: 24px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+export const Avatar = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+
+  object-fit: cover;
+`;
+
 export const NavbarExtendedContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -191,7 +214,7 @@ export const Button = styled.button<ButtonProps>`
 
   border: 1px solid
     ${({ variant }) =>
-      variant === 'primary' ? `${THEME.COLORS.HEADING}` : `${THEME.COLORS.PRIMARY_500}`};
+      variant === 'primary' ? `${THEME.COLORS.PRIMARY_500}` : `${THEME.COLORS.PRIMARY_500}`};
 
   &:hover {
     background: ${({ variant }) =>
@@ -199,7 +222,9 @@ export const Button = styled.button<ButtonProps>`
 
     color: ${({ variant }) =>
       variant === 'primary' ? `${THEME.COLORS.PRIMARY_500}` : `${THEME.COLORS.HEADING}`};
-    border-color: ${({ variant }) =>
-      variant === 'primary' ? `${THEME.COLORS.PRIMARY_500}` : `${THEME.COLORS.HEADING}`};
+
+    border: 1px solid
+      ${({ variant }) =>
+        variant === 'primary' ? `${THEME.COLORS.PRIMARY_500}` : `${THEME.COLORS.PRIMARY_500}`};
   }
 `;

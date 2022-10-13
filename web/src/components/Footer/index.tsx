@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import {
+  Wave,
   Container,
   Content,
   App,
@@ -8,8 +9,6 @@ import {
   Logo,
   InformationContainer,
   Information,
-  Ul,
-  Li,
   Icon,
   Copyright,
   Social,
@@ -23,7 +22,7 @@ import logoImg from '../../assets/logo.svg';
 export function Footer() {
   return (
     <>
-      <img src={footerWave} />
+      <Wave src={footerWave} />
       <Container>
         <Content>
           <App>
@@ -33,51 +32,53 @@ export function Footer() {
 
           <InformationContainer>
             <Information>
-              <Ul>
+              <ul>
                 Institucional
-                <Link to="/sobre">
-                  <Li>Sobre o Adopet</Li>
-                </Link>
-                <Link to="/faq">
-                  <Li>FAQ</Li>
-                </Link>
-              </Ul>
+                <li>
+                  <Link to="/sobre">Sobre o Adopet </Link>
+                </li>
+                <li>
+                  <Link to="/faq">FAQ </Link>
+                </li>
+              </ul>
             </Information>
 
             <Information>
-              <Ul>
+              <ul>
                 Como Ajudar?
-                <Link to="/faq">
-                  <Li>Quero adotar</Li>
-                </Link>
-                <Link to="/faq">
-                  <Li>Quero doar</Li>
-                </Link>
-              </Ul>
+                <li>
+                  <Link to="/adoption">Quero adotar </Link>
+                </li>
+                <li>
+                  <Link to="/adoption">Quero doar </Link>
+                </li>
+              </ul>
             </Information>
           </InformationContainer>
 
           <Social>
-            <Link to="/faq">
-              <Icon>
+            <Icon title="Facebook">
+              <a href="https://facebook.com" target="_blank">
                 <RiFacebookFill />
-              </Icon>
-            </Link>
+              </a>
+            </Icon>
 
-            <Link to="/faq">
-              <Icon>
+            <Icon title="Instagram">
+              <a href="https://instagram.com" target="_blank">
                 <RiInstagramFill />
-              </Icon>
-            </Link>
+              </a>
+            </Icon>
 
-            <Link to="faq">
-              <Icon>
+            <Icon title="YouTube">
+              <a href="https://youtube.com" target="_blank">
                 <RiYoutubeFill />
-              </Icon>
-            </Link>
+              </a>
+            </Icon>
           </Social>
         </Content>
-        <Copyright>Orion {new Date().getFullYear()} - Todos os diretos reservados.</Copyright>
+        <Copyright>
+          <p>Adopet {new Date().getFullYear()} - Todos os diretos reservados.</p>
+        </Copyright>
       </Container>
     </>
   );

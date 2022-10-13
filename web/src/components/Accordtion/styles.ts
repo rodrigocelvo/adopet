@@ -33,10 +33,12 @@ export const Question = styled.div`
   padding: 10px 20px;
 `;
 
-export const QuestionTitle = styled.strong``;
+export const QuestionTitle = styled.strong`
+  font-size: 1rem;
+`;
 
 export const Icon = styled.div`
-  font-size: 24px;
+  font-size: 1rem;
 `;
 
 export const QuestionContent = styled.div`

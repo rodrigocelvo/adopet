@@ -2,6 +2,16 @@ import styled from 'styled-components';
 
 import { THEME } from '../../theme';
 
+export const Wave = styled.img`
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`;
+
 export const Container = styled.footer`
   width: 100%;
 `;
@@ -12,7 +22,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 
   margin-top: -130px;
 
@@ -44,23 +54,6 @@ export const Name = styled.strong`
   color: ${THEME.COLORS.HEADING};
 `;
 
-export const Ul = styled.ul`
-  padding-right: 40px;
-  font-weight: 700;
-  color: ${THEME.COLORS.TEXT};
-`;
-
-export const Li = styled.li`
-  list-style: none;
-  font-weight: 400;
-  font-size: 0.75rem;
-  color: ${THEME.COLORS.HEADING};
-
-  &:hover {
-    color: ${THEME.COLORS.TEXT};
-  }
-`;
-
 export const InformationContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -68,11 +61,46 @@ export const InformationContainer = styled.div`
 
 export const Information = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+
+  ul {
+    font-weight: 700;
+    color: ${THEME.COLORS.TEXT};
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: ${THEME.COLORS.HEADING};
+
+    &:hover {
+      color: ${THEME.COLORS.TEXT};
+    }
+  }
+
+  ul:first-child {
+    margin-right: 50px;
+  }
+
+  @media (max-width: 768px) {
+    ul:last-child {
+      margin-right: 0px;
+      margin-left: 10px;
+    }
+  }
 `;
 
 export const Social = styled.div`
   display: flex;
+
+  @media (max-width: 1366px) {
+    margin-top: 30px;
+  }
 `;
 
 export const Icon = styled.div`
@@ -83,12 +111,28 @@ export const Icon = styled.div`
   &:hover {
     color: ${THEME.COLORS.TEXT};
   }
+
+  a {
+    font-weight: 400;
+    color: ${THEME.COLORS.HEADING};
+
+    &:hover {
+      color: ${THEME.COLORS.TEXT};
+    }
+  }
 `;
 
 export const Copyright = styled.div`
-  font-size: 0.75rem;
-  text-align: center;
-  color: ${THEME.COLORS.TEXT};
   background-color: ${THEME.COLORS.PRIMARY_500};
-  padding-bottom: 10px;
+  padding: 10px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 0.75rem;
+    text-align: center;
+    opacity: 0.8;
+    color: ${THEME.COLORS.TEXT};
+  }
 `;

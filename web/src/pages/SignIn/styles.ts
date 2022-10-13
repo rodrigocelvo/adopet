@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import signInBackgroundImg from '../../assets/sign-in-background.jpg';
+import signInBackgroundImg from '../../assets/sign-in-background.jpeg';
 import { THEME } from '../../theme';
 
 export const Container = styled.div`
@@ -22,18 +22,21 @@ export const Logo = styled.img`
   height: 200px;
 `;
 
-export const Title = styled.h1`
+export const AppName = styled.h1`
+  margin: 0;
+  padding: 0;
+  margin-top: -30px;
+  margin-bottom: 50px;
+  font-size: 3rem;
+  color: ${THEME.COLORS.PRIMARY_500};
+`;
+
+export const Title = styled.h2`
   margin-bottom: 24px;
   font-size: 2rem;
   color: ${THEME.COLORS.TEXT};
 `;
 
-export const AppName = styled.h2`
-  margin: 0;
-  padding: 0;
-  font-size: 3rem;
-  color: ${THEME.COLORS.PRIMARY_500};
-`;
 const appearFromRight = keyframes`
   from {
     opacity: 0;
@@ -51,18 +54,23 @@ export const AnimationContainer = styled.div`
   align-items: center;
   justify-content: center;
   animation: ${appearFromRight} 1s;
+
   form {
-    margin: 80px 0;
     width: 340px;
     text-align: center;
+
+    button {
+      margin-top: 10px;
+    }
   }
 
   a {
-    color: ${THEME.COLORS.PRIMARY_50};
+    color: ${THEME.COLORS.PRIMARY_500};
     display: block;
     margin-top: 24px;
     text-decoration: none;
     transition: color 0.2s;
+
     &:hover {
       opacity: 0.8;
     }
@@ -70,17 +78,39 @@ export const AnimationContainer = styled.div`
   > a {
     color: ${THEME.COLORS.PRIMARY_500};
     display: block;
-    margin-top: 24px;
+    margin-top: 16px;
     text-decoration: none;
     transition: color 0.2s;
     display: flex;
     align-items: center;
+
     svg {
       margin-right: 16px;
     }
+
+    &:last-child {
+      margin-top: 8px;
+    }
+
     &:hover {
       opacity: 0.8;
     }
+  }
+`;
+
+export const Links = styled.div`
+  width: 340px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    display: flex;
+    align-items: center;
+  }
+
+  svg {
+    margin-right: 16px;
   }
 `;
 
