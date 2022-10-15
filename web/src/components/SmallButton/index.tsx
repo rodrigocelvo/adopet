@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import { IconBaseProps } from 'react-icons';
 
 import { Container } from './styles';
 
-interface SmallButtonProps {
+interface SmallButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: string;
   icon: React.ComponentType<IconBaseProps>;
   color?: string;

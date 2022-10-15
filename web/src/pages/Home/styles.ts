@@ -29,9 +29,14 @@ export const Intro = styled.div`
   @media (max-width: 1300px) {
     padding: 0 30px;
   }
+
+  button {
+    margin: 30px 0;
+  }
 `;
 
 export const Title = styled.h1`
+  order: 3;
   font-size: 3rem;
   line-height: 1.1;
   font-weight: 900;

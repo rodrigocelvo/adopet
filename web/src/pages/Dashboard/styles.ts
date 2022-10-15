@@ -6,13 +6,15 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 120px 80px 80px;
-
-  h2 {
-    margin: 0;
-    padding: 0;
-    color: ${THEME.COLORS.PRIMARY_500};
-  }
 `;
+
+export const Title = styled.h2`
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+  color: ${THEME.COLORS.PRIMARY_500};
+`;
+
 export const Header = styled.div`
   display: flex;
   align-items: center;

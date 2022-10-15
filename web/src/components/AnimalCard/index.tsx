@@ -16,6 +16,7 @@ import {
 } from './styles';
 
 import { THEME } from '../../theme';
+import { useNavigate } from 'react-router-dom';
 
 interface AnimalCardProps {
   photo: string;
@@ -27,6 +28,8 @@ interface AnimalCardProps {
 }
 
 export function AnimalCard({ photo, name, city, uf, genre, loggedIn }: AnimalCardProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       {!loggedIn ? (
@@ -49,7 +52,12 @@ export function AnimalCard({ photo, name, city, uf, genre, loggedIn }: AnimalCar
             <Name>{name}</Name>
             <ButtonContainer>
               <SmallButton name="Deletar" icon={FiTrash2} color={THEME.COLORS.ALERT} />
-              <SmallButton name="Editar" icon={FiEdit2} color="#EFB35A" />
+              <SmallButton
+                onClick={() => navigate('/pet/adasd/edit')}
+                name="Editar"
+                icon={FiEdit2}
+                color="#EFB35A"
+              />
             </ButtonContainer>
           </LoggedContent>
         </Container>

@@ -6,10 +6,13 @@ import { Button } from '../../components/Button';
 import { ANIMALS } from '../../utils/animals';
 
 import petAdoptionImg from '../../assets/pet-adoption.svg';
-import { Container, Header, Content, NonePet, AnimalContent } from './styles';
+import { Container, Header, Title, Content, NonePet, AnimalContent } from './styles';
+import { useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
   const { user } = { user: true };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -19,8 +22,8 @@ export function Dashboard() {
       />
       <Container>
         <Header>
-          <h2>Pets para adoção</h2>
-          <Button>Novo bichinho</Button>
+          <Title>Pets para adoção</Title>
+          <Button onClick={() => navigate('/pet/new')}>Novo bichinho</Button>
         </Header>
         <Content>
           {ANIMALS.length === 0 && (

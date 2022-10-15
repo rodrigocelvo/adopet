@@ -20,7 +20,8 @@ export const Container = styled.div<ContainerProps>`
   width: 100%;
   color: ${THEME.COLORS.TEXT};
   display: flex;
-  align-items: center;
+  /* align-items: center; */
+  margin-top: 8px;
 
   & + div {
     margin-top: 8px;
@@ -45,12 +46,13 @@ export const Container = styled.div<ContainerProps>`
       color: ${THEME.COLORS.PRIMARY_500};
     `}
 
-  input {
+  textarea {
     outline: none;
     flex: 1;
     background: transparent;
     border: 0;
     color: ${THEME.COLORS.TEXT};
+    resize: none;
 
     &::placeholder {
       color: #666360;

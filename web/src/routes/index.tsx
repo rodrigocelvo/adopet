@@ -10,6 +10,7 @@ import { SignIn } from '../pages/SignIn';
 import { SignUp } from '../pages/SignUp';
 
 import { Dashboard } from '../pages/Dashboard';
+import { CreatePet } from '../pages/CreatePet';
 
 export function Routes() {
   return (
@@ -26,6 +27,22 @@ export function Routes() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/pet/new"
+          element={
+            <PrivateRoute>
+              <CreatePet />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/pet/:id/edit"
+          element={
+            <PrivateRoute>
+              <CreatePet />
             </PrivateRoute>
           }
         />
