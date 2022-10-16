@@ -40,7 +40,7 @@ export function SignIn() {
             <Input name="email" placeholder="E-mail" icon={FiMail} />
             <Input name="password" type="password" placeholder="Senha" icon={FiLock} />
             <Button type="submit">Entrar</Button>
-            <Link to="/forgot-password">Esqueci minha senha</Link>
+            {/* <Link to="/forgot-password">Esqueci minha senha</Link> */}
           </form>
 
           <Links>

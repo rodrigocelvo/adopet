@@ -60,7 +60,7 @@ export function CreatePet() {
       <Content>
         <Header>
           <Title>Criar pet</Title>
-          <Button onClick={() => navigate('/pet/new')}>Marcar como adotado</Button>
+          <Button onClick={() => navigate('/dashboard')}>Marcar como adotado</Button>
         </Header>
 
         <Form onSubmit={handleSubmit}>
@@ -70,6 +70,7 @@ export function CreatePet() {
                 {/* <img src="https://conteudo.imguol.com.br/c/entretenimento/eb/2022/03/23/cachorro-da-raca-lulu-da-pomeramia-1648065976007_v2_900x506.jpg" /> */}
                 <div>
                   <RiCameraFill />
+                  <p>Selecione uma imagem</p>
                 </div>
                 <input name="asdsad" type="file" id="avatar" />
               </label>

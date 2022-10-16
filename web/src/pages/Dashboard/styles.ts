@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import * as Dialog from '@radix-ui/react-dialog';
 
 import { THEME } from '../../theme';
 
@@ -86,4 +87,9 @@ export const AnimalContent = styled.div`
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(1, 1fr);
   }
+`;
+
+export const DialogOverlay = styled(Dialog.Overlay)`
+  background-color: rgba(0, 0, 0, 0.8);
+  inset: 0;
 `;

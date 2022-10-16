@@ -26,6 +26,10 @@ export const Header = styled.div`
     align-items: center;
   }
 
+  button:disabled {
+    opacity: 0.5;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 0px;
@@ -106,17 +110,21 @@ export const AvatarInput = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
 
       width: 320px;
       height: 320px;
       border: 1px dashed ${THEME.COLORS.PRIMARY_500};
 
       svg {
-        z-index: -1;
-
         width: 48px;
         height: 48px;
         color: ${THEME.COLORS.PRIMARY_500};
+      }
+
+      p {
+        color: ${THEME.COLORS.TEXT};
+        opacity: 0.6;
       }
     }
 
@@ -135,6 +143,7 @@ export const GenreContainer = styled.div`
   flex-direction: row;
   border-radius: 4px;
   margin: 8px 0;
+  border: 2px solid ${THEME.COLORS.HEADING};
 
   padding: 16px;
 
@@ -150,6 +159,10 @@ export const GenreContainer = styled.div`
       font-size: 20px;
       margin-right: 16px;
     }
+  }
+
+  &:focus-within {
+    border: 2px solid ${THEME.COLORS.PRIMARY_500};
   }
 `;
 
@@ -187,7 +200,7 @@ export const StyledRadio = styled(RadioGroupPrimitive.Item)`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
   &:hover {
-    background-color: ${THEME.COLORS.PRIMARY_100};
+    /* background-color: ${THEME.COLORS.PRIMARY_100}; */
   }
 
   &:focus {

@@ -20,6 +20,7 @@ export function Dashboard() {
         loggedIn
         userAvatar="https://conteudo.imguol.com.br/c/entretenimento/eb/2022/03/23/cachorro-da-raca-lulu-da-pomeramia-1648065976007_v2_900x506.jpg"
       />
+
       <Container>
         <Header>
           <Title>Pets para adoção</Title>
@@ -32,6 +33,7 @@ export function Dashboard() {
               <img src={petAdoptionImg} />
             </NonePet>
           )}
+
           <AnimalContent>
             {ANIMALS.map(animal => (
               <AnimalCard loggedIn={true} name={animal.name} photo={animal.imgUrl} />

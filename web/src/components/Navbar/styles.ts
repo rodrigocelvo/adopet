@@ -34,6 +34,7 @@ export const Content = styled.nav<NavProps>`
 export const LeftContainer = styled.div`
   display: flex;
   align-items: center;
+  outline: none;
 `;
 
 export const RightContainer = styled.div`
@@ -149,19 +150,30 @@ export const OpenLinksButton = styled.button`
 `;
 
 export const AvatarButton = styled.button`
-  border: none;
   cursor: pointer;
-  border-radius: 24px;
+  border-radius: 100%;
+  outline: none;
+  border: 2px solid transparent;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
 
   &:hover {
     opacity: 0.8;
+  }
+
+  &:focus {
+    border: 5px solid ${THEME.COLORS.PRIMARY_500};
   }
 `;
 
 export const Avatar = styled.img`
   width: 48px;
   height: 48px;
-  border-radius: 24px;
+  border-radius: 100%;
 
   object-fit: cover;
 `;

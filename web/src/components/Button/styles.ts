@@ -10,6 +10,8 @@ export const Container = styled.button`
   padding: 16px;
   color: ${THEME.COLORS.HEADING};
   width: 100%;
+  outline: none;
+  border: 2px solid transparent;
 
   font-weight: 900;
 
@@ -18,5 +20,9 @@ export const Container = styled.button`
 
   &:hover {
     opacity: 0.8;
+  }
+
+  &:focus {
+    border: 2px solid ${THEME.COLORS.TEXT};
   }
 `;

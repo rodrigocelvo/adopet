@@ -13,8 +13,14 @@ export const Container = styled.button`
   background-color: ${THEME.COLORS.BACKGROUND};
   color: ${THEME.COLORS.TEXT};
   margin: 0 4px;
+  outline: none;
+  border: 2px solid ${THEME.COLORS.BACKGROUND};
 
   &:hover {
     background-color: ${THEME.COLORS.PRIMARY_50};
+  }
+
+  &:focus {
+    border: 2px solid ${THEME.COLORS.PRIMARY_500};
   }
 `;
