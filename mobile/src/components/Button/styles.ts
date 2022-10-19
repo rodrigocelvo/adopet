@@ -10,7 +10,7 @@ export const Container = styled(RectButton)`
   justify-content: center;
   align-items: center;
   background-color: ${THEME.COLORS.PRIMARY_500};
-  width: 300px;
+  width: 100%;
 `;
 
 export const Title = styled.Text`

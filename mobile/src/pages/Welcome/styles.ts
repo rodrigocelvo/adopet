@@ -8,6 +8,7 @@ export const Container = styled.View`
 `;
 
 export const Content = styled.View`
+  width: 80%;
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -26,7 +27,6 @@ export const Description = styled.Text`
   color: ${THEME.COLORS.PRIMARY_500};
   font-family: ${THEME.FONT_FAMILY.REGULAR};
   text-align: center;
-  padding: 0 80px;
   margin: 8px 0;
 `;
 

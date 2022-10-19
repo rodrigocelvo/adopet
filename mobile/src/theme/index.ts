@@ -1,12 +1,12 @@
 export const THEME = {
   COLORS: {
-    BACKGROUND: '#f6f6f6',
+    BACKGROUND: '#F6F6F6',
 
     TEXT: '#2C3232',
 
+    CAPTION_100: '#DCDCE6',
+    CAPTION_400: '#A8A8B3',
     CAPTION_500: '#71717A',
-    CAPTION_400: '#A1A1AA',
-    CAPTION_300: '#D4D4D8',
 
     SHAPE: '#2A2634',
     HEADING: '#FFFFFF',
