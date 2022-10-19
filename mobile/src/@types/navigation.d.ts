@@ -3,6 +3,8 @@ export declare global {
     interface RootParamList {
       home: undefined;
       signin: undefined;
+      signup: undefined;
+      forgotpassword: undefined;
     }
   }
 }

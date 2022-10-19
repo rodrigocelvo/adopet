@@ -7,15 +7,7 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import {
-  Container,
-  Content,
-  Logo,
-  AppName,
-  Account,
-  AccountButton,
-  AccountText,
-} from './styles';
+import { Container, Content, Logo, AppName } from './styles';
 
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
@@ -23,13 +15,9 @@ import { Button } from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 import backgroundImg from '../../assets/background.png';
-import { useNavigation } from '@react-navigation/native';
 
-export function SignIn() {
-  const navigation = useNavigation();
-
+export function ForgotPassword() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   return (
     <>
@@ -40,7 +28,7 @@ export function SignIn() {
         <ImageBackground source={backgroundImg} style={{ flex: 1 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Container>
-              <Header title="Login" />
+              <Header title="Esqueci a senha" goBack />
               <Content>
                 <Logo source={logoImg} />
                 <AppName>Adopet</AppName>
@@ -54,25 +42,7 @@ export function SignIn() {
                   icon="mail-fill"
                 />
 
-                <Input
-                  onChangeText={setPassword}
-                  value={password}
-                  placeholder="Senha"
-                  secureTextEntry
-                  autoComplete="off"
-                  autoCapitalize="none"
-                  icon="lock-2-fill"
-                />
-                <Button>Entrar</Button>
-                <Account>
-                  <AccountButton onPress={() => navigation.navigate('signup')}>
-                    <AccountText>Criar conta</AccountText>
-                  </AccountButton>
-                  <AccountButton
-                    onPress={() => navigation.navigate('forgotpassword')}>
-                    <AccountText>Esqueci a senha</AccountText>
-                  </AccountButton>
-                </Account>
+                <Button>Recuperar</Button>
               </Content>
             </Container>
           </ScrollView>

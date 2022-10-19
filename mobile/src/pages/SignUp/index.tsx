@@ -12,9 +12,9 @@ import {
   Content,
   Logo,
   AppName,
-  Account,
-  AccountButton,
-  AccountText,
+  InputGroup,
+  InputGroupLine,
+  InputGroupLine2,
 } from './styles';
 
 import { Header } from '../../components/Header';
@@ -23,13 +23,14 @@ import { Button } from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 import backgroundImg from '../../assets/background.png';
-import { useNavigation } from '@react-navigation/native';
 
-export function SignIn() {
-  const navigation = useNavigation();
-
+export function SignUp() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [city, setCity] = useState('');
+  const [uf, setUf] = useState('');
 
   return (
     <>
@@ -40,10 +41,19 @@ export function SignIn() {
         <ImageBackground source={backgroundImg} style={{ flex: 1 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Container>
-              <Header title="Login" />
+              <Header title="Cadastre-se" goBack />
               <Content>
                 <Logo source={logoImg} />
                 <AppName>Adopet</AppName>
+
+                <Input
+                  onChangeText={setName}
+                  value={name}
+                  placeholder="Nome"
+                  autoCapitalize="words"
+                  autoComplete="name"
+                  icon="user-fill"
+                />
 
                 <Input
                   onChangeText={setEmail}
@@ -63,16 +73,41 @@ export function SignIn() {
                   autoCapitalize="none"
                   icon="lock-2-fill"
                 />
-                <Button>Entrar</Button>
-                <Account>
-                  <AccountButton onPress={() => navigation.navigate('signup')}>
-                    <AccountText>Criar conta</AccountText>
-                  </AccountButton>
-                  <AccountButton
-                    onPress={() => navigation.navigate('forgotpassword')}>
-                    <AccountText>Esqueci a senha</AccountText>
-                  </AccountButton>
-                </Account>
+
+                <Input
+                  onChangeText={setPhone}
+                  value={phone}
+                  keyboardType="numeric"
+                  placeholder="Telefone"
+                  autoComplete="off"
+                  autoCapitalize="none"
+                  icon="phone-fill"
+                />
+
+                <InputGroup>
+                  <InputGroupLine>
+                    <Input
+                      onChangeText={setCity}
+                      value={city}
+                      placeholder="Cidade"
+                      autoComplete="off"
+                      autoCapitalize="none"
+                      icon="map-pin-fill"
+                      style={{ flex: 1, width: '100%' }}
+                    />
+                  </InputGroupLine>
+                  <InputGroupLine2>
+                    <Input
+                      onChangeText={setUf}
+                      value={uf}
+                      placeholder="UF"
+                      autoComplete="off"
+                      autoCapitalize="none"
+                      icon="map-fill"
+                    />
+                  </InputGroupLine2>
+                </InputGroup>
+                <Button>Criar conta</Button>
               </Content>
             </Container>
           </ScrollView>

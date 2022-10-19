@@ -8,6 +8,7 @@ interface InputProps extends TextInputProps {
 }
 
 export const Container = styled.View<InputProps>`
+  flex: 1;
   flex-direction: row;
   justify-content: center;
   align-items: center;
