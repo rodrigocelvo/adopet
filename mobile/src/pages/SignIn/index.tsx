@@ -63,7 +63,9 @@ export function SignIn() {
                   autoCapitalize="none"
                   icon="lock-2-fill"
                 />
-                <Button>Entrar</Button>
+                <Button onPress={() => navigation.navigate('home')}>
+                  Entrar
+                </Button>
                 <Account>
                   <AccountButton onPress={() => navigation.navigate('signup')}>
                     <AccountText>Criar conta</AccountText>

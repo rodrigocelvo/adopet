@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { ForgotPassword } from '../pages/ForgotPassword';
+import { Home } from '../pages/Home';
 
 import { SignIn } from '../pages/SignIn';
 import { SignUp } from '../pages/SignUp';
@@ -14,6 +15,7 @@ export function AppRoutes() {
       <Screen name="signin" component={SignIn} />
       <Screen name="signup" component={SignUp} />
       <Screen name="forgotpassword" component={ForgotPassword} />
+      <Screen name="home" component={Home} />
     </Navigator>
   );
 }
