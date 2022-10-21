@@ -2,9 +2,7 @@ import styled, { css } from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
-})`
-  margin-right: 12px;
-`;
+})``;
 
 export const Content = styled.View`
   width: 300px;

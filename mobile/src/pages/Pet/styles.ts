@@ -83,7 +83,7 @@ export const UserName = styled.Text`
 
   ${({ theme }) => css`
     font-size: ${theme.FONT_SIZE.MD}px;
-    color: ${theme.COLORS.SHAPE};
+    color: ${theme.COLORS.ALERT};
     font-family: ${theme.FONT_FAMILY.MEDIUM};
   `};
 `;
@@ -128,6 +128,7 @@ export const Adoption = styled.View`
   flex-direction: row;
 
   margin-bottom: 30px;
+  align-items: center;
 `;
 
 export const Gap = styled.View`

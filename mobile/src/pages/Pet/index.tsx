@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import {
@@ -33,6 +33,7 @@ import RemixIcon from 'react-native-remix-icon';
 
 export function Pet() {
   const theme = useTheme();
+  const [favorite, setFavorite] = useState(false);
 
   return (
     <Container>
@@ -52,8 +53,11 @@ export function Pet() {
                 <UserName>Rodrigo Celvo</UserName>
               </UserContent>
             </UserProfile>
-            <LikeButton>
-              <RemixIcon name="heart-line" color={theme.COLORS.ALERT} />
+            <LikeButton onPress={() => setFavorite(!favorite)}>
+              <RemixIcon
+                name={favorite ? 'heart-fill' : 'heart-line'}
+                color={theme.COLORS.ALERT}
+              />
             </LikeButton>
           </Linear>
         </LinearGradient>

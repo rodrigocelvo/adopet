@@ -25,11 +25,15 @@ export default function App() {
   const deviceTheme = useColorScheme();
   let theme;
 
-  deviceTheme === 'dark' ? (theme = themes.dark) : (theme = themes.light);
+  deviceTheme === 'light' ? (theme = themes.light) : (theme = themes.dark);
 
   return (
     <>
-      <StatusBar barStyle="light-content" translucent />
+      <StatusBar
+        barStyle={deviceTheme === 'light' ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+        translucent
+      />
       <SafeAreaProvider>
         <SafeAreaView
           style={{

@@ -26,9 +26,12 @@ import { PetCard } from '../../components/PetCard';
 import { ANIMALS } from '../../utils/animals';
 import { useNavigation } from '@react-navigation/native';
 import { SmallButton } from '../../components/SmallButton';
+import { useTheme } from 'styled-components';
 
 export function Home() {
   const navigation = useNavigation();
+  const theme = useTheme();
+
   return (
     <>
       <ScrollView>
@@ -41,7 +44,11 @@ export function Home() {
                 />
                 <Username>Rodrigo Celvo</Username>
               </User>
-              <SmallButton icon="notification-line" size={24} />
+              <SmallButton
+                icon="shut-down-line"
+                size={24}
+                color={theme.COLORS.ALERT}
+              />
             </Header>
 
             <SearchBar icon="search-line" placeholder="Pesquisar..." />
@@ -65,7 +72,7 @@ export function Home() {
 
           <Adoption>
             <SectionTitle>Adotar Pet</SectionTitle>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('petsearch')}>
               <SectionTitle>Ver mais</SectionTitle>
             </TouchableOpacity>
           </Adoption>
@@ -74,7 +81,11 @@ export function Home() {
             data={ANIMALS}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <PetCard data={item} onPress={() => navigation.navigate('pet')} />
+              <PetCard
+                data={item}
+                onPress={() => navigation.navigate('pet')}
+                style={{ marginRight: 12 }}
+              />
             )}
             showsHorizontalScrollIndicator={false}
             horizontal

@@ -3,9 +3,9 @@ import React, { ReactNode } from 'react';
 import { Container, Title } from './styles';
 import { Loading } from '../../components/Loading';
 
-import { RectButtonProps } from 'react-native-gesture-handler';
+import { TouchableOpacityProps } from 'react-native';
 
-interface ButtonProps extends RectButtonProps {
+interface ButtonProps extends TouchableOpacityProps {
   isLoading?: boolean;
   children: ReactNode;
 }

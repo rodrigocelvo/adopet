@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-} from 'react-native';
+import React from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+
+import { useNavigation } from '@react-navigation/native';
 
 import {
   Container,
@@ -18,17 +19,40 @@ import {
 } from './styles';
 
 import { Header } from '../../components/Header';
-import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
+import { InputForm } from '../../components/InputForm';
 
 import logoImg from '../../assets/logo.png';
-import { useNavigation } from '@react-navigation/native';
+
+interface signInDFormDataProps {
+  email: string;
+  password: string;
+}
+
+const signInSchema = yup.object({
+  // email: yup
+  //   .string()
+  //   .email('Informe um email válido')
+  //   .required('Informe seu email'),
+  // password: yup.string().required('Informe sua senha.'),
+});
 
 export function SignIn() {
   const navigation = useNavigation();
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<signInDFormDataProps>({
+    resolver: yupResolver(signInSchema),
+  });
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  function handleSignIn(data: signInDFormDataProps) {
+    console.log(data);
+
+    navigation.navigate('home');
+  }
 
   return (
     <>
@@ -42,27 +66,27 @@ export function SignIn() {
               <Logo source={logoImg} />
               <AppName>Adopet</AppName>
 
-              <Input
-                onChangeText={setEmail}
-                value={email}
+              <InputForm
+                name="email"
+                control={control}
                 placeholder="E-mail"
                 autoCapitalize="none"
                 autoComplete="off"
                 icon="mail-fill"
+                error={errors.email?.message}
+              />
+              <InputForm
+                name="password"
+                control={control}
+                placeholder="E-mail"
+                autoCapitalize="none"
+                autoComplete="off"
+                icon="lock-fill"
+                secureTextEntry
+                error={errors.password?.message}
               />
 
-              <Input
-                onChangeText={setPassword}
-                value={password}
-                placeholder="Senha"
-                secureTextEntry
-                autoComplete="off"
-                autoCapitalize="none"
-                icon="lock-2-fill"
-              />
-              <Button onPress={() => navigation.navigate('home')}>
-                Entrar
-              </Button>
+              <Button onPress={handleSubmit(handleSignIn)}>Entrar</Button>
               <Account>
                 <AccountButton onPress={() => navigation.navigate('signup')}>
                   <AccountText>Criar conta</AccountText>

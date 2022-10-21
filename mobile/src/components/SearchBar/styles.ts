@@ -15,7 +15,7 @@ export const Container = styled.View<InputProps>`
 
   border-radius: 8px;
 
-  height: 60px;
+  height: 56px;
   margin-bottom: 8px;
 
   ${({ theme }) => css`
@@ -50,7 +50,7 @@ export const Button = styled(RectButton)`
 
   background-color: ${({ theme }) => theme.COLORS.PRIMARY_500};
   height: 100%;
-  width: 60px;
+  width: 56px;
   border-radius: 4px;
 `;
 
