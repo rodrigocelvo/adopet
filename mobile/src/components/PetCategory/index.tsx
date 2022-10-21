@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Icon, Title } from './styles';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { THEME } from '../../theme';
+import { useTheme } from 'styled-components';
 
 interface PetTypeProps {
   title: string;
@@ -11,6 +11,8 @@ interface PetTypeProps {
 }
 
 export function PetCategory({ title, icon }: PetTypeProps) {
+  const theme = useTheme();
+
   return (
     <Container>
       {icon && (
@@ -18,7 +20,7 @@ export function PetCategory({ title, icon }: PetTypeProps) {
           <MaterialCommunityIcons
             name={icon}
             size={24}
-            color={THEME.COLORS.PRIMARY_900}
+            color={theme.COLORS.PRIMARY_500}
           />
         </Icon>
       )}

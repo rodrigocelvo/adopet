@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ImageBackground, KeyboardAvoidingView, Platform } from 'react-native';
 
 import {
   Container,
   Content,
+  ScrollView,
   Logo,
   AppName,
   InputGroup,
@@ -34,84 +29,81 @@ export function SignUp() {
 
   return (
     <>
-      <SafeAreaView />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}>
-        <ImageBackground source={backgroundImg} style={{ flex: 1 }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Container>
-              <Header title="Cadastre-se" goBack />
-              <Content>
-                <Logo source={logoImg} />
-                <AppName>Adopet</AppName>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Container>
+            <Header title="Cadastre-se" goBack />
+            <Content>
+              <Logo source={logoImg} />
+              <AppName>Adopet</AppName>
 
-                <Input
-                  onChangeText={setName}
-                  value={name}
-                  placeholder="Nome"
-                  autoCapitalize="words"
-                  autoComplete="name"
-                  icon="user-fill"
-                />
+              <Input
+                onChangeText={setName}
+                value={name}
+                placeholder="Nome"
+                autoCapitalize="words"
+                autoComplete="name"
+                icon="user-fill"
+              />
 
-                <Input
-                  onChangeText={setEmail}
-                  value={email}
-                  placeholder="E-mail"
-                  autoCapitalize="none"
-                  autoComplete="off"
-                  icon="mail-fill"
-                />
+              <Input
+                onChangeText={setEmail}
+                value={email}
+                placeholder="E-mail"
+                autoCapitalize="none"
+                autoComplete="off"
+                icon="mail-fill"
+              />
 
-                <Input
-                  onChangeText={setPassword}
-                  value={password}
-                  placeholder="Senha"
-                  secureTextEntry
-                  autoComplete="off"
-                  autoCapitalize="none"
-                  icon="lock-2-fill"
-                />
+              <Input
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Senha"
+                secureTextEntry
+                autoComplete="off"
+                autoCapitalize="none"
+                icon="lock-2-fill"
+              />
 
-                <Input
-                  onChangeText={setPhone}
-                  value={phone}
-                  keyboardType="numeric"
-                  placeholder="Telefone"
-                  autoComplete="off"
-                  autoCapitalize="none"
-                  icon="phone-fill"
-                />
+              <Input
+                onChangeText={setPhone}
+                value={phone}
+                keyboardType="numeric"
+                placeholder="Telefone"
+                autoComplete="off"
+                autoCapitalize="none"
+                icon="phone-fill"
+              />
 
-                <InputGroup>
-                  <InputGroupLine>
-                    <Input
-                      onChangeText={setCity}
-                      value={city}
-                      placeholder="Cidade"
-                      autoComplete="off"
-                      autoCapitalize="none"
-                      icon="map-pin-fill"
-                      style={{ flex: 1, width: '100%' }}
-                    />
-                  </InputGroupLine>
-                  <InputGroupLine2>
-                    <Input
-                      onChangeText={setUf}
-                      value={uf}
-                      placeholder="UF"
-                      autoComplete="off"
-                      autoCapitalize="none"
-                      icon="map-fill"
-                    />
-                  </InputGroupLine2>
-                </InputGroup>
-                <Button>Criar conta</Button>
-              </Content>
-            </Container>
-          </ScrollView>
-        </ImageBackground>
+              <InputGroup>
+                <InputGroupLine>
+                  <Input
+                    onChangeText={setCity}
+                    value={city}
+                    placeholder="Cidade"
+                    autoComplete="off"
+                    autoCapitalize="none"
+                    icon="map-pin-fill"
+                    style={{ flex: 1, width: '100%' }}
+                  />
+                </InputGroupLine>
+                <InputGroupLine2>
+                  <Input
+                    onChangeText={setUf}
+                    value={uf}
+                    placeholder="UF"
+                    autoComplete="off"
+                    autoCapitalize="none"
+                    icon="map-fill"
+                  />
+                </InputGroupLine2>
+              </InputGroup>
+              <Button>Criar conta</Button>
+            </Content>
+          </Container>
+        </ScrollView>
       </KeyboardAvoidingView>
     </>
   );

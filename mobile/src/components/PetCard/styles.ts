@@ -1,5 +1,4 @@
-import styled from 'styled-components/native';
-import { THEME } from '../../theme';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
@@ -8,26 +7,30 @@ export const Container = styled.TouchableOpacity.attrs({
 `;
 
 export const Content = styled.View`
-  width: 180px;
-  height: 250px;
-  background-color: ${THEME.COLORS.HEADING};
+  width: 300px;
+  height: 400px;
+  background-color: ${({ theme }) => theme.COLORS.CAPTION_800};
   border-radius: 4px;
 `;
 
 export const PetImage = styled.Image`
-  width: 180px;
-  height: 180px;
+  width: 300px;
+  height: 300px;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 4px;
 `;
 
 export const Title = styled.Text`
-  color: ${THEME.COLORS.PRIMARY_500};
-  font-size: ${THEME.FONT_SIZE.LG}px;
+  ${({ theme }) => css`
+    color: ${theme.COLORS.PRIMARY_500};
+    font-size: ${theme.FONT_SIZE.LG}px;
+  `};
 `;
 
 export const Details = styled.View`
-  padding: 10px;
+  padding: 0 10px;
+  flex: 1;
+  justify-content: center;
 `;
 
 export const Information = styled.View`
@@ -36,6 +39,8 @@ export const Information = styled.View`
 `;
 
 export const InfoText = styled.Text`
-  font-size: ${THEME.FONT_SIZE.SM}px;
-  color: ${THEME.COLORS.TEXT};
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZE.SM}px;
+    color: ${theme.COLORS.TEXT};
+  `};
 `;

@@ -25,28 +25,26 @@ export function ForgotPassword() {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}>
-        <ImageBackground source={backgroundImg} style={{ flex: 1 }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Container>
-              <Header title="Esqueci a senha" goBack />
-              <Content>
-                <Logo source={logoImg} />
-                <AppName>Adopet</AppName>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Container>
+            <Header title="Esqueci a senha" goBack />
+            <Content>
+              <Logo source={logoImg} />
+              <AppName>Adopet</AppName>
 
-                <Input
-                  onChangeText={setEmail}
-                  value={email}
-                  placeholder="E-mail"
-                  autoCapitalize="none"
-                  autoComplete="off"
-                  icon="mail-fill"
-                />
+              <Input
+                onChangeText={setEmail}
+                value={email}
+                placeholder="E-mail"
+                autoCapitalize="none"
+                autoComplete="off"
+                icon="mail-fill"
+              />
 
-                <Button>Recuperar</Button>
-              </Content>
-            </Container>
-          </ScrollView>
-        </ImageBackground>
+              <Button>Recuperar</Button>
+            </Content>
+          </Container>
+        </ScrollView>
       </KeyboardAvoidingView>
     </>
   );

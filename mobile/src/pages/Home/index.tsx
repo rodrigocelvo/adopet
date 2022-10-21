@@ -1,11 +1,11 @@
 import React from 'react';
-import { SafeAreaView, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import RemixIcon from 'react-native-remix-icon';
 import { SearchBar } from '../../components/SearchBar';
 
 import {
   Container,
-  Scroll,
+  ScrollView,
   Header,
   ContentPadding,
   User,
@@ -24,12 +24,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PetCard } from '../../components/PetCard';
 
 import { ANIMALS } from '../../utils/animals';
+import { useNavigation } from '@react-navigation/native';
+import { SmallButton } from '../../components/SmallButton';
 
 export function Home() {
+  const navigation = useNavigation();
   return (
     <>
-      <SafeAreaView />
-      <Scroll showsVerticalScrollIndicator={false}>
+      <ScrollView>
         <Container>
           <ContentPadding>
             <Header>
@@ -39,7 +41,7 @@ export function Home() {
                 />
                 <Username>Rodrigo Celvo</Username>
               </User>
-              <RemixIcon name="notification-fill" />
+              <SmallButton icon="notification-line" size={24} />
             </Header>
 
             <SearchBar icon="search-line" placeholder="Pesquisar..." />
@@ -71,7 +73,9 @@ export function Home() {
           <FlatList
             data={ANIMALS}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => <PetCard data={item} />}
+            renderItem={({ item }) => (
+              <PetCard data={item} onPress={() => navigation.navigate('pet')} />
+            )}
             showsHorizontalScrollIndicator={false}
             horizontal
             contentContainerStyle={{
@@ -80,7 +84,7 @@ export function Home() {
             }}
           />
         </Container>
-      </Scroll>
+      </ScrollView>
     </>
   );
 }

@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components/native';
 import { TextInput as Input, TextInputProps } from 'react-native';
-import { THEME } from '../../theme';
 import Icon from 'react-native-remix-icon';
 
 interface InputProps extends TextInputProps {
@@ -11,32 +10,42 @@ export const Container = styled.View<InputProps>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: ${THEME.COLORS.HEADING};
+
   border-radius: 4px;
-  border: 2px solid ${THEME.COLORS.CAPTION_100};
+
   height: 60px;
   margin-bottom: 8px;
+
+  ${({ theme }) => css`
+    background-color: ${theme.COLORS.HEADING};
+    border: 2px solid ${theme.COLORS.CAPTION_100};
+  `}
 
   ${({ isFocused }) =>
     isFocused &&
     css`
-      border-color: ${THEME.COLORS.PRIMARY_500};
+      border-color: ${({ theme }) => theme.COLORS.PRIMARY_500};
     '}
   `};
 `;
 
 export const TextInput = styled(Input).attrs<InputProps>({
-  placeholderTextColor: `${THEME.COLORS.CAPTION_500}`,
+  placeholderTextColor: '#71717A',
 })`
   flex: 1;
-  font-family: ${THEME.FONT_FAMILY.REGULAR};
-  font-size: ${THEME.FONT_SIZE.MD}px;
 
-  color: ${THEME.COLORS.TEXT};
+  ${({ theme }) => css`
+    font-family: ${theme.FONT_FAMILY.REGULAR};
+    font-size: ${theme.FONT_SIZE.MD}px;
+    color: ${theme.COLORS.TEXT};
+  `}
 `;
 
 export const RemixIcon = styled(Icon)`
   padding: 0px 20px;
-  font-size: ${THEME.FONT_SIZE.LG}px;
-  color: ${THEME.COLORS.CAPTION_400};
+
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZE.LG}px;
+    color: ${theme.COLORS.CAPTION_400};
+  `}
 `;

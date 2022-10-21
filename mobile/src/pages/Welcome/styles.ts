@@ -1,10 +1,9 @@
-import styled from 'styled-components/native';
-import { THEME } from '../../theme';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  background-color: ${THEME.COLORS.HEADING};
+  background-color: ${({ theme }) => theme.COLORS.HEADING}; ;
 `;
 
 export const Content = styled.View`
@@ -16,18 +15,23 @@ export const Content = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${THEME.FONT_FAMILY.BOLD};
-  font-size: ${THEME.FONT_SIZE.LG}px;
-  color: ${THEME.COLORS.TEXT};
   text-align: center;
+  ${({ theme }) => css`
+    font-family: ${theme.FONT_FAMILY.BOLD};
+    font-size: ${theme.FONT_SIZE.LG}px;
+    color: ${theme.COLORS.TEXT};
+  `};
 `;
 
 export const Description = styled.Text`
-  font-size: ${THEME.FONT_SIZE.MD}px;
-  color: ${THEME.COLORS.PRIMARY_500};
-  font-family: ${THEME.FONT_FAMILY.REGULAR};
   text-align: center;
   margin: 8px 0;
+
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZE.MD}px;
+    color: ${theme.COLORS.PRIMARY_500};
+    font-family: ${theme.FONT_FAMILY.REGULAR};
+  `};
 `;
 
 export const Header = styled.Image`

@@ -7,9 +7,11 @@ import { Container, Title, BTA } from './styles';
 interface HeaderProps {
   title?: string;
   goBack?: boolean;
+  favorite?: boolean;
+  onFavorite?: () => void;
 }
 
-export function Header({ title, goBack }: HeaderProps) {
+export function Header({ title, goBack, ...rest }: HeaderProps) {
   const navigation = useNavigation();
 
   function handleGoBack() {
@@ -17,14 +19,16 @@ export function Header({ title, goBack }: HeaderProps) {
   }
 
   return (
-    <Container>
-      {goBack ? (
-        <SmallButton icon="arrow-left-line" onPress={handleGoBack} />
-      ) : (
+    <>
+      <Container {...rest}>
+        {goBack ? (
+          <SmallButton icon="arrow-left-line" onPress={handleGoBack} />
+        ) : (
+          <BTA />
+        )}
+        <Title>{title}</Title>
         <BTA />
-      )}
-      <Title>{title}</Title>
-      <BTA />
-    </Container>
+      </Container>
+    </>
   );
 }

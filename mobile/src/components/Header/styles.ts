@@ -1,5 +1,4 @@
-import styled from 'styled-components/native';
-import { THEME } from '../../theme';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
@@ -11,9 +10,11 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${THEME.FONT_FAMILY.BOLD};
-  font-size: ${THEME.FONT_SIZE.LG}px;
-  color: ${THEME.COLORS.TEXT};
+  ${({ theme }) => css`
+    font-family: ${theme.FONT_FAMILY.BOLD};
+    font-size: ${theme.FONT_SIZE.LG}px;
+    color: ${theme.COLORS.TEXT};
+  `};
 `;
 
 export const BTA = styled.View`

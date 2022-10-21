@@ -1,8 +1,7 @@
 import React from 'react';
 import RemixIcon from 'react-native-remix-icon';
-import { THEME } from '../../theme';
+import { useTheme } from 'styled-components';
 import { TouchableOpacityProps } from 'react-native';
-import { RectButtonProps } from 'react-native-gesture-handler';
 
 import {
   Container,
@@ -27,6 +26,8 @@ interface Props extends TouchableOpacityProps {
 }
 
 export function PetCard({ data, ...rest }: Props) {
+  const theme = useTheme();
+
   return (
     <Container {...rest}>
       <Content>
@@ -40,7 +41,7 @@ export function PetCard({ data, ...rest }: Props) {
             <InfoText>
               <RemixIcon
                 name={data.genre === 'male' ? 'men-line' : 'women-line'}
-                color={THEME.COLORS.PRIMARY_500}
+                color={theme.COLORS.PRIMARY_500}
                 size={18}
               />
             </InfoText>

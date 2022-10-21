@@ -1,7 +1,6 @@
-import styled from 'styled-components/native';
-import { THEME } from '../../theme';
+import styled, { css } from 'styled-components/native';
 
-export const Container = styled.KeyboardAvoidingView`
+export const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -17,9 +16,13 @@ export const Content = styled.View`
 
 export const AppName = styled.Text`
   font-size: 48px;
-  font-family: ${THEME.FONT_FAMILY.BOLD};
-  color: ${THEME.COLORS.PRIMARY_500};
+
   margin-bottom: 30px;
+
+  ${({ theme }) => css`
+    font-family: ${theme.FONT_FAMILY.BOLD};
+    color: ${theme.COLORS.PRIMARY_500};
+  `};
 `;
 
 export const Logo = styled.Image`
@@ -37,6 +40,8 @@ export const Account = styled.View`
 export const AccountButton = styled.TouchableOpacity``;
 
 export const AccountText = styled.Text`
-  color: ${THEME.COLORS.CAPTION_500};
-  font-size: ${THEME.FONT_SIZE.MD}px;
+  ${({ theme }) => css`
+    color: ${theme.COLORS.CAPTION_500};
+    font-size: ${theme.FONT_SIZE.MD}px;
+  `};
 `;

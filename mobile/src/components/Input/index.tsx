@@ -3,7 +3,7 @@ import { TextInputProps } from 'react-native';
 
 import { Container, TextInput, RemixIcon } from './styles';
 
-import { THEME } from '../../theme';
+import { useTheme } from 'styled-components';
 
 interface InputProps extends TextInputProps {
   icon?: ReactNode;
@@ -11,6 +11,7 @@ interface InputProps extends TextInputProps {
 
 export function Input({ icon, ...rest }: InputProps) {
   const [isFocused, setIsFocused] = useState(false);
+  const theme = useTheme();
 
   function handleOnFocus() {
     setIsFocused(true);
@@ -26,7 +27,7 @@ export function Input({ icon, ...rest }: InputProps) {
         <RemixIcon
           name={icon}
           color={
-            isFocused ? THEME.COLORS.PRIMARY_500 : THEME.COLORS.CAPTION_400
+            isFocused ? theme.COLORS.PRIMARY_500 : theme.COLORS.CAPTION_500
           }
           size={24}
         />

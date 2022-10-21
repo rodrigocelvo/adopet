@@ -1,12 +1,13 @@
-import styled from 'styled-components/native';
-import { THEME } from '../../theme';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
   padding-bottom: 20px;
 `;
 
-export const Scroll = styled.ScrollView`
+export const ScrollView = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})`
   flex: 1;
 `;
 
@@ -34,9 +35,12 @@ export const Avatar = styled.Image`
 
 export const Username = styled.Text`
   margin-left: 10px;
-  font-size: ${THEME.FONT_SIZE.SM}px;
-  color: ${THEME.COLORS.TEXT};
-  font-family: ${THEME.FONT_FAMILY.MEDIUM};
+
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZE.SM}px;
+    color: ${theme.COLORS.TEXT};
+    font-family: ${theme.FONT_FAMILY.MEDIUM};
+  `};
 `;
 
 export const BannerButton = styled.TouchableOpacity.attrs({
@@ -56,10 +60,13 @@ export const Banner = styled.Image`
 `;
 
 export const SectionTitle = styled.Text`
-  font-size: ${THEME.FONT_SIZE.SM}px;
-  font-family: ${THEME.FONT_FAMILY.REGULAR};
-  color: ${THEME.COLORS.CAPTION_500};
   margin-bottom: 8px;
+
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZE.SM}px;
+    font-family: ${theme.FONT_FAMILY.REGULAR};
+    color: ${theme.COLORS.CAPTION_500};
+  `};
 `;
 
 export const PetCategorySelection = styled.ScrollView.attrs({

@@ -1,5 +1,4 @@
-import styled from 'styled-components/native';
-import { THEME } from '../../theme';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.KeyboardAvoidingView`
   flex: 1;
@@ -17,9 +16,13 @@ export const Content = styled.View`
 
 export const AppName = styled.Text`
   font-size: 48px;
-  font-family: ${THEME.FONT_FAMILY.BOLD};
-  color: ${THEME.COLORS.PRIMARY_500};
+
   margin-bottom: 30px;
+
+  ${({ theme }) => css`
+    font-family: ${theme.FONT_FAMILY.BOLD};
+    color: ${theme.COLORS.PRIMARY_500};
+  `};
 `;
 
 export const Logo = styled.Image`

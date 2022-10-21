@@ -6,6 +6,7 @@ export declare global {
       signin: undefined;
       signup: undefined;
       forgotpassword: undefined;
+      pet: undefined;
     }
   }
 }

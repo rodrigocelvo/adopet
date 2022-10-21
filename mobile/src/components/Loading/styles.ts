@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 
 import { ActivityIndicator } from 'react-native';
-import { THEME } from '../../theme';
 
 export const Container = styled.View`
   flex: 1;
@@ -10,5 +9,5 @@ export const Container = styled.View`
 `;
 
 export const Load = styled(ActivityIndicator)`
-  color: ${THEME.COLORS.PRIMARY_900};
+  color: ${({ theme }) => theme.COLORS.PRIMARY_900}; ;
 `;
