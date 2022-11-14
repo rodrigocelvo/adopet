@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Navbar } from '../../components/Navbar';
 import { InfoCard } from '../../components/InfoCard';
-import { AnimalCard } from '../../components/AnimalCard';
+import { AnimalCard, AnimalCardProps } from '../../components/AnimalCard';
 import { Button } from '../../components/Button';
 import { Footer } from '../../components/Footer';
-
-import { ANIMALS } from '../../utils/animals';
 
 import {
   Container,
@@ -35,9 +33,24 @@ import waveImg from '../../assets/wave2.svg';
 import card1Img from '../../assets/card1.svg';
 import card2Img from '../../assets/card2.svg';
 import card3Img from '../../assets/card3.svg';
+import { api } from '../../services/api';
 
 export function Home() {
   const navigate = useNavigate();
+  const [pets, setPets] = useState<AnimalCardProps[]>([]);
+
+  async function fetchPets() {
+    try {
+      const response = await api.get('/pets/lasts');
+      setPets(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchPets();
+  }, []);
 
   return (
     <>
@@ -90,14 +103,14 @@ export function Home() {
           <SubTitle>Novos bichinhos</SubTitle>
           <AnimalContainer>
             <AnimalContent>
-              {ANIMALS.map(animal => (
+              {pets.map(animal => (
                 <AnimalCard
                   key={animal.id}
+                  id={animal.id}
                   name={animal.name}
-                  city={animal.city}
-                  uf={animal.uf}
+                  author={animal.author}
                   genre={animal.genre}
-                  photo={animal.imgUrl}
+                  imgUrl={animal.imgUrl}
                 />
               ))}
             </AnimalContent>

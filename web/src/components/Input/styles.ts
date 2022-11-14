@@ -21,6 +21,7 @@ export const Container = styled.div<ContainerProps>`
   color: ${THEME.COLORS.TEXT};
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
 
   & + div {
     margin-top: 8px;

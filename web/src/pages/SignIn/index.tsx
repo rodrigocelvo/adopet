@@ -1,9 +1,12 @@
 import React, { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiLock, FiLogIn, FiMail } from 'react-icons/fi';
+import { FiArrowLeft, FiLock, FiLogIn, FiMail, FiUser } from 'react-icons/fi';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
+import { InputControlled } from '../../components/InputControlled';
 
 import {
   Container,
@@ -17,12 +20,29 @@ import {
 } from './styles';
 
 import logoImg from '../../assets/logo.svg';
+import { useForm } from 'react-hook-form';
+
+interface signInDFormDataProps {
+  code: string;
+}
+
+const signInSchema = yup.object({
+  code: yup.string().required('Infome o código'),
+});
 
 export function SignIn() {
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<signInDFormDataProps>({
+    resolver: yupResolver(signInSchema),
+  });
+
   const navigate = useNavigate();
 
-  function handleSubmit(event: FormEvent) {
-    event.preventDefault();
+  function handleSignIn() {
     navigate('/dashboard');
   }
 
@@ -34,13 +54,19 @@ export function SignIn() {
           <Logo src={logoImg} alt="Logo" />
           <AppName>Adopet</AppName>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(handleSignIn)}>
             <Title>Faça seu login</Title>
 
-            <Input name="email" placeholder="E-mail" icon={FiMail} />
-            <Input name="password" type="password" placeholder="Senha" icon={FiLock} />
+            <InputControlled
+              label="Código"
+              control={control}
+              name="code"
+              placeholder="Sua ID"
+              icon={FiUser}
+              error={errors.code?.message}
+              isErrored={!!errors.code?.message}
+            />
             <Button type="submit">Entrar</Button>
-            {/* <Link to="/forgot-password">Esqueci minha senha</Link> */}
           </form>
 
           <Links>

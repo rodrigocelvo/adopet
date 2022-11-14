@@ -11,9 +11,17 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   containerStyle?: object;
   icon?: React.ComponentType<IconBaseProps>;
   error?: boolean;
+  isErrored: boolean;
 }
 
-export function TextArea({ name, containerStyle = {}, icon: Icon, error, ...rest }: TextAreaProps) {
+export function TextArea({
+  name,
+  containerStyle = {},
+  icon: Icon,
+  error,
+  isErrored,
+  ...rest
+}: TextAreaProps) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
@@ -29,7 +37,12 @@ export function TextArea({ name, containerStyle = {}, icon: Icon, error, ...rest
   }
 
   return (
-    <Container style={containerStyle} isFilled={isFilled} isFocused={isFocused} isErrored={error}>
+    <Container
+      style={containerStyle}
+      isFilled={isFilled}
+      isFocused={isFocused}
+      isErrored={isErrored}
+    >
       {Icon && <Icon size={20} />}
       <textarea
         onFocus={handleInputFocus}

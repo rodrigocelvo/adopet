@@ -95,6 +95,9 @@ export const Form = styled.form`
 
 export const FormGroup = styled.div`
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 300px;
 `;
 
 export const Background = styled.div`

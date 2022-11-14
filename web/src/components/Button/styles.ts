@@ -23,6 +23,6 @@ export const Container = styled.button`
   }
 
   &:focus {
-    border: 2px solid ${THEME.COLORS.TEXT};
+    border: 2px solid ${THEME.COLORS.PRIMARY_500};
   }
 `;

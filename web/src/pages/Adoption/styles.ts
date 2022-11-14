@@ -4,6 +4,7 @@ import { THEME } from '../../theme';
 export const Container = styled.div`
   width: 100%;
   padding-top: 120px;
+  padding: 120px 0px 80px;
 `;
 
 export const Content = styled.div`

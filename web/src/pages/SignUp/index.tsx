@@ -1,10 +1,13 @@
 import React, { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import 'yup-phone';
+
 import { FiArrowLeft, FiLock, FiMail, FiMap, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
 
 import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
 
 import {
   Container,
@@ -19,13 +22,67 @@ import {
 } from './styles';
 
 import logoImg from '../../assets/logo.svg';
+import { InputControlled } from '../../components/InputControlled';
+import { useForm } from 'react-hook-form';
+import { api } from '../../services/api';
+
+interface signUpFormDataProps {
+  name: string;
+  email: string;
+  phone: string;
+  city: string;
+  uf: string;
+}
+
+const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+
+const signUpSchema = yup.object({
+  name: yup.string().max(30, 'Nome muito grande.').required('Infome o seu nome.'),
+  email: yup.string().email().required('Insira seu e-mail.'),
+  phone: yup.string().matches(phoneRegex, 'Número inválido. ').required('Informe seu WhatsApp'),
+  city: yup.string().required('Insira sua cidade.'),
+  uf: yup
+    .string()
+    .min(2, 'Informe a sigla.')
+    .max(2, 'Informe a sigla.')
+    .required('Informe a sigla.'),
+});
 
 export function SignUp() {
   const navigate = useNavigate();
 
-  function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    navigate('/signin');
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<signUpFormDataProps>({
+    resolver: yupResolver(signUpSchema),
+  });
+
+  async function handleCreateAccount({ name, email, phone, city, uf }: signUpFormDataProps) {
+    try {
+      const response = await api.post('/users/', {
+        name,
+        email,
+        phone,
+        city,
+        uf,
+      });
+
+      const { code } = response.data;
+
+      await navigator.clipboard.writeText(code);
+
+      alert(
+        `Conta criada com sucesso. O código para login ${code} foi copiado para a área de transferencia.`
+      );
+
+      navigate('/signin');
+    } catch (err) {
+      console.log(err);
+
+      alert(`Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
+    }
   }
 
   return (
@@ -35,21 +92,60 @@ export function SignUp() {
           <Logo src={logoImg} alt="Logo" />
           <AppName>Adopet</AppName>
 
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit(handleCreateAccount)}>
             <Title>Crie sua conta</Title>
 
-            <Input name="name" placeholder="Nome" icon={FiUser} />
-            <Input name="email" placeholder="E-mail" type="email" icon={FiMail} />
-            <Input name="password" type="password" placeholder="Senha" icon={FiLock} />
-            <Input name="whatsapp" placeholder="WhatsApp" icon={FiPhone} />
+            <InputControlled
+              label="Nome completo"
+              control={control}
+              name="name"
+              placeholder="Nome"
+              icon={FiUser}
+              error={errors.name?.message}
+              isErrored={!!errors.name?.message}
+            />
+            <InputControlled
+              label="E-mail"
+              control={control}
+              name="email"
+              placeholder="E-mail"
+              type="email"
+              icon={FiMail}
+              error={errors.email?.message}
+              isErrored={!!errors.email?.message}
+            />
+            <InputControlled
+              label="WhatsApp"
+              control={control}
+              name="phone"
+              placeholder="WhatsApp com DDD"
+              icon={FiPhone}
+              error={errors.phone?.message}
+              isErrored={!!errors.phone?.message}
+            />
             <FormGroup>
-              <Input name="city" placeholder="Cidade" icon={FiMapPin} style={{ width: '120px' }} />
+              <InputControlled
+                label="Cidade"
+                control={control}
+                name="city"
+                placeholder="Cidade"
+                icon={FiMapPin}
+                error={errors.city?.message}
+                isErrored={!!errors.city?.message}
+                style={{ width: '70px' }}
+              />
               <div style={{ marginLeft: '8px' }}></div>
-              <Input
+              <InputControlled
+                label="Estado"
+                control={control}
                 name="uf"
                 placeholder="UF"
+                maxLength={2}
+                minLength={2}
                 icon={FiMap}
-                style={{ width: '50px', marginTop: '0px' }}
+                error={errors.uf?.message}
+                isErrored={!!errors.uf?.message}
+                style={{ width: '30px', marginTop: '0px' }}
               />
             </FormGroup>
 

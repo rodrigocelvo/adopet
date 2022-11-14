@@ -18,28 +18,35 @@ import {
 import { THEME } from '../../theme';
 import { useNavigate } from 'react-router-dom';
 
-interface AnimalCardProps {
-  photo: string;
+export interface AnimalCardProps {
+  id?: string;
+  imgUrl: string;
   name: string;
-  city?: string;
-  uf?: string;
   genre?: string;
+
+  author?: {
+    city?: string;
+    uf?: string;
+  };
+
   loggedIn?: boolean;
 }
 
-export function AnimalCard({ photo, name, city, uf, genre, loggedIn }: AnimalCardProps) {
+interface Props extends AnimalCardProps {}
+
+export function AnimalCard({ imgUrl, name, genre, loggedIn, author }: Props) {
   const navigate = useNavigate();
 
   return (
     <>
       {!loggedIn ? (
         <Container>
-          <Photo src={photo} />
+          <Photo src={imgUrl} />
           <Content>
             <Name>{name}</Name>
             <Info>
               <Location>
-                {city}, {uf}
+                {author?.city}, {author?.uf}
               </Location>
               <Genre>{genre === 'male' ? <BsGenderMale /> : <BsGenderFemale />}</Genre>
             </Info>
@@ -47,7 +54,7 @@ export function AnimalCard({ photo, name, city, uf, genre, loggedIn }: AnimalCar
         </Container>
       ) : (
         <Container>
-          <Photo src={photo} />
+          <Photo src={imgUrl} />
           <LoggedContent>
             <Name>{name}</Name>
             <ButtonContainer>

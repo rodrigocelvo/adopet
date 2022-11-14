@@ -81,6 +81,9 @@ export const Form = styled.form`
 
 export const FormGroup = styled.div`
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 300px;
 
   margin: 8px 0;
 `;
@@ -136,7 +139,7 @@ export const AvatarInput = styled.div`
 export const AnimalImageContainer = styled.div``;
 export const AnimalFormContainer = styled.div``;
 
-export const GenreContainer = styled.div`
+export const OptionContainer = styled.div`
   margin-top: 8px;
   background-color: white;
   display: flex;
@@ -166,9 +169,9 @@ export const GenreContainer = styled.div`
   }
 `;
 
-export const Genre = styled.div`
+export const Option = styled.div`
   display: flex;
-  justify-content: center;
+
   align-items: flex-end;
   gap: 12px;
   margin-top: 8px;

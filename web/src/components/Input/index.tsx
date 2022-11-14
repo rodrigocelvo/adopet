@@ -8,12 +8,12 @@ import { Container, Error } from './styles';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  containerStyle?: object;
   icon?: React.ComponentType<IconBaseProps>;
   error?: boolean;
+  isErrored: boolean;
 }
 
-export function Input({ name, containerStyle = {}, icon: Icon, error, ...rest }: InputProps) {
+export function Input({ name, icon: Icon, error, isErrored, ...rest }: InputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
@@ -29,9 +29,15 @@ export function Input({ name, containerStyle = {}, icon: Icon, error, ...rest }:
   }
 
   return (
-    <Container style={containerStyle} isFilled={isFilled} isFocused={isFocused} isErrored={error}>
+    <Container isFilled={isFilled} isFocused={isFocused} isErrored={isErrored}>
       {Icon && <Icon size={20} />}
-      <input onFocus={handleInputFocus} onBlur={handleInputBlur} ref={inputRef} {...rest} />
+      <input
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
+        ref={inputRef}
+        autoComplete="off"
+        {...rest}
+      />
 
       {error && (
         <>
