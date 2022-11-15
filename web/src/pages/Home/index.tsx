@@ -64,7 +64,9 @@ export function Home() {
             <Description>
               tente adotar um bichinho e você vai ser muito feliz, eu prometo.
             </Description>
-            <Button onClick={() => navigate('/adoption')}>QUERO ADOTAR</Button>
+            <Button style={{ width: '300px' }} onClick={() => navigate('/adoption')}>
+              QUERO ADOTAR
+            </Button>
           </Intro>
           <Animal src={catImg} />
         </Main>

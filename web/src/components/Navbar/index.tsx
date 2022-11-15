@@ -23,6 +23,7 @@ import {
 } from './styles';
 
 import LogoImg from '../../assets/logo.svg';
+import { useAuth } from '../../hooks/useAuth';
 
 interface NavbarPorps {
   loggedIn?: boolean;
@@ -33,6 +34,7 @@ export function Navbar({ loggedIn, userAvatar }: NavbarPorps) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { user, signUp } = useAuth();
 
   return (
     <>
@@ -98,9 +100,11 @@ export function Navbar({ loggedIn, userAvatar }: NavbarPorps) {
               </Link>
 
               <RightContainer>
-                <strong>John</strong>
-                <AvatarButton onClick={() => navigate('/signin')}>
-                  <Avatar src={userAvatar} />
+                <strong>{user.name}</strong>
+                <AvatarButton onClick={signUp}>
+                  <Avatar
+                    src={`https://ui-avatars.com/api/?name=${user.name}&background=random&color=white`}
+                  />
                 </AvatarButton>
               </RightContainer>
             </NavbarInnerContainer>

@@ -21,8 +21,9 @@ import {
 
 import logoImg from '../../assets/logo.svg';
 import { useForm } from 'react-hook-form';
+import { useAuth } from '../../hooks/useAuth';
 
-interface signInDFormDataProps {
+interface signInFormDataProps {
   code: string;
 }
 
@@ -36,14 +37,27 @@ export function SignIn() {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<signInDFormDataProps>({
+  } = useForm<signInFormDataProps>({
     resolver: yupResolver(signInSchema),
   });
 
   const navigate = useNavigate();
+  const { signIn, signed } = useAuth();
 
-  function handleSignIn() {
+  if (signed) {
     navigate('/dashboard');
+  }
+
+  async function handleSignIn(data: signInFormDataProps) {
+    try {
+      await signIn({
+        id: data.code,
+      });
+
+      navigate('/dashboard');
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (

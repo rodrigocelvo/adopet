@@ -22,6 +22,7 @@ export function Routes() {
         <Route path="/adoption" element={<Adoption />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+
         <Route
           path="/dashboard"
           element={

@@ -25,6 +25,7 @@ import logoImg from '../../assets/logo.svg';
 import { InputControlled } from '../../components/InputControlled';
 import { useForm } from 'react-hook-form';
 import { api } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
 
 interface signUpFormDataProps {
   name: string;
@@ -50,6 +51,11 @@ const signUpSchema = yup.object({
 
 export function SignUp() {
   const navigate = useNavigate();
+  const { signed } = useAuth();
+
+  if (signed) {
+    navigate('/dashboard');
+  }
 
   const {
     control,

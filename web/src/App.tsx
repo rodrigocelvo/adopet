@@ -2,12 +2,15 @@ import { ThemeProvider } from 'styled-components';
 import { THEME } from './theme';
 
 import { Routes } from './routes';
+import { AuthContextProvider } from './contexts/AuthContext';
 
 function App() {
   return (
-    <ThemeProvider theme={THEME}>
-      <Routes />
-    </ThemeProvider>
+    <AuthContextProvider>
+      <ThemeProvider theme={THEME}>
+        <Routes />
+      </ThemeProvider>
+    </AuthContextProvider>
   );
 }
 

@@ -9,6 +9,7 @@ import petAdoptionImg from '../../assets/pet-adoption.svg';
 import { Container, Header, Title, Content, NonePet, AnimalContent } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
 
 interface PetProps {
   id?: string;
@@ -24,21 +25,18 @@ interface PetProps {
 }
 
 export function Dashboard() {
-  const { user } = { user: true };
   const [pets, setPets] = useState<AnimalCardProps[]>([]);
+  const { user } = useAuth();
 
   const navigate = useNavigate();
 
   async function fetchPets() {
     try {
-      const response = await api.get('/pets/');
-      const myPets = response.data;
+      const response = await api.get('/pets');
+      const responsePetData = response.data;
 
-      myPets.forEach((pet: PetProps) => {
-        if (pet.author.id === 'ff80808184736591018473fa1621000c') {
-          setPets([pet]);
-        }
-      });
+      const myPets = responsePetData.filter((pet: PetProps) => pet.author.id === user.id);
+      setPets(myPets);
     } catch (err) {
       console.log(err);
     }
