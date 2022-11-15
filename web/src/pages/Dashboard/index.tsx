@@ -44,7 +44,7 @@ export function Dashboard() {
 
   useEffect(() => {
     fetchPets();
-  }, []);
+  }, [pets]);
 
   return (
     <>
@@ -70,9 +70,10 @@ export function Dashboard() {
             {pets.map(animal => (
               <AnimalCard
                 key={animal.id}
+                id={animal.id}
                 loggedIn={true}
                 name={animal.name}
-                imgUrl="https://conteudo.imguol.com.br/c/entretenimento/eb/2022/03/23/cachorro-da-raca-lulu-da-pomeramia-1648065976007_v2_900x506.jpg"
+                imgUrl={animal.imgUrl}
               />
             ))}
           </AnimalContent>

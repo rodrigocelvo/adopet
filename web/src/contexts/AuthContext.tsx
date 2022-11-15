@@ -21,7 +21,7 @@ export interface AuthContextDataProps {
   user: UserProps;
   isUserLoading: boolean;
   signIn: (id: SignInProps) => Promise<void>;
-  signUp: () => Promise<void>;
+  logOut: () => Promise<void>;
   signed: boolean;
 }
 
@@ -29,10 +29,15 @@ export const AuthContext = createContext({} as AuthContextDataProps);
 
 export function AuthContextProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState(({} as UserProps) || null);
-  const [isUserLoading, setIsUserLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
   useEffect(() => {
-    async function getUser() {
+    getUser();
+  }, []);
+
+  async function getUser() {
+    try {
+      setIsUserLoading(true);
       const storageUser = localStorage.getItem('@Adopet:user');
 
       if (!storageUser) {
@@ -44,14 +49,14 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
         const parsedDate = JSON.parse(storageUser);
         setUser(parsedDate);
       }
+    } catch (err) {
+      setIsUserLoading(false);
     }
-    getUser();
-  }, []);
+  }
 
   async function signIn({ id }: SignInProps) {
-    setIsUserLoading(true);
-
     try {
+      setIsUserLoading(true);
       const response = await api.post('/me', {
         id,
       });
@@ -76,12 +81,13 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function signUp() {
-    setIsUserLoading(true);
+  async function logOut() {
     try {
+      setIsUserLoading(true);
       localStorage.clear();
       // @ts-ignore
       setUser(null);
+      setIsUserLoading(false);
     } catch (error) {
       console.log(error);
 
@@ -97,7 +103,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
         signIn,
         isUserLoading,
         user,
-        signUp,
+        logOut,
         signed: !!user,
       }}
     >

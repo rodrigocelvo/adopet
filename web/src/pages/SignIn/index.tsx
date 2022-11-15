@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiLock, FiLogIn, FiMail, FiUser } from 'react-icons/fi';
 
@@ -44,10 +44,6 @@ export function SignIn() {
   const navigate = useNavigate();
   const { signIn, signed } = useAuth();
 
-  if (signed) {
-    navigate('/dashboard');
-  }
-
   async function handleSignIn(data: signInFormDataProps) {
     try {
       await signIn({
@@ -59,6 +55,12 @@ export function SignIn() {
       console.log(err);
     }
   }
+
+  useEffect(() => {
+    if (signed) {
+      navigate('/dashboard');
+    }
+  }, []);
 
   return (
     <Container>

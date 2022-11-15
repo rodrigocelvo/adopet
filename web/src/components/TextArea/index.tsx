@@ -49,7 +49,7 @@ export function TextArea({
         onBlur={handleInputBlur}
         ref={inputRef}
         cols={40}
-        rows={5}
+        rows={8}
         {...rest}
       />
 

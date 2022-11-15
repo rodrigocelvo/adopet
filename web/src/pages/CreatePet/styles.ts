@@ -136,7 +136,15 @@ export const AvatarInput = styled.div`
   }
 `;
 
-export const AnimalImageContainer = styled.div``;
+export const AnimalImageContainer = styled.div`
+  p {
+    font-size: 12px;
+    margin-left: 5px;
+    color: ${THEME.COLORS.ALERT};
+    font-weight: 600;
+    text-align: left;
+  }
+`;
 export const AnimalFormContainer = styled.div``;
 
 export const OptionContainer = styled.div`

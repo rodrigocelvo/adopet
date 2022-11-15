@@ -34,7 +34,7 @@ export interface AnimalCardProps {
 
 interface Props extends AnimalCardProps {}
 
-export function AnimalCard({ imgUrl, name, genre, loggedIn, author }: Props) {
+export function AnimalCard({ imgUrl, name, genre, loggedIn, author, id }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -60,7 +60,7 @@ export function AnimalCard({ imgUrl, name, genre, loggedIn, author }: Props) {
             <ButtonContainer>
               <SmallButton name="Deletar" icon={FiTrash2} color={THEME.COLORS.ALERT} />
               <SmallButton
-                onClick={() => navigate('/pet/adasd/edit')}
+                onClick={() => navigate(`/pet/${id}/edit`)}
                 name="Editar"
                 icon={FiEdit2}
                 color="#EFB35A"

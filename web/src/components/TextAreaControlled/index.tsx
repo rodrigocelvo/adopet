@@ -23,7 +23,7 @@ export function TextAreaControlled({ control, name, label, error, icon, ...rest 
       <Controller
         control={control}
         render={({ field: { onChange, value } }) => (
-          <TextArea name={name} onChange={onChange} value={value} icon={icon} {...rest} />
+          <TextArea name={name} id={name} onChange={onChange} value={value} icon={icon} {...rest} />
         )}
         name={name}
       />

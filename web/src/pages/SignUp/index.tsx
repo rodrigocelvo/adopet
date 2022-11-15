@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -53,10 +53,6 @@ export function SignUp() {
   const navigate = useNavigate();
   const { signed } = useAuth();
 
-  if (signed) {
-    navigate('/dashboard');
-  }
-
   const {
     control,
     handleSubmit,
@@ -71,8 +67,8 @@ export function SignUp() {
         name,
         email,
         phone,
-        city,
-        uf,
+        city: city.toUpperCase(),
+        uf: uf.toUpperCase(),
       });
 
       const { code } = response.data;
@@ -90,6 +86,12 @@ export function SignUp() {
       alert(`Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
     }
   }
+
+  useEffect(() => {
+    if (signed) {
+      navigate('/dashboard');
+    }
+  }, []);
 
   return (
     <Container>

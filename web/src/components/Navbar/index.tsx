@@ -34,7 +34,7 @@ export function Navbar({ loggedIn, userAvatar }: NavbarPorps) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const navigate = useNavigate();
-  const { user, signUp } = useAuth();
+  const { user, logOut } = useAuth();
 
   return (
     <>
@@ -101,7 +101,7 @@ export function Navbar({ loggedIn, userAvatar }: NavbarPorps) {
 
               <RightContainer>
                 <strong>{user.name}</strong>
-                <AvatarButton onClick={signUp}>
+                <AvatarButton onClick={logOut}>
                   <Avatar
                     src={`https://ui-avatars.com/api/?name=${user.name}&background=random&color=white`}
                   />
