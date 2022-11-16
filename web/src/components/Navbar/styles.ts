@@ -5,6 +5,7 @@ import { THEME } from '../../theme';
 
 interface NavProps {
   menuIsOpen: boolean;
+  modalIsOpen?: boolean;
 }
 
 interface ButtonProps {
@@ -24,7 +25,7 @@ export const Content = styled.nav<NavProps>`
   position: fixed;
   -webkit-backdrop-filter: blur(13px);
   backdrop-filter: blur(13px);
-  z-index: 9999;
+  z-index: ${({ modalIsOpen }) => (modalIsOpen ? '0' : '9999')};
 
   @media (min-width: 768px) {
     height: 80px;

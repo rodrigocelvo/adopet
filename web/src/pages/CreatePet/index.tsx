@@ -88,7 +88,6 @@ export function CreatePet() {
 
   const {
     control,
-    reset,
     handleSubmit,
     setValue,
     formState: { errors },
@@ -99,11 +98,13 @@ export function CreatePet() {
   const navigate = useNavigate();
 
   async function handleNewPet({ name, birthDate, weight, breed, tags, description }: PetDataProps) {
+    setLoading(true);
+
     try {
-      setLoading(true);
       if (!petImageId) return;
 
       if (!photo) {
+        setLoading(false);
         return setSelectImageError('Selecione uma imagem.');
       }
 
@@ -130,17 +131,17 @@ export function CreatePet() {
           imgUrl: `http://localhost:3333/images/pets/${id}.png`,
         })
         .then(() => {
+          setLoading(true);
           setPetImageId(id);
           setTimeout(() => {
             navigate('/dashboard');
-          }, 3000);
+          }, 1000);
         });
     } catch (err) {
       console.log(err);
       navigate('/dashboard');
-      alert(`Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
-    } finally {
       setLoading(false);
+      alert(`Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
     }
   }
 
@@ -152,9 +153,9 @@ export function CreatePet() {
     tags,
     description,
   }: PetDataProps) {
-    try {
-      setLoading(true);
+    setLoading(true);
 
+    try {
       await api.put(`/pets/${params.id}`, {
         name,
         birthDate,
@@ -173,8 +174,8 @@ export function CreatePet() {
       console.log(err);
 
       alert(`Edt: Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
-    } finally {
       setLoading(false);
+    } finally {
     }
   }
 
@@ -246,10 +247,7 @@ export function CreatePet() {
 
   return (
     <Container>
-      <Navbar
-        loggedIn
-        userAvatar="https://ui-avatars.com/api/?name=Rodrigo+Celvo&background=random"
-      />
+      <Navbar loggedIn />
       <Content>
         <Header>
           <Title>{params.id ? 'Editar' : 'Criar'} pet</Title>
@@ -293,6 +291,7 @@ export function CreatePet() {
               name="name"
               placeholder="Nome do pet"
               icon={RiAddCircleFill}
+              maxLength={20}
               error={errors.name?.message}
               isErrored={!!errors.name?.message}
             />
@@ -409,7 +408,7 @@ export function CreatePet() {
               error={errors.description?.message}
               isErrored={!!errors.description?.message}
             />
-            <Button type="submit" loading={loading}>
+            <Button type="submit" disabled={loading} loading={!!loading}>
               {!params.id ? 'Cadastrar' : 'Editar'} pet
             </Button>
           </AnimalFormContainer>

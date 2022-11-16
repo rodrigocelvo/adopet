@@ -3,6 +3,8 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 import { SmallButton } from '../SmallButton';
 
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
+
 import {
   Container,
   Content,
@@ -19,7 +21,7 @@ import { THEME } from '../../theme';
 import { useNavigate } from 'react-router-dom';
 
 export interface AnimalCardProps {
-  id?: string;
+  id: string;
   imgUrl: string;
   name: string;
   genre?: string;
@@ -57,8 +59,12 @@ export function AnimalCard({ imgUrl, name, genre, loggedIn, author, id }: Props)
           <Photo src={imgUrl} />
           <LoggedContent>
             <Name>{name}</Name>
+
             <ButtonContainer>
-              <SmallButton name="Deletar" icon={FiTrash2} color={THEME.COLORS.ALERT} />
+              <AlertDialog.Trigger asChild>
+                <SmallButton name="Deletar" icon={FiTrash2} color={THEME.COLORS.ALERT} />
+              </AlertDialog.Trigger>
+
               <SmallButton
                 onClick={() => navigate(`/pet/${id}/edit`)}
                 name="Editar"

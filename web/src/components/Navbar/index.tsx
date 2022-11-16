@@ -27,20 +27,21 @@ import { useAuth } from '../../hooks/useAuth';
 
 interface NavbarPorps {
   loggedIn?: boolean;
-  userAvatar?: string;
+  modalIsOpen?: boolean;
 }
 
-export function Navbar({ loggedIn, userAvatar }: NavbarPorps) {
+export function Navbar({ loggedIn, modalIsOpen }: NavbarPorps) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const navigate = useNavigate();
+
   const { user, logOut } = useAuth();
 
   return (
     <>
       {!loggedIn ? (
         <Container>
-          <Content menuIsOpen={menuIsOpen}>
+          <Content menuIsOpen={menuIsOpen} modalIsOpen={modalIsOpen}>
             <NavbarInnerContainer>
               <Link to="/">
                 <LeftContainer>
@@ -90,7 +91,7 @@ export function Navbar({ loggedIn, userAvatar }: NavbarPorps) {
         </Container>
       ) : (
         <Container>
-          <Content menuIsOpen={menuIsOpen}>
+          <Content menuIsOpen={menuIsOpen} modalIsOpen={modalIsOpen}>
             <NavbarInnerContainer>
               <Link to="/dashboard">
                 <LeftContainer>

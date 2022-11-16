@@ -9,10 +9,13 @@ import petAdoptionImg from '../../assets/pet-adoption.svg';
 import { Container, Header, Title, Content, NonePet, AnimalContent } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
+import { Modal } from '../../components/Modal';
 import { useAuth } from '../../hooks/useAuth';
 
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
+
 interface PetProps {
-  id?: string;
+  id: string;
   imgUrl: string;
   name: string;
   genre?: string;
@@ -26,6 +29,7 @@ interface PetProps {
 
 export function Dashboard() {
   const [pets, setPets] = useState<AnimalCardProps[]>([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const { user } = useAuth();
 
   const navigate = useNavigate();
@@ -48,16 +52,14 @@ export function Dashboard() {
 
   return (
     <>
-      <Navbar
-        loggedIn
-        userAvatar="https://conteudo.imguol.com.br/c/entretenimento/eb/2022/03/23/cachorro-da-raca-lulu-da-pomeramia-1648065976007_v2_900x506.jpg"
-      />
+      <Navbar loggedIn modalIsOpen={modalIsOpen} />
 
       <Container>
         <Header>
           <Title>Pets para adoção</Title>
           <Button onClick={() => navigate('/pet/new')}>Novo bichinho</Button>
         </Header>
+
         <Content>
           {pets.length === 0 && (
             <NonePet>
@@ -68,13 +70,11 @@ export function Dashboard() {
 
           <AnimalContent>
             {pets.map(animal => (
-              <AnimalCard
-                key={animal.id}
-                id={animal.id}
-                loggedIn={true}
-                name={animal.name}
-                imgUrl={animal.imgUrl}
-              />
+              <AlertDialog.Root key={animal.id} onOpenChange={() => setModalIsOpen(!modalIsOpen)}>
+                <AnimalCard id={animal.id} name={animal.name} imgUrl={animal.imgUrl} loggedIn />
+
+                <Modal petId={animal.id} />
+              </AlertDialog.Root>
             ))}
           </AnimalContent>
         </Content>

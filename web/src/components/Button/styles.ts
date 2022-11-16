@@ -25,4 +25,8 @@ export const Container = styled.button`
   &:focus {
     border: 2px solid ${THEME.COLORS.PRIMARY_500};
   }
+
+  &:disabled {
+    opacity: 0.5;
+  }
 `;

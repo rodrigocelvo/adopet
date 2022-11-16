@@ -8,6 +8,7 @@ export const Container = styled.div`
   height: auto;
   text-align: start;
   border-radius: 4px;
+  width: 300px;
 `;
 
 export const Content = styled.div`
@@ -29,6 +30,7 @@ export const ButtonContainer = styled.div`
 export const Name = styled.strong`
   color: ${THEME.COLORS.PRIMARY_500};
   font-size: 1.25rem;
+  word-break: break-all;
 `;
 
 export const Photo = styled.img`
