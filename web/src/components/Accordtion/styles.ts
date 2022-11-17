@@ -39,6 +39,7 @@ export const QuestionTitle = styled.strong`
 
 export const Icon = styled.div`
   font-size: 1rem;
+  transition: all 0.3s ease-in-out;
 `;
 
 export const QuestionContent = styled.div`
@@ -47,6 +48,18 @@ export const QuestionContent = styled.div`
   padding: 20px;
   display: flex;
   border-radius: 0 0 4px 4px;
+  animation: accordion 0.5s ease-in-out;
+
+  @keyframes accordion {
+    from {
+      opacity: 0;
+      margin-top: -30px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0px;
+    }
+  }
 `;
 
 export const QuestionDescription = styled.p`

@@ -8,6 +8,4 @@ export const Container = styled.View`
   align-items: center;
 `;
 
-export const Load = styled(ActivityIndicator)`
-  color: ${({ theme }) => theme.COLORS.PRIMARY_900}; ;
-`;
+export const Load = styled(ActivityIndicator)``;

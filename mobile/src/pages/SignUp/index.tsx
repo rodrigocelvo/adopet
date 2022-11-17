@@ -38,15 +38,6 @@ const signInSchema = yup.object({
     .string()
     .email('Informe um email válido.')
     .required('Informe seu email.'),
-
-  password: yup
-    .string()
-    .min(6, 'A senha deve ter minímo 6 caracteres.')
-    .required('Informe sua senha.'),
-  confirm_password: yup
-    .string()
-    .required('Informe a confirmação de senha')
-    .oneOf([yup.ref('password'), null], 'A senha não é igual'),
   phone: yup
     .string()
     .min(8, 'Número inválido.')
@@ -106,28 +97,6 @@ export function SignUp() {
                 autoComplete="off"
                 icon="mail-fill"
                 error={errors.email?.message}
-              />
-
-              <InputForm
-                name="password"
-                control={control}
-                placeholder="Senha"
-                autoCapitalize="none"
-                autoComplete="off"
-                icon="lock-fill"
-                secureTextEntry
-                error={errors.password?.message}
-              />
-
-              <InputForm
-                name="confirm_password"
-                control={control}
-                placeholder="Confirme a senha"
-                autoCapitalize="none"
-                autoComplete="off"
-                icon="lock-fill"
-                secureTextEntry
-                error={errors.confirm_password?.message}
               />
 
               <InputForm

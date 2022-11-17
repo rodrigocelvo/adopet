@@ -44,7 +44,7 @@ export const TextInput = styled(Input).attrs<InputProps>({
   `};
 `;
 
-export const Button = styled(RectButton)`
+export const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
 

@@ -7,3 +7,9 @@ export const Container = styled.View`
   align-items: center;
   justify-content: center;
 `;
+
+export const EmptyText = styled.Text`
+  margin-top: 20px;
+  font-size: 16x;
+  color: ${({ theme }) => theme.COLORS.ALERT};
+`;

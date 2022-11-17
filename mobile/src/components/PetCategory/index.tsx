@@ -8,13 +8,14 @@ import { useTheme } from 'styled-components';
 interface PetTypeProps {
   title: string;
   icon?: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+  onPress?: () => void;
 }
 
-export function PetCategory({ title, icon }: PetTypeProps) {
+export function PetCategory({ title, icon, onPress }: PetTypeProps) {
   const theme = useTheme();
 
   return (
-    <Container>
+    <Container onPress={onPress}>
       {icon && (
         <Icon>
           <MaterialCommunityIcons

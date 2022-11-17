@@ -1,3 +1,12 @@
+export type PetSearchNavigationProps = {
+  category?: string;
+  search?: string;
+};
+
+export type PetNavigationProps = {
+  id: string;
+};
+
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
@@ -6,8 +15,8 @@ export declare global {
       signin: undefined;
       signup: undefined;
       forgotpassword: undefined;
-      pet: undefined;
-      petsearch: undefined;
+      pet: PetNavigationProps;
+      petsearch: PetSearchNavigationProps;
     }
   }
 }

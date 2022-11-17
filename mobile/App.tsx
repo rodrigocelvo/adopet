@@ -1,7 +1,11 @@
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['onAnimatedValueUpdate', 'Could not find image', 'GO_BACK']);
 
 import { ThemeProvider } from 'styled-components';
+import { AuthContextProvider } from './src/hooks/useAuth';
 
 import {
   useFonts,
@@ -28,7 +32,7 @@ export default function App() {
   deviceTheme === 'light' ? (theme = themes.light) : (theme = themes.dark);
 
   return (
-    <>
+    <AuthContextProvider>
       <StatusBar
         barStyle={deviceTheme === 'light' ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
@@ -38,13 +42,13 @@ export default function App() {
         <SafeAreaView
           style={{
             flex: 1,
-            backgroundColor: '#5AA9EF',
+            backgroundColor: '#000',
           }}>
           <ThemeProvider theme={theme}>
             {fontsLoaded ? <Routes /> : <Loading />}
           </ThemeProvider>
         </SafeAreaView>
       </SafeAreaProvider>
-    </>
+    </AuthContextProvider>
   );
 }

@@ -14,11 +14,15 @@ import {
 } from './styles';
 
 export interface PetCardProps {
+  id: string;
   name: string;
   imgUrl: string;
-  city: string;
-  uf: string;
-  genre: string;
+  sex: string;
+
+  author: {
+    uf: string;
+    city: string;
+  };
 }
 
 interface Props extends TouchableOpacityProps {
@@ -36,11 +40,11 @@ export function PetCard({ data, ...rest }: Props) {
           <Title>{data.name}</Title>
           <Information>
             <InfoText>
-              {data.city}, {data.uf}
+              {data.author.city}, {data.author.uf}
             </InfoText>
             <InfoText>
               <RemixIcon
-                name={data.genre === 'male' ? 'men-line' : 'women-line'}
+                name={data.sex === 'male' ? 'men-line' : 'women-line'}
                 color={theme.COLORS.PRIMARY_500}
                 size={18}
               />

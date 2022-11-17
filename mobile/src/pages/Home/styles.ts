@@ -31,6 +31,8 @@ export const User = styled.View`
 export const Avatar = styled.Image`
   width: 48px;
   height: 48px;
+
+  border-radius: 100%;
 `;
 
 export const Username = styled.Text`

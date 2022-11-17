@@ -56,6 +56,22 @@ export const PetName = styled.Text`
   `};
 `;
 
+export const AdoptedBanner = styled.View`
+  background-color: rgba(30, 148, 54, 0.6);
+  width: 100%;
+  height: 56px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const AdoptedBannerText = styled.Text`
+  ${({ theme }) => css`
+    font-size: 20px,
+    color: ${theme.COLORS.SHAPE};
+    font-family: ${theme.FONT_FAMILY.BOLD};
+  `};
+`;
+
 export const LikeButton = styled(RectButton)`
   width: 48px;
   height: 48px;

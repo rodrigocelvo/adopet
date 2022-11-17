@@ -9,6 +9,8 @@ interface HeaderProps {
   goBack?: boolean;
   favorite?: boolean;
   onFavorite?: () => void;
+
+  style?: object;
 }
 
 export function Header({ title, goBack, ...rest }: HeaderProps) {

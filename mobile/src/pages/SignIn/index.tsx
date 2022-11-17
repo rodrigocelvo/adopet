@@ -1,5 +1,5 @@
-import React from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useEffect } from 'react';
+import { KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,35 +23,40 @@ import { Button } from '../../components/Button';
 import { InputForm } from '../../components/InputForm';
 
 import logoImg from '../../assets/logo.png';
+import { useAuth } from '../../hooks/useAuth';
 
-interface signInDFormDataProps {
-  email: string;
-  password: string;
+interface signInFormDataProps {
+  code: string;
 }
 
 const signInSchema = yup.object({
-  // email: yup
-  //   .string()
-  //   .email('Informe um email válido')
-  //   .required('Informe seu email'),
-  // password: yup.string().required('Informe sua senha.'),
+  code: yup.string().required('Informe seu código.'),
 });
 
 export function SignIn() {
   const navigation = useNavigation();
+
   const {
     control,
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<signInDFormDataProps>({
+  } = useForm<signInFormDataProps>({
     resolver: yupResolver(signInSchema),
   });
 
-  function handleSignIn(data: signInDFormDataProps) {
-    console.log(data);
+  const { signIn, signed } = useAuth();
 
-    navigation.navigate('home');
+  async function handleSignIn(data: signInFormDataProps) {
+    try {
+      await signIn({
+        id: data.code,
+      });
+    } catch (err) {
+      console.log(err);
+
+      Alert.alert('Oops', 'Não foi possível fazer o login.');
+    }
   }
 
   return (
@@ -67,23 +72,13 @@ export function SignIn() {
               <AppName>Adopet</AppName>
 
               <InputForm
-                name="email"
+                name="code"
                 control={control}
-                placeholder="E-mail"
+                placeholder="Sua ID"
                 autoCapitalize="none"
                 autoComplete="off"
                 icon="mail-fill"
-                error={errors.email?.message}
-              />
-              <InputForm
-                name="password"
-                control={control}
-                placeholder="E-mail"
-                autoCapitalize="none"
-                autoComplete="off"
-                icon="lock-fill"
-                secureTextEntry
-                error={errors.password?.message}
+                error={errors.code?.message}
               />
 
               <Button onPress={handleSubmit(handleSignIn)}>Entrar</Button>
