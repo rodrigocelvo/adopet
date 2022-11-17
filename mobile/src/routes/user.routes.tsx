@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components';
 import { Home } from '../pages/Home';
 import { Pet } from '../pages/Pet';
 import { PetSearch } from '../pages/PetSearch';
+import { Profile } from '../pages/Profile';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -21,6 +22,7 @@ export function UserRoutes() {
       <Screen name="home" component={Home} />
       <Screen name="pet" component={Pet} />
       <Screen name="petsearch" component={PetSearch} />
+      <Screen name="profile" component={Profile} />
     </Navigator>
   );
 }

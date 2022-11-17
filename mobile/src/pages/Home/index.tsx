@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { SearchBar } from '../../components/SearchBar';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   Container,
@@ -45,9 +46,11 @@ export function Home() {
     }
   }
 
-  useEffect(() => {
-    fetchPets();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchPets();
+    }, []),
+  );
 
   return (
     <>
@@ -55,7 +58,7 @@ export function Home() {
         <Container>
           <ContentPadding>
             <Header>
-              <User>
+              <User onPress={() => navigation.navigate('profile')}>
                 <Avatar
                   source={{
                     uri: `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${user.name}`,
@@ -115,7 +118,7 @@ export function Home() {
           </PetCategorySelection>
 
           <Adoption>
-            <SectionTitle>Adotar Pet</SectionTitle>
+            <SectionTitle>Novos bicinhos</SectionTitle>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('petsearch', { category: '', search: '' })

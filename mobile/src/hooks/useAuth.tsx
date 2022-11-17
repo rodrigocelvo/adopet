@@ -32,6 +32,7 @@ export interface AuthContextDataProps {
   isUserLoading: boolean;
   signIn: (id: SignInProps) => Promise<void>;
   logOut: () => Promise<void>;
+  updateUser: (id: string) => Promise<void>;
   signed: boolean;
 }
 
@@ -43,7 +44,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [user]);
 
   async function getUser() {
     try {
@@ -105,6 +106,31 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function updateUser(id: string) {
+    try {
+      setIsUserLoading(true);
+      const response: ResponseUserProps = await api.post('/me', {
+        id,
+      });
+
+      const userData = {
+        id: response.data.id,
+        name: response.data.name,
+        avatar: response.data.avatar,
+      };
+
+      await AsyncStorage.setItem('@Adopet:user', JSON.stringify(userData));
+
+      setUser(userData);
+    } catch (error) {
+      console.log(error);
+
+      throw error;
+    } finally {
+      setIsUserLoading(false);
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -113,6 +139,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
         user,
         logOut,
         signed: !!user,
+        updateUser,
       }}>
       {children}
     </AuthContext.Provider>

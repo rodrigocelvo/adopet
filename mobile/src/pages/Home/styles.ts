@@ -23,7 +23,7 @@ export const Header = styled.View`
   margin: 20px 0;
 `;
 
-export const User = styled.View`
+export const User = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
 `;

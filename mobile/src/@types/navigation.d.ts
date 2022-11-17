@@ -11,12 +11,13 @@ export declare global {
   namespace ReactNavigation {
     interface RootParamList {
       welcome: undefined;
-      home: undefined;
       signin: undefined;
       signup: undefined;
-      forgotpassword: undefined;
+
+      home: undefined;
       pet: PetNavigationProps;
       petsearch: PetSearchNavigationProps;
+      profile: undefined;
     }
   }
 }
