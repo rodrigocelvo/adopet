@@ -21,12 +21,13 @@ import { Button } from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 import { InputForm } from '../../components/InputForm';
+import { api } from '../../services/api';
+import { useNavigation } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 
-interface signUpDFormDataProps {
+interface signUpFormDataProps {
   name: string;
   email: string;
-  password: string;
-  confirm_password: string;
   phone: number;
   city: string;
   uf: string;
@@ -56,15 +57,46 @@ export function SignUp() {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<signUpDFormDataProps>({
+  } = useForm<signUpFormDataProps>({
     resolver: yupResolver(signInSchema),
   });
 
-  function handleSignUp(data: signUpDFormDataProps) {
-    console.log(data);
+  const navigation = useNavigation();
 
-    Alert.alert('Conta criada.');
-    reset();
+  async function handleSignUp({
+    name,
+    email,
+    phone,
+    city,
+    uf,
+  }: signUpFormDataProps) {
+    try {
+      const response = await api.post('/users/', {
+        name,
+        email,
+        phone,
+        city: city.toUpperCase(),
+        uf: uf.toUpperCase(),
+      });
+
+      const { code } = response.data;
+
+      await Clipboard.setStringAsync(code);
+
+      Alert.alert(
+        'Conta criada!',
+        `Conta criada com sucesso. O código para login ${code} foi copiado para a área de transferencia.`,
+      );
+
+      navigation.navigate('signin');
+    } catch (err) {
+      console.log(err);
+
+      Alert.alert(
+        'Erro',
+        `Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`,
+      );
+    }
   }
 
   return (

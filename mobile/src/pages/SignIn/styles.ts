@@ -31,10 +31,10 @@ export const Logo = styled.Image`
 `;
 
 export const Account = styled.View`
-  margin-top: 8px;
+  margin-top: 16px;
   width: 100%;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 export const AccountButton = styled.TouchableOpacity``;

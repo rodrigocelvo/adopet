@@ -15,6 +15,9 @@ interface UserProps {
   name: string;
   avatar: string;
 }
+interface ResponseUserProps {
+  data: UserProps;
+}
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -64,16 +67,14 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   async function signIn({ id }: SignInProps) {
     try {
       setIsUserLoading(true);
-      const response = await api.post('/me', {
+      const response: ResponseUserProps = await api.post('/me', {
         id,
       });
 
-      const responseData: UserProps = response.data;
-
       const userData = {
-        id: responseData.id,
-        name: responseData.name,
-        avatar: responseData.avatar,
+        id: response.data.id,
+        name: response.data.name,
+        avatar: response.data.avatar,
       };
 
       await AsyncStorage.setItem('@Adopet:user', JSON.stringify(userData));

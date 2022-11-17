@@ -86,10 +86,6 @@ export function SignIn() {
                 <AccountButton onPress={() => navigation.navigate('signup')}>
                   <AccountText>Criar conta</AccountText>
                 </AccountButton>
-                <AccountButton
-                  onPress={() => navigation.navigate('forgotpassword')}>
-                  <AccountText>Esqueci a senha</AccountText>
-                </AccountButton>
               </Account>
             </Content>
           </Container>
