@@ -61,7 +61,9 @@ export function Home() {
               <User onPress={() => navigation.navigate('profile')}>
                 <Avatar
                   source={{
-                    uri: `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${user.name}`,
+                    uri: !user.avatar
+                      ? `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${user.name}`
+                      : user.avatar,
                   }}
                 />
                 <Username>{user.name}</Username>

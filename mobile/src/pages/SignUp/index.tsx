@@ -126,7 +126,7 @@ export function SignUp() {
                 control={control}
                 placeholder="E-mail"
                 autoCapitalize="none"
-                autoComplete="off"
+                autoComplete="email"
                 icon="mail-fill"
                 error={errors.email?.message}
               />
@@ -136,7 +136,7 @@ export function SignUp() {
                 control={control}
                 keyboardType="numeric"
                 placeholder="Telefone"
-                autoComplete="off"
+                autoComplete="tel"
                 autoCapitalize="none"
                 icon="phone-fill"
                 error={errors.phone?.message}
@@ -148,7 +148,7 @@ export function SignUp() {
                     name="city"
                     control={control}
                     placeholder="Cidade"
-                    autoComplete="off"
+                    autoComplete="postal-address-country"
                     autoCapitalize="none"
                     icon="map-pin-fill"
                     style={{ flex: 1, width: '100%' }}
@@ -160,7 +160,7 @@ export function SignUp() {
                     name="uf"
                     control={control}
                     placeholder="UF"
-                    autoComplete="off"
+                    autoComplete="postal-address-region"
                     autoCapitalize="none"
                     icon="map-fill"
                     error={errors.uf?.message}

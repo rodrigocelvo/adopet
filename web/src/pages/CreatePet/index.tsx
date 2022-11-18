@@ -117,7 +117,7 @@ export function CreatePet() {
         adopted: petAdopted,
         sex: petSex,
         category: petCategory,
-        imgUrl: `http://localhost:3333/images/pets/${petImageId}.png`,
+        imgUrl: `http://192.168.0.9:3333/images/pets/${petImageId}.png`,
         description,
         author: {
           id: user.id,
@@ -128,7 +128,7 @@ export function CreatePet() {
 
       await api
         .patch(`/pets/image/${petImageId}/${id}`, {
-          imgUrl: `http://localhost:3333/images/pets/${id}.png`,
+          imgUrl: `http://192.168.0.9:3333/images/pets/${id}.png`,
         })
         .then(() => {
           setLoading(true);
@@ -165,7 +165,7 @@ export function CreatePet() {
         adopted: petAdopted,
         sex: petSex,
         category: petCategory,
-        imgUrl: `http://localhost:3333/images/pets/${params.id}.png`,
+        imgUrl: `http://192.168.0.9:3333/images/pets/${params.id}.png`,
         description,
       });
 

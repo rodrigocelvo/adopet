@@ -8,6 +8,7 @@ import { api } from '../../services/api';
 
 import { Container, EmptyText } from './styles';
 import { PetSearchNavigationProps } from '../../@types/navigation';
+import { useTheme } from 'styled-components';
 
 interface SearchProps {
   id: string;
@@ -31,6 +32,8 @@ export function PetSearch() {
   const [pets, setPets] = useState<PetCardProps[]>([]);
   const [petCategory, setPetCategory] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const theme = useTheme();
 
   const route = useRoute();
   const { category, search } = route.params as PetSearchNavigationProps;
@@ -141,7 +144,11 @@ export function PetSearch() {
 
   return (
     <Container>
-      <Header title={petCategory} goBack style={{ marginLeft: 50 }} />
+      <Header
+        title={petCategory}
+        goBack
+        style={{ backgroundColor: theme.COLORS.BACKGROUND }}
+      />
       {pets.length <= 0 && (
         <EmptyText>
           Ooops... parece que não há {'\n'}resultados para sua pesquisa.
@@ -159,6 +166,9 @@ export function PetSearch() {
           />
         )}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingTop: 12,
+        }}
       />
     </Container>
   );

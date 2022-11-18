@@ -18,6 +18,6 @@ export const Title = styled.Text`
 `;
 
 export const BTA = styled.View`
-  width: 60px;
+  width: 10px;
   height: 60px;
 `;

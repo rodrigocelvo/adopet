@@ -31,18 +31,21 @@ export default function App() {
 
   deviceTheme === 'light' ? (theme = themes.light) : (theme = themes.dark);
 
+  let backTheme = useColorScheme();
+  // backTheme === 'light' ? '#000' : '#FF',
+
   return (
     <AuthContextProvider>
       <StatusBar
-        barStyle={deviceTheme === 'light' ? 'light-content' : 'dark-content'}
+        barStyle={deviceTheme === 'light' ? 'dark-content' : 'light-content'}
         backgroundColor="transparent"
         translucent
       />
       <SafeAreaProvider>
         <SafeAreaView
           style={{
+            backgroundColor: `${deviceTheme === 'light' ? 'white' : 'black'}`,
             flex: 1,
-            backgroundColor: '#000',
           }}>
           <ThemeProvider theme={theme}>
             {fontsLoaded ? <Routes /> : <Loading />}

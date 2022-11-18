@@ -27,6 +27,7 @@ import { api } from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import { useAuth } from '../../hooks/useAuth';
+import { Loading } from '../../components/Loading';
 
 interface profileUpdateDataProps {
   name: string;
@@ -56,8 +57,6 @@ const updateUserSchema = yup.object({
 });
 
 export function Profile() {
-  const [updateUserProfile, setUpdateUserProfile] =
-    useState<profileUpdateDataProps>({} as profileUpdateDataProps);
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState('');
   const [name, setName] = useState('');
@@ -73,7 +72,7 @@ export function Profile() {
     resolver: yupResolver(updateUserSchema),
   });
 
-  async function handleSignUp({
+  async function handleUpdateUser({
     name,
     email,
     phone,
@@ -91,9 +90,12 @@ export function Profile() {
 
       updateUser(user.id);
 
-      Alert.alert('Conta atualizada!', `Conta atualizada com sucesso!`);
-
-      navigation.goBack();
+      Alert.alert('Conta atualizada!', `Conta atualizada com sucesso!`, [
+        {
+          text: 'Ok',
+          onPress: () => navigation.goBack(),
+        },
+      ]);
     } catch (err) {
       console.log(err);
 
@@ -131,22 +133,20 @@ export function Profile() {
     }
   }
 
-  async function handlePicker() {
+  async function handleImage() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       aspect: [4, 4],
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setAvatar(result.uri);
 
       try {
-        //tipar
-        const newUpload: any = new FormData();
+        const newUpload = new FormData();
 
         newUpload.append('avatar', {
+          // @ts-ignore
           name: 'avatar',
           uri: result.uri,
         });
@@ -160,8 +160,10 @@ export function Profile() {
         });
 
         Alert.alert('Perfil', 'Imagem atualizada com sucesso!');
-      } catch (e) {
-        console.log(e);
+
+        updateUser(user.id);
+      } catch (err) {
+        console.log(err);
       }
     }
   }
@@ -169,6 +171,10 @@ export function Profile() {
   useEffect(() => {
     fetchUser();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -178,10 +184,12 @@ export function Profile() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Container>
             <Header title="Editar Perfil" goBack />
-            <AvatarContainer onPress={handlePicker}>
+            <AvatarContainer onPress={handleImage}>
               <Avatar
                 source={{
-                  uri: !avatar ? 'https://github.com/rodrigocelvo.png' : avatar,
+                  uri: !avatar
+                    ? `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${user.name}`
+                    : avatar,
                 }}
               />
             </AvatarContainer>
@@ -191,7 +199,6 @@ export function Profile() {
               <InputForm
                 name="name"
                 control={control}
-                value="f"
                 placeholder="Nome"
                 autoCapitalize="words"
                 autoComplete="name"
@@ -204,7 +211,7 @@ export function Profile() {
                 control={control}
                 placeholder="E-mail"
                 autoCapitalize="none"
-                autoComplete="off"
+                autoComplete="email"
                 icon="mail-fill"
                 error={errors.email?.message}
               />
@@ -214,7 +221,7 @@ export function Profile() {
                 control={control}
                 keyboardType="numeric"
                 placeholder="WhatsApp"
-                autoComplete="off"
+                autoComplete="tel"
                 autoCapitalize="none"
                 icon="phone-fill"
                 error={errors.phone?.message}
@@ -226,7 +233,7 @@ export function Profile() {
                     name="city"
                     control={control}
                     placeholder="Cidade"
-                    autoComplete="off"
+                    autoComplete="postal-address-country"
                     autoCapitalize="none"
                     icon="map-pin-fill"
                     style={{ flex: 1, width: '100%' }}
@@ -238,14 +245,14 @@ export function Profile() {
                     name="uf"
                     control={control}
                     placeholder="UF"
-                    autoComplete="off"
+                    autoComplete="postal-address-region"
                     autoCapitalize="none"
                     icon="map-fill"
                     error={errors.uf?.message}
                   />
                 </InputGroupLine2>
               </InputGroup>
-              <Button onPress={handleSubmit(handleSignUp)}>Salvar</Button>
+              <Button onPress={handleSubmit(handleUpdateUser)}>Salvar</Button>
             </Content>
           </Container>
         </ScrollView>

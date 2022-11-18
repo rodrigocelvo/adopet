@@ -60,6 +60,7 @@ interface PetProps {
     phone: string;
     uf: string;
     city: string;
+    avatar?: string;
   };
 }
 
@@ -173,7 +174,9 @@ export function Pet() {
             <UserProfile>
               <UserAvatar
                 source={{
-                  uri: `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${pet.author.name}`,
+                  uri: !pet.author.avatar
+                    ? `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${pet.author.name}`
+                    : pet.author.avatar,
                 }}
               />
 
@@ -249,7 +252,7 @@ export function Pet() {
               icon="mail-line"
               color={theme.COLORS.PRIMARY_500}
               onPress={() =>
-                sendMail(pet.name, pet.author.name, pet.author.phone)
+                sendMail(pet.name, pet.author.name, pet.author.email)
               }
             />
             <Gap />
@@ -262,7 +265,7 @@ export function Pet() {
                     style: 'cancel',
                   },
                   {
-                    text: 'Sim. quero adotar.',
+                    text: 'Sim, quero adotar.',
                     onPress: () => handleAdoptPet(pet.id),
                   },
                 ])
