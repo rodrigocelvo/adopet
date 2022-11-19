@@ -38,6 +38,7 @@ export function SearchBar({ icon, ...rest }: InputProps) {
     }
 
     navigation.navigate('petsearch', { search: value.toLowerCase() });
+    setSearch('');
   }
 
   return (
@@ -47,7 +48,6 @@ export function SearchBar({ icon, ...rest }: InputProps) {
         value={search}
         onChangeText={setSearch}
         onFocus={handleOnFocus}
-        autoCapitalize="none"
         {...rest}
       />
 

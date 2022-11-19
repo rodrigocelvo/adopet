@@ -28,6 +28,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import { useAuth } from '../../hooks/useAuth';
 import { Loading } from '../../components/Loading';
+import { Photo } from '../../components/Photo';
 
 interface profileUpdateDataProps {
   name: string;
@@ -86,6 +87,7 @@ export function Profile() {
         phone,
         city: city.toUpperCase(),
         uf: uf.toUpperCase(),
+        avatar,
       });
 
       updateUser(user.id);
@@ -183,15 +185,9 @@ export function Profile() {
         style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Container>
-            <Header title="Editar Perfil" goBack />
+            <Header title="Editar Perfil" showBackButton />
             <AvatarContainer onPress={handleImage}>
-              <Avatar
-                source={{
-                  uri: !avatar
-                    ? `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${user.name}`
-                    : avatar,
-                }}
-              />
+              <Photo name={user.name} avatar={user.avatar} size={200} />
             </AvatarContainer>
             <UserName>{name}</UserName>
 

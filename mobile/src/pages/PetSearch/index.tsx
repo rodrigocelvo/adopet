@@ -90,7 +90,7 @@ export function PetSearch() {
 
       setPets(result);
 
-      setPetCategory('Resultado');
+      setPetCategory('Pesquisa');
     } catch (err) {
       console.log(err);
     } finally {
@@ -138,22 +138,17 @@ export function PetSearch() {
     }
   }, []);
 
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
   if (loading) {
     return <Loading />;
   }
 
   return (
     <Container>
-      <Header
-        title={petCategory}
-        goBack
-        style={{ backgroundColor: theme.COLORS.BACKGROUND }}
-      />
-      {pets.length <= 0 && (
-        <EmptyText>
-          Ooops... parece que não há {'\n'}resultados para sua pesquisa.
-        </EmptyText>
-      )}
+      <Header title={petCategory} showBackButton onBack={handleGoBack} />
 
       <FlatList
         data={pets}
@@ -165,9 +160,15 @@ export function PetSearch() {
             style={{ marginBottom: 12 }}
           />
         )}
+        ListEmptyComponent={
+          <EmptyText>
+            Ooops... parece que a lista {'\n'}resultados para sua pesquisa.
+          </EmptyText>
+        }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingTop: 12,
+          paddingBottom: 40,
         }}
       />
     </Container>

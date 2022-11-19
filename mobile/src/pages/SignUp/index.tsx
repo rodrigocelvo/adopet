@@ -24,6 +24,7 @@ import { InputForm } from '../../components/InputForm';
 import { api } from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
+import { useTheme } from 'styled-components';
 
 interface signUpFormDataProps {
   name: string;
@@ -62,6 +63,7 @@ export function SignUp() {
   });
 
   const navigation = useNavigation();
+  const THEME = useTheme();
 
   async function handleSignUp({
     name,
@@ -106,7 +108,10 @@ export function SignUp() {
         style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Container>
-            <Header title="Cadastre-se" goBack />
+            <Header
+              title=""
+              style={{ backgroundColor: THEME.COLORS.BACKGROUND }}
+            />
             <Content>
               <Logo source={logoImg} />
               <AppName>Adopet</AppName>

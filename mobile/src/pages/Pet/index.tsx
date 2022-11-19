@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { differenceInYears, differenceInMonths } from 'date-fns';
 import { Alert, Linking } from 'react-native';
 import * as MailComposer from 'expo-mail-composer';
+import { Share } from 'react-native';
 
 import {
   Container,
@@ -35,6 +36,7 @@ import { SmallButton } from '../../components/SmallButton';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { Loading } from '../../components/Loading';
+import { Photo } from '../../components/Photo';
 import RemixIcon from 'react-native-remix-icon';
 
 import { PetNavigationProps } from '../../@types/navigation';
@@ -60,7 +62,7 @@ interface PetProps {
     phone: string;
     uf: string;
     city: string;
-    avatar?: string;
+    avatar: string;
   };
 }
 
@@ -152,6 +154,12 @@ export function Pet() {
     Linking.openURL(`whatsapp://send?phone=${whatsapp}&text=${message}`);
   }
 
+  async function handleCodeShare() {
+    await Share.share({
+      message: `Olhaaaa o bichinho que ta para adoção ${pet.id}`,
+    });
+  }
+
   useEffect(() => {
     fetchPet();
   }, []);
@@ -163,7 +171,13 @@ export function Pet() {
   return (
     <Container>
       <PetImage source={{ uri: `${pet.imgUrl}` }}>
-        <Header goBack />
+        <Header
+          title="Adoção"
+          showBackButton
+          showShareButton
+          onShare={handleCodeShare}
+        />
+
         <LinearGradient colors={theme.COLORS.FOOTER}>
           {pet.adopted && (
             <AdoptedBanner>
@@ -172,12 +186,10 @@ export function Pet() {
           )}
           <Linear>
             <UserProfile>
-              <UserAvatar
-                source={{
-                  uri: !pet.author.avatar
-                    ? `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${pet.author.name}`
-                    : pet.author.avatar,
-                }}
+              <Photo
+                name={pet.author.name}
+                avatar={pet.author.avatar}
+                size={64}
               />
 
               <UserContent>

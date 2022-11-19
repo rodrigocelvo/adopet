@@ -11,7 +11,7 @@ export const Content = styled.View`
 
 export const PetImage = styled.ImageBackground`
   width: 100%;
-  height: 400px;
+  height: 500px;
 
   justify-content: space-between;
 `;
@@ -81,7 +81,9 @@ export const LikeButton = styled(RectButton)`
   border-radius: 24px;
 `;
 
-export const UserContent = styled.View``;
+export const UserContent = styled.View`
+  margin-left: 10px;
+`;
 
 export const UserAdCreate = styled.Text`
   ${({ theme }) => css`

@@ -22,9 +22,11 @@ import bannerImg from '../../assets/banner.png';
 import { PetCategory } from '../../components/PetCategory';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PetCard, PetCardProps } from '../../components/PetCard';
+import { Photo } from '../../components/Photo';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SmallButton } from '../../components/SmallButton';
+import { Loading } from '../../components/Loading';
 import { useTheme } from 'styled-components';
 import { api } from '../../services/api';
 
@@ -32,25 +34,44 @@ import { useAuth } from '../../hooks/useAuth';
 
 export function Home() {
   const [pets, setPets] = useState<PetCardProps[]>([]);
+  const [avatar, setAvatar] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
   const theme = useTheme();
   const { logOut, user } = useAuth();
 
   async function fetchPets() {
+    setLoading(true);
     try {
       const response = await api.get('/pets/lasts');
       setPets(response.data);
     } catch (err) {
       console.log();
+    } finally {
+      setLoading(false);
     }
   }
 
   useFocusEffect(
     useCallback(() => {
+      setLoading(true);
       fetchPets();
+      setLoading(false);
     }, []),
   );
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setAvatar(user.avatar);
+    }, 10);
+    setLoading(false);
+  }, [user.avatar]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -59,13 +80,7 @@ export function Home() {
           <ContentPadding>
             <Header>
               <User onPress={() => navigation.navigate('profile')}>
-                <Avatar
-                  source={{
-                    uri: !user.avatar
-                      ? `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${user.name}`
-                      : user.avatar,
-                  }}
-                />
+                <Photo name={user.name} avatar={avatar} size={64} />
                 <Username>{user.name}</Username>
               </User>
               <SmallButton

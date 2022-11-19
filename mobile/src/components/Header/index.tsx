@@ -1,19 +1,35 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { SmallButton } from '../SmallButton';
+import { CaretLeft, Export } from 'phosphor-react-native';
 
-import { Container, Title, BTA } from './styles';
+import {
+  Container,
+  ButtonLeft,
+  ButtonRight,
+  Title,
+  EmptyBoxSpace,
+} from './styles';
+import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native';
 
 interface HeaderProps {
   title?: string;
-  goBack?: boolean;
-  favorite?: boolean;
-  onFavorite?: () => void;
+  showBackButton?: boolean;
+  showShareButton?: boolean;
+  onShare?: () => void;
+  onBack?: () => void;
 
   style?: object;
 }
 
-export function Header({ title, goBack, ...rest }: HeaderProps) {
+export function Header({
+  title,
+  showBackButton,
+  showShareButton,
+  onShare,
+  onBack,
+  ...rest
+}: HeaderProps) {
+  const THEME = useTheme();
   const navigation = useNavigation();
 
   function handleGoBack() {
@@ -23,13 +39,21 @@ export function Header({ title, goBack, ...rest }: HeaderProps) {
   return (
     <>
       <Container {...rest}>
-        {goBack ? (
-          <SmallButton icon="arrow-left-line" onPress={handleGoBack} />
+        {showBackButton ? (
+          <ButtonLeft onPress={handleGoBack}>
+            <CaretLeft size={24} color={THEME.COLORS.TEXT} />
+          </ButtonLeft>
         ) : (
-          <BTA />
+          <EmptyBoxSpace />
         )}
         <Title>{title}</Title>
-        <BTA />
+        {showShareButton ? (
+          <ButtonRight onPress={onShare}>
+            <Export size={24} color={THEME.COLORS.PRIMARY_500} />
+          </ButtonRight>
+        ) : (
+          <EmptyBoxSpace />
+        )}
       </Container>
     </>
   );

@@ -24,6 +24,7 @@ import { InputForm } from '../../components/InputForm';
 
 import logoImg from '../../assets/logo.png';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from 'styled-components';
 
 interface signInFormDataProps {
   code: string;
@@ -35,6 +36,7 @@ const signInSchema = yup.object({
 
 export function SignIn() {
   const navigation = useNavigation();
+  const THEME = useTheme();
 
   const {
     control,
@@ -66,7 +68,10 @@ export function SignIn() {
         style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Container>
-            <Header title="Login" />
+            <Header
+              title=""
+              style={{ backgroundColor: THEME.COLORS.BACKGROUND }}
+            />
             <Content>
               <Logo source={logoImg} />
               <AppName>Adopet</AppName>

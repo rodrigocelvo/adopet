@@ -6,7 +6,7 @@ import { Pet } from '../pages/Pet';
 import { PetSearch } from '../pages/PetSearch';
 import { Profile } from '../pages/Profile';
 
-const { Navigator, Screen, Group } = createStackNavigator();
+const { Navigator, Screen } = createStackNavigator();
 
 export function UserRoutes() {
   const theme = useTheme();
@@ -19,12 +19,10 @@ export function UserRoutes() {
           backgroundColor: theme.COLORS.BACKGROUND,
         },
       }}>
-      <Group>
-        <Screen name="home" component={Home} />
-        <Screen name="pet" component={Pet} />
-        <Screen name="petsearch" component={PetSearch} />
-        <Screen name="profile" component={Profile} />
-      </Group>
+      <Screen name="home" component={Home} />
+      <Screen name="pet" component={Pet} />
+      <Screen name="petsearch" component={PetSearch} />
+      <Screen name="profile" component={Profile} />
     </Navigator>
   );
 }

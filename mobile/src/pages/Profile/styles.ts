@@ -22,6 +22,7 @@ export const ScrollView = styled.ScrollView.attrs({
 export const AvatarContainer = styled.TouchableOpacity`
   width: 200px;
   height: 200px;
+  margin-top: 50px;
 `;
 
 export const Avatar = styled.Image`

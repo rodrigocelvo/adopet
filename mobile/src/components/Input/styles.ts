@@ -15,10 +15,11 @@ export const Container = styled.View<InputProps>`
 
   height: 60px;
   margin-bottom: 8px;
+  border: 2px solid transparent;
 
   ${({ theme }) => css`
     background-color: ${theme.COLORS.HEADING};
-    border: 2px solid ${theme.COLORS.CAPTION_100};
+    /* border: 2px solid ${theme.COLORS.CAPTION_100}; */
   `}
 
   ${({ isFocused }) =>

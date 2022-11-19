@@ -17,16 +17,16 @@ export const Container = styled.View<InputProps>`
 
   height: 56px;
   margin-bottom: 8px;
+  border: 2px solid transparent;
 
   ${({ theme }) => css`
     background-color: ${theme.COLORS.HEADING};
-    border: 2px solid ${theme.COLORS.CAPTION_100};
   `};
 
   ${({ isFocused }) =>
     isFocused &&
     css`
-      border-color: ${({ theme }) => theme.COLORS.PRIMARY_500};;
+      border-color: ${({ theme }) => theme.COLORS.PRIMARY_500};
     '}
   `};
 `;
@@ -50,7 +50,7 @@ export const Button = styled.TouchableOpacity`
 
   background-color: ${({ theme }) => theme.COLORS.PRIMARY_500};
   height: 100%;
-  width: 56px;
+  width: 52px;
   border-radius: 4px;
 `;
 

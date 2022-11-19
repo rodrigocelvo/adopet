@@ -113,6 +113,14 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
         id,
       });
 
+      const fakeData = {
+        id: response.data.id,
+        name: response.data.name,
+        avatar: 'image.png',
+      };
+
+      setUser(fakeData);
+
       const userData = {
         id: response.data.id,
         name: response.data.name,

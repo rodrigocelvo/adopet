@@ -31,9 +31,6 @@ export default function App() {
 
   deviceTheme === 'light' ? (theme = themes.light) : (theme = themes.dark);
 
-  let backTheme = useColorScheme();
-  // backTheme === 'light' ? '#000' : '#FF',
-
   return (
     <AuthContextProvider>
       <StatusBar
