@@ -15,6 +15,7 @@ interface SearchProps {
   name: string;
   sex: string;
   breed: string;
+  tags: string;
 
   author: {
     uf: string;
@@ -114,6 +115,10 @@ export function PetSearch() {
 
       if (obj.breed.toLowerCase() === searchTerm) {
         return obj.breed;
+      }
+
+      if (obj.tags.toLowerCase().includes(searchTerm)) {
+        return obj.tags;
       }
 
       if (obj.author.uf.toLowerCase() === searchTerm) {

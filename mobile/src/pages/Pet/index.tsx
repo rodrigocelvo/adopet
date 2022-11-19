@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { differenceInYears, differenceInMonths } from 'date-fns';
 import { Alert, Linking } from 'react-native';
 import * as MailComposer from 'expo-mail-composer';
 import { Share } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   Container,
@@ -160,9 +161,11 @@ export function Pet() {
     });
   }
 
-  useEffect(() => {
-    fetchPet();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchPet();
+    }, []),
+  );
 
   if (loading) {
     return <Loading />;
@@ -240,6 +243,11 @@ export function Pet() {
             <PetCategory
               key={`${tag} + ${Math.floor(Math.random() * 10)}`}
               title={tag}
+              onPress={() =>
+                navigation.navigate('petsearch', {
+                  search: tag,
+                })
+              }
             />
           ))}
         </PetCategorySelection>

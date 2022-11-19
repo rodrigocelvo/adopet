@@ -12,6 +12,7 @@ export default {
 
     SHAPE: '#FFFFFF',
     HEADING: '#222828',
+    BORDER: '#202024',
 
     PRIMARY_50: '#1A1E1E',
     PRIMARY_100: '#2C3232',

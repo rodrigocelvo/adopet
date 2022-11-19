@@ -2,7 +2,8 @@ import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
-  padding-bottom: 20px;
+  padding-bottom: 120px;
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const ScrollView = styled.ScrollView.attrs({
