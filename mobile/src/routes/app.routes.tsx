@@ -8,14 +8,14 @@ import { Welcome } from '../pages/Welcome';
 const { Navigator, Screen } = createStackNavigator();
 
 export function AppRoutes() {
-  const theme = useTheme();
+  const THEME = useTheme();
 
   return (
     <Navigator
       screenOptions={{
         headerShown: false,
         cardStyle: {
-          backgroundColor: theme.COLORS.BACKGROUND,
+          backgroundColor: THEME.COLORS.BACKGROUND,
         },
       }}>
       <Screen name="welcome" component={Welcome} />

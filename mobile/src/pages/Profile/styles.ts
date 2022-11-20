@@ -5,7 +5,6 @@ export const Container = styled.KeyboardAvoidingView`
   align-items: center;
   justify-content: center;
   padding-bottom: 120px;
-  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const Content = styled.View`

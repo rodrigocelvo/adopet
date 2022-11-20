@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+import { useTheme } from 'styled-components';
+
 import { CaretLeft, Export } from 'phosphor-react-native';
 
 import {
@@ -8,15 +12,12 @@ import {
   Title,
   EmptyBoxSpace,
 } from './styles';
-import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
 
 interface HeaderProps {
   title?: string;
   showBackButton?: boolean;
   showShareButton?: boolean;
   onShare?: () => void;
-  onBack?: () => void;
 
   style?: object;
 }
@@ -26,7 +27,6 @@ export function Header({
   showBackButton,
   showShareButton,
   onShare,
-  onBack,
   ...rest
 }: HeaderProps) {
   const THEME = useTheme();
@@ -37,24 +37,22 @@ export function Header({
   }
 
   return (
-    <>
-      <Container {...rest}>
-        {showBackButton ? (
-          <ButtonLeft onPress={handleGoBack}>
-            <CaretLeft size={24} color={THEME.COLORS.TEXT} />
-          </ButtonLeft>
-        ) : (
-          <EmptyBoxSpace />
-        )}
-        <Title>{title}</Title>
-        {showShareButton ? (
-          <ButtonRight onPress={onShare}>
-            <Export size={24} color={THEME.COLORS.PRIMARY_500} />
-          </ButtonRight>
-        ) : (
-          <EmptyBoxSpace />
-        )}
-      </Container>
-    </>
+    <Container {...rest}>
+      {showBackButton ? (
+        <ButtonLeft onPress={handleGoBack}>
+          <CaretLeft size={24} color={THEME.COLORS.TEXT} />
+        </ButtonLeft>
+      ) : (
+        <EmptyBoxSpace />
+      )}
+      <Title>{title}</Title>
+      {showShareButton ? (
+        <ButtonRight onPress={onShare}>
+          <Export size={24} color={THEME.COLORS.PRIMARY_500} />
+        </ButtonRight>
+      ) : (
+        <EmptyBoxSpace />
+      )}
+    </Container>
   );
 }

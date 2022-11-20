@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
-
-import { Container, Title } from './styles';
-import { Loading } from '../../components/Loading';
-
 import { TouchableOpacityProps } from 'react-native';
+
+import { Loading } from '../../components/Loading';
+import { Container, Title } from './styles';
 
 interface ButtonProps extends TouchableOpacityProps {
   isLoading?: boolean;

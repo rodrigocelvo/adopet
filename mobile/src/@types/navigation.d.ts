@@ -14,7 +14,10 @@ export declare global {
       signin: undefined;
       signup: undefined;
 
+      tab: undefined;
       home: undefined;
+      mypets: undefined;
+      favorites: undefined;
       pet: PetNavigationProps;
       petsearch: PetSearchNavigationProps;
       profile: undefined;

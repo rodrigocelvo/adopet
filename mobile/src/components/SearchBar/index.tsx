@@ -1,11 +1,10 @@
 import React, { ReactNode, useState } from 'react';
 import { TextInputProps } from 'react-native';
-
-import { Container, TextInput, Button, RemixIcon } from './styles';
+import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from 'styled-components';
 
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { Container, TextInput, Button, RemixIcon } from './styles';
 
 interface InputProps extends TextInputProps {
   icon?: ReactNode;
@@ -35,6 +34,14 @@ export function SearchBar({ icon, ...rest }: InputProps) {
 
     if (value == 'femea') {
       value = 'female';
+    }
+
+    if (value == 'adotados') {
+      value = 'adotados';
+    }
+
+    if (value == 'adotar') {
+      value = 'adotar';
     }
 
     navigation.navigate('petsearch', { search: value.toLowerCase() });

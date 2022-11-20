@@ -1,21 +1,39 @@
 import styled, { css } from 'styled-components/native';
 
+interface CardProps {
+  sm: boolean;
+}
+
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })``;
 
-export const Content = styled.View`
-  width: 300px;
-  height: 400px;
+export const Content = styled.View<CardProps>`
+  width: 360px;
+  height: 500px;
   background-color: ${({ theme }) => theme.COLORS.CAPTION_800};
   border-radius: 4px;
+
+  ${({ sm }) =>
+    sm &&
+    css`
+      width: 300px;
+      height: 400px;
+    `};
 `;
 
-export const PetImage = styled.Image`
-  width: 300px;
-  height: 300px;
+export const PetImage = styled.Image<CardProps>`
+  width: 360px;
+  height: 360px;
   overflow: hidden;
   border-radius: 4px;
+
+  ${({ sm }) =>
+    sm &&
+    css`
+      width: 300px;
+      height: 300px;
+    `};
 `;
 
 export const Title = styled.Text`

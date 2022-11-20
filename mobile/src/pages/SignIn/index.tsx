@@ -1,12 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { useNavigation } from '@react-navigation/native';
+import { Header } from '../../components/Header';
+import { Button } from '../../components/Button';
+import { InputForm } from '../../components/InputForm';
+
+import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
@@ -18,13 +24,7 @@ import {
   AccountText,
 } from './styles';
 
-import { Header } from '../../components/Header';
-import { Button } from '../../components/Button';
-import { InputForm } from '../../components/InputForm';
-
 import logoImg from '../../assets/logo.png';
-import { useAuth } from '../../hooks/useAuth';
-import { useTheme } from 'styled-components';
 
 interface signInFormDataProps {
   code: string;
@@ -40,14 +40,13 @@ export function SignIn() {
 
   const {
     control,
-    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<signInFormDataProps>({
     resolver: yupResolver(signInSchema),
   });
 
-  const { signIn, signed } = useAuth();
+  const { signIn } = useAuth();
 
   async function handleSignIn(data: signInFormDataProps) {
     try {
@@ -68,10 +67,7 @@ export function SignIn() {
         style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Container>
-            <Header
-              title=""
-              style={{ backgroundColor: THEME.COLORS.BACKGROUND }}
-            />
+            <Header style={{ backgroundColor: THEME.COLORS.BACKGROUND }} />
             <Content>
               <Logo source={logoImg} />
               <AppName>Adopet</AppName>

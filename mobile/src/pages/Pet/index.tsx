@@ -1,14 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Alert, Linking, Share } from 'react-native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { differenceInYears, differenceInMonths } from 'date-fns';
-import { Alert, Linking } from 'react-native';
 import * as MailComposer from 'expo-mail-composer';
-import { Share } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+
+import { PetCategory } from '../../components/PetCategory';
+import { PetDetails } from '../../components/PetDetails';
+import { SmallButton } from '../../components/SmallButton';
+import { Button } from '../../components/Button';
+import { Header } from '../../components/Header';
+import { Loading } from '../../components/Loading';
+import { Photo } from '../../components/Photo';
+import { PetCardProps } from '../../components/PetCard';
+
+import RemixIcon from 'react-native-remix-icon';
+import { useTheme } from 'styled-components';
+
+import { PetNavigationProps } from '../../@types/navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../../services/api';
+
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
-  // Header,
   PetImage,
   Linear,
   Content,
@@ -22,27 +43,16 @@ import {
   UserContent,
   UserAdCreate,
   PetCategorySelection,
-  UserAvatar,
   UserName,
   SectionTitle,
   InfoContainer,
   PetDescription,
   Adoption,
   Gap,
+  AdoptedByContainer,
+  AdoptedBy,
+  AdoptedByText,
 } from './styles';
-import { useTheme } from 'styled-components';
-import { PetCategory } from '../../components/PetCategory';
-import { PetDetails } from '../../components/PetDetails';
-import { SmallButton } from '../../components/SmallButton';
-import { Button } from '../../components/Button';
-import { Header } from '../../components/Header';
-import { Loading } from '../../components/Loading';
-import { Photo } from '../../components/Photo';
-import RemixIcon from 'react-native-remix-icon';
-
-import { PetNavigationProps } from '../../@types/navigation';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { api } from '../../services/api';
 
 interface PetProps {
   id: string;
@@ -56,8 +66,10 @@ interface PetProps {
   breed: string;
   imgUrl: string;
   adopted: boolean;
+  adoptedBy: string;
 
   author: {
+    id: string;
     name: string;
     email: string;
     phone: string;
@@ -67,8 +79,18 @@ interface PetProps {
   };
 }
 
+interface PetAdoptedBy {
+  name: string;
+  avatar: string;
+}
+
 interface PetResponse extends PetProps {
   data: PetProps;
+}
+
+interface PetDataProps {
+  id: string;
+  favorite: boolean;
 }
 
 export function Pet() {
@@ -78,21 +100,26 @@ export function Pet() {
   const [loading, setLoading] = useState(true);
   const [petBirthDate, setPetBirthDate] = useState('');
   const [tags, setTags] = useState([]);
+  const [adopetedUserPet, setAdopetedUserPet] = useState<PetAdoptedBy>(
+    {} as PetAdoptedBy,
+  );
 
   const route = useRoute();
 
   const navigation = useNavigation();
+  const { user } = useAuth();
 
   const { id } = route.params as PetNavigationProps;
 
   async function fetchPet() {
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await api.get(`/pets/${id}`);
 
       setPet(response.data);
       setTags(response.data.tags.split(','));
       calculateAge(response.data.birthDate);
+      fetchAdoptedPetByUser(response.data.adoptedBy);
 
       setLoading(false);
     } catch (err) {
@@ -103,9 +130,9 @@ export function Pet() {
   }
 
   async function handleAdoptPet(petId: string) {
+    setLoading(true);
     try {
-      setLoading(true);
-      await api.patch(`/pets/${petId}/adopt`, {
+      await api.post(`/pets/${user.id}/adopt/${petId}`, {
         adopted: true,
       });
 
@@ -114,7 +141,7 @@ export function Pet() {
         'Parabéns, o bichinho ficará muito feliz em ter uma família.',
       );
 
-      navigation.navigate('home');
+      navigation.navigate('tab');
 
       setLoading(false);
     } catch (err) {
@@ -161,9 +188,80 @@ export function Pet() {
     });
   }
 
+  async function fetchFavoritePet() {
+    const response = await AsyncStorage.getItem('@Adopet:favorites');
+
+    const data = response ? JSON.parse(response) : [];
+
+    const result = data.filter(
+      (item: PetDataProps) => item.id === id && item.favorite === true,
+    );
+
+    if (result.length > 0) {
+      return setFavorite(true);
+    }
+
+    return setFavorite(false);
+  }
+
+  async function handleRemoveFavorite(id: string) {
+    const response = await AsyncStorage.getItem('@Adopet:favorites');
+
+    const previousData = response ? JSON.parse(response) : [];
+    const data = previousData.filter((item: PetDataProps) => item.id !== id);
+
+    await AsyncStorage.setItem('@Adopet:favorites', JSON.stringify(data));
+
+    setFavorite(!favorite);
+  }
+
+  async function handleFavorite() {
+    try {
+      const newData = {
+        id: pet.id,
+        name: pet.name,
+        imgUrl: pet.imgUrl,
+        sex: pet.sex,
+        favorite: true,
+        author: {
+          uf: pet.author.uf,
+          city: pet.author.city,
+        },
+      } as PetCardProps;
+
+      const response = await AsyncStorage.getItem('@Adopet:favorites');
+      const previousData = response ? JSON.parse(response) : [];
+
+      const data = [...previousData, newData];
+
+      await AsyncStorage.setItem('@Adopet:favorites', JSON.stringify(data));
+
+      setFavorite(!favorite);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function fetchAdoptedPetByUser(userId: string) {
+    try {
+      setLoading(true);
+      const response = await api.get(`/users/${userId}`);
+
+      const UserPetAdopetResponse: PetAdoptedBy = response.data;
+
+      setAdopetedUserPet(UserPetAdopetResponse);
+
+      setLoading(false);
+    } catch (err) {
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
       fetchPet();
+      fetchFavoritePet();
     }, []),
   );
 
@@ -200,7 +298,10 @@ export function Pet() {
                 <UserName>{pet.author.name}</UserName>
               </UserContent>
             </UserProfile>
-            <LikeButton onPress={() => setFavorite(!favorite)}>
+            <LikeButton
+              onPress={() =>
+                favorite ? handleRemoveFavorite(pet.id) : handleFavorite()
+              }>
               <RemixIcon
                 name={favorite ? 'heart-fill' : 'heart-line'}
                 color={theme.COLORS.ALERT}
@@ -243,11 +344,6 @@ export function Pet() {
             <PetCategory
               key={`${tag} + ${Math.floor(Math.random() * 10)}`}
               title={tag}
-              onPress={() =>
-                navigation.navigate('petsearch', {
-                  search: tag,
-                })
-              }
             />
           ))}
         </PetCategorySelection>
@@ -257,51 +353,79 @@ export function Pet() {
         <SectionTitle>Descrição</SectionTitle>
         <PetDescription>{pet.description}</PetDescription>
 
-        <SectionTitle>Se interessou?</SectionTitle>
         {!pet.adopted ? (
-          <Adoption>
-            <SmallButton
-              icon="whatsapp-line"
-              color={theme.COLORS.PRIMARY_500}
-              onPress={() =>
-                sendWhatsapp(pet.name, pet.author.name, pet.author.phone)
-              }
-            />
-            <Gap />
-            <SmallButton
-              icon="mail-line"
-              color={theme.COLORS.PRIMARY_500}
-              onPress={() =>
-                sendMail(pet.name, pet.author.name, pet.author.email)
-              }
-            />
-            <Gap />
-            <Button
-              onPress={() =>
-                Alert.alert('Adoção', 'Você quer adotar esse bicinho?', [
-                  {
-                    text: 'Cancelar',
-                    onPress: () => {},
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Sim, quero adotar.',
-                    onPress: () => handleAdoptPet(pet.id),
-                  },
-                ])
-              }
-              disabled={pet.adopted}
-              isLoading={loading}>
-              Adotar
-            </Button>
-          </Adoption>
+          <>
+            <SectionTitle>Se interessou?</SectionTitle>
+            <Adoption>
+              <SmallButton
+                icon="whatsapp-line"
+                color={theme.COLORS.PRIMARY_500}
+                onPress={() =>
+                  sendWhatsapp(pet.name, pet.author.name, pet.author.phone)
+                }
+              />
+              <Gap />
+              <SmallButton
+                icon="mail-line"
+                color={theme.COLORS.PRIMARY_500}
+                onPress={() =>
+                  sendMail(pet.name, pet.author.name, pet.author.email)
+                }
+              />
+              <Gap />
+              <Button
+                onPress={() =>
+                  Alert.alert(
+                    'Adoção',
+                    'Você tem certeza que quer adotar esse bichinho?',
+                    [
+                      {
+                        text: 'Cancelar',
+                        onPress: () => {},
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'Sim, quero adotar',
+                        onPress: () => handleAdoptPet(pet.id),
+                      },
+                    ],
+                  )
+                }
+                disabled={pet.adopted}
+                isLoading={loading}>
+                Adotar
+              </Button>
+            </Adoption>
+          </>
         ) : (
-          <Adoption>
-            <PetDescription>
-              Esse bichinho já foi adotado, mas tenho certeza que você vai
-              encontrar outro em nossa lista
-            </PetDescription>
-          </Adoption>
+          <>
+            {pet.adoptedBy !== user.id && (
+              <>
+                <SectionTitle>Adotado</SectionTitle>
+                <Adoption>
+                  <PetDescription>
+                    {pet.author.id !== pet.adoptedBy
+                      ? 'Esse bichinho já foi adotado, mas tenho certeza que você vai encontrar outro em nossa lista.'
+                      : 'O autor desativou esse anúncio.'}
+                  </PetDescription>
+                </Adoption>
+              </>
+            )}
+
+            {adopetedUserPet && pet.adoptedBy !== pet.author.id && (
+              <AdoptedByContainer>
+                <SectionTitle>Quem adotou?</SectionTitle>
+                <AdoptedBy>
+                  <Photo
+                    avatar={adopetedUserPet.avatar}
+                    name={adopetedUserPet.name}
+                    size={64}
+                  />
+                  <AdoptedByText>{adopetedUserPet.name}</AdoptedByText>
+                </AdoptedBy>
+              </AdoptedByContainer>
+            )}
+          </>
         )}
       </Content>
     </Container>

@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { ReactNode } from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
+
 import { useTheme } from 'styled-components';
 
 import { Container, RemixIcon } from './styles';

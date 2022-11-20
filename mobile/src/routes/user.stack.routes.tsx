@@ -17,12 +17,13 @@ export function UserStackRoutes() {
     <Navigator
       screenOptions={{
         headerShown: false,
-
+        gestureEnabled: false,
         cardStyle: {
           backgroundColor: THEME.COLORS.BACKGROUND,
         },
       }}>
-      <Screen name="UserTabRoutes" component={UserBottomTabRoutes} />
+      <Screen name="tab" component={UserBottomTabRoutes} />
+
       <Screen name="home" component={Home} />
       <Screen name="pet" component={Pet} />
       <Screen name="petsearch" component={PetSearch} />

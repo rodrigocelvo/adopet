@@ -1,7 +1,9 @@
 import React from 'react';
-import RemixIcon from 'react-native-remix-icon';
-import { useTheme } from 'styled-components';
 import { TouchableOpacityProps } from 'react-native';
+
+import { useTheme } from 'styled-components';
+
+import RemixIcon from 'react-native-remix-icon';
 
 import {
   Container,
@@ -18,6 +20,7 @@ export interface PetCardProps {
   name: string;
   imgUrl: string;
   sex: string;
+  favorite?: boolean;
 
   author: {
     uf: string;
@@ -27,15 +30,16 @@ export interface PetCardProps {
 
 interface Props extends TouchableOpacityProps {
   data: PetCardProps;
+  sm?: boolean;
 }
 
-export function PetCard({ data, ...rest }: Props) {
+export function PetCard({ data, sm = false, ...rest }: Props) {
   const theme = useTheme();
 
   return (
     <Container {...rest}>
-      <Content>
-        <PetImage source={{ uri: `${data.imgUrl}` }} />
+      <Content sm={sm}>
+        <PetImage sm={sm} source={{ uri: `${data.imgUrl}` }} />
         <Details>
           <Title>{data.name}</Title>
           <Information>

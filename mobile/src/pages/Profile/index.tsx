@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
-
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import * as ImagePicker from 'expo-image-picker';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { Photo } from '../../components/Photo';
+import { Header } from '../../components/Header';
+import { Button } from '../../components/Button';
+import { InputForm } from '../../components/InputForm';
+import { Loading } from '../../components/Loading';
+
+import { useAuth } from '../../hooks/auth';
+import { api } from '../../services/api';
 
 import {
   Container,
   Content,
   ScrollView,
-  Avatar,
   AvatarContainer,
   UserName,
   InputGroup,
   InputGroupLine,
   InputGroupLine2,
 } from './styles';
-
-import { Header } from '../../components/Header';
-import { Button } from '../../components/Button';
-
-import logoImg from '../../assets/logo.png';
-import { InputForm } from '../../components/InputForm';
-import { api } from '../../services/api';
-import { useNavigation } from '@react-navigation/native';
-import * as Clipboard from 'expo-clipboard';
-import { useAuth } from '../../hooks/useAuth';
-import { Loading } from '../../components/Loading';
-import { Photo } from '../../components/Photo';
 
 interface profileUpdateDataProps {
   name: string;
@@ -142,9 +138,8 @@ export function Profile() {
     });
 
     if (!result.cancelled) {
-      setAvatar(result.uri);
-
       try {
+        setAvatar(result.uri);
         const newUpload = new FormData();
 
         newUpload.append('avatar', {
@@ -248,7 +243,11 @@ export function Profile() {
                   />
                 </InputGroupLine2>
               </InputGroup>
-              <Button onPress={handleSubmit(handleUpdateUser)}>Salvar</Button>
+              <Button
+                onPress={handleSubmit(handleUpdateUser)}
+                isLoading={loading}>
+                Salvar
+              </Button>
             </Content>
           </Container>
         </ScrollView>

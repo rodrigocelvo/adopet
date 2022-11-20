@@ -1,9 +1,9 @@
 import React, { ReactNode, useState } from 'react';
 import { TextInputProps } from 'react-native';
 
-import { Container, TextInput, RemixIcon } from './styles';
-
 import { useTheme } from 'styled-components';
+
+import { Container, TextInput, RemixIcon } from './styles';
 
 interface InputProps extends TextInputProps {
   icon?: ReactNode;

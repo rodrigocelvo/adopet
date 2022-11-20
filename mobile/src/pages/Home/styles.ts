@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   padding-bottom: 120px;
-  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const ScrollView = styled.ScrollView.attrs({
@@ -27,13 +26,6 @@ export const Header = styled.View`
 export const User = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-`;
-
-export const Avatar = styled.Image`
-  width: 48px;
-  height: 48px;
-
-  border-radius: 100%;
 `;
 
 export const Username = styled.Text`
@@ -83,4 +75,21 @@ export const Adoption = styled.View`
   padding: 0 20px;
   flex-direction: row;
   justify-content: space-between;
+`;
+
+export const Adopted = styled.View`
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-direction: row;
+`;
+
+export const AdoptedText = styled.Text`
+  margin-bottom: 8px;
+
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZE.SM}px;
+    font-family: ${theme.FONT_FAMILY.REGULAR};
+    color: ${theme.COLORS.PRIMARY_500};
+  `};
 `;

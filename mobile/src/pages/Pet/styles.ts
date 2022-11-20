@@ -7,6 +7,7 @@ export const Container = styled.ScrollView.attrs({
 
 export const Content = styled.View`
   padding: 0 20px;
+  padding-bottom: 20px;
 `;
 
 export const PetImage = styled.ImageBackground`
@@ -106,13 +107,6 @@ export const UserName = styled.Text`
   `};
 `;
 
-export const UserAvatar = styled.Image`
-  width: 64px;
-  height: 64px;
-  border-radius: 100%;
-  margin-right: 8px;
-`;
-
 export const SectionTitle = styled.Text`
   margin-bottom: 8px;
 
@@ -151,4 +145,24 @@ export const Adoption = styled.View`
 
 export const Gap = styled.View`
   width: 8px;
+`;
+
+export const AdoptedByContainer = styled.View`
+  margin-bottom: 40px;
+`;
+
+export const AdoptedBy = styled.View`
+  margin-top: 20px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const AdoptedByText = styled.Text`
+  margin-left: 8px;
+
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZE.MD}px;
+    color: ${theme.COLORS.SUCCESS};
+    font-family: ${theme.FONT_FAMILY.MEDIUM};
+  `};
 `;

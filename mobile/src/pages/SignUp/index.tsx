@@ -1,9 +1,18 @@
 import React from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import * as Clipboard from 'expo-clipboard';
+
+import { Header } from '../../components/Header';
+import { Button } from '../../components/Button';
+import { InputForm } from '../../components/InputForm';
+
+import { api } from '../../services/api';
+import { useTheme } from 'styled-components';
 
 import {
   Container,
@@ -16,15 +25,7 @@ import {
   InputGroupLine2,
 } from './styles';
 
-import { Header } from '../../components/Header';
-import { Button } from '../../components/Button';
-
 import logoImg from '../../assets/logo.png';
-import { InputForm } from '../../components/InputForm';
-import { api } from '../../services/api';
-import { useNavigation } from '@react-navigation/native';
-import * as Clipboard from 'expo-clipboard';
-import { useTheme } from 'styled-components';
 
 interface signUpFormDataProps {
   name: string;
@@ -109,7 +110,8 @@ export function SignUp() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Container>
             <Header
-              title=""
+              title="Cadastre-se"
+              showBackButton
               style={{ backgroundColor: THEME.COLORS.BACKGROUND }}
             />
             <Content>

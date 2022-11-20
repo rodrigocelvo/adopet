@@ -5,7 +5,7 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['onAnimatedValueUpdate', 'Could not find image', 'GO_BACK']);
 
 import { ThemeProvider } from 'styled-components';
-import { AuthContextProvider } from './src/hooks/useAuth';
+import { AuthContextProvider } from './src/hooks/auth';
 
 import {
   useFonts,
@@ -16,6 +16,7 @@ import {
 
 import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
+import { Box } from './src/components/Box';
 
 import themes from './src/theme';
 

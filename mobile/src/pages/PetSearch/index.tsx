@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
+
+import { useNavigation, useRoute } from '@react-navigation/native';
+
 import { Header } from '../../components/Header';
 import { PetCard, PetCardProps } from '../../components/PetCard';
 import { Loading } from '../../components/Loading';
+
+import { PetSearchNavigationProps } from '../../@types/navigation';
 import { api } from '../../services/api';
 
 import { Container, EmptyText } from './styles';
-import { PetSearchNavigationProps } from '../../@types/navigation';
-import { useTheme } from 'styled-components';
 
 interface SearchProps {
   id: string;
@@ -16,6 +18,7 @@ interface SearchProps {
   sex: string;
   breed: string;
   tags: string;
+  adopted: boolean;
 
   author: {
     uf: string;
@@ -33,8 +36,6 @@ export function PetSearch() {
   const [pets, setPets] = useState<PetCardProps[]>([]);
   const [petCategory, setPetCategory] = useState('');
   const [loading, setLoading] = useState(true);
-
-  const theme = useTheme();
 
   const route = useRoute();
   const { category, search } = route.params as PetSearchNavigationProps;
@@ -87,11 +88,10 @@ export function PetSearch() {
 
       if (!search) return;
 
+      setPetCategory('Pesquisa');
       const result = searchPet(petResponse, search.toLowerCase());
 
       setPets(result);
-
-      setPetCategory('Pesquisa');
     } catch (err) {
       console.log(err);
     } finally {
@@ -99,7 +99,7 @@ export function PetSearch() {
     }
   }
 
-  const searchPet = function (anyArray: any, searchTerm: any) {
+  const searchPet = function (anyArray: any, searchTerm: string) {
     return anyArray.filter((obj: SearchProps) => {
       if (obj.name.toLowerCase() === searchTerm) {
         return obj.name;
@@ -115,6 +115,14 @@ export function PetSearch() {
 
       if (obj.breed.toLowerCase() === searchTerm) {
         return obj.breed;
+      }
+
+      if ('adotados' === searchTerm) {
+        return obj.adopted;
+      }
+
+      if ('adotar' === searchTerm && obj.adopted === false) {
+        return obj;
       }
 
       if (obj.tags.toLowerCase().includes(searchTerm)) {
@@ -143,18 +151,13 @@ export function PetSearch() {
     }
   }, []);
 
-  function handleGoBack() {
-    navigation.goBack();
-  }
-
   if (loading) {
     return <Loading />;
   }
 
   return (
     <Container>
-      <Header title={petCategory} showBackButton onBack={handleGoBack} />
-
+      <Header title={petCategory} showBackButton />
       <FlatList
         data={pets}
         keyExtractor={item => item.id}
@@ -167,13 +170,14 @@ export function PetSearch() {
         )}
         ListEmptyComponent={
           <EmptyText>
-            Ooops... parece que a lista {'\n'}resultados para sua pesquisa.
+            Ooops... parece que a lista {'\n'}não tem resultados para sua
+            pesquisa.
           </EmptyText>
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingTop: 12,
-          paddingBottom: 40,
+          paddingBottom: 120,
         }}
       />
     </Container>
