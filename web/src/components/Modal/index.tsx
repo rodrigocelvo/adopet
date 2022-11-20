@@ -9,6 +9,8 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from './styles';
+
+import toast, { Toaster } from 'react-hot-toast';
 import { api } from '../../services/api';
 
 interface Props {
@@ -18,10 +20,15 @@ interface Props {
 async function handleDelete(petId: string) {
   try {
     await api.delete(`/pets/${petId}`);
+    toast.success('Pet deletado com sucesso.');
   } catch (err) {
     console.log(err);
-    alert('Não foi possível deletar esse pet.');
+    toast.error('Não foi possível deletar esse pet.');
   }
+}
+
+export function ToastDeletedPet() {
+  return <Toaster position="bottom-center" />;
 }
 
 export function Modal({ petId }: Props) {

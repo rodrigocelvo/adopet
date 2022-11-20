@@ -123,6 +123,14 @@ export const AnimalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  span {
+    margin-top: -20px;
+    margin-bottom: 30px;
+    font-size: 12px;
+    font-weight: bold;
+  }
 `;
 
 export const AnimalContent = styled.div`

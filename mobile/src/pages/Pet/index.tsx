@@ -7,7 +7,11 @@ import {
 } from '@react-navigation/native';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { differenceInYears, differenceInMonths } from 'date-fns';
+import {
+  differenceInYears,
+  differenceInMonths,
+  differenceInDays,
+} from 'date-fns';
 import * as MailComposer from 'expo-mail-composer';
 
 import { PetCategory } from '../../components/PetCategory';
@@ -154,13 +158,20 @@ export function Pet() {
   function calculateAge(date: string) {
     const birth = new Date(date);
 
-    const differenceYear = differenceInYears(Date.now(), birth);
+    const diferreceDays = differenceInDays(Date.now(), birth);
     const differenceMouth = differenceInMonths(Date.now(), birth);
+    const differenceYear = differenceInYears(Date.now(), birth);
 
-    if (differenceYear > 0) {
-      setPetBirthDate(`${differenceYear} anos`);
-    } else {
+    if (diferreceDays <= 59) {
+      setPetBirthDate(`${diferreceDays} dias`);
+    }
+
+    if (differenceMouth >= 1) {
       setPetBirthDate(`${differenceMouth} meses`);
+    }
+
+    if (differenceYear >= 1) {
+      setPetBirthDate(`${differenceYear} anos`);
     }
   }
 

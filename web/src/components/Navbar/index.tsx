@@ -23,7 +23,7 @@ import {
 } from './styles';
 
 import LogoImg from '../../assets/logo.svg';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth';
 
 interface NavbarPorps {
   loggedIn?: boolean;
@@ -32,8 +32,6 @@ interface NavbarPorps {
 
 export function Navbar({ loggedIn, modalIsOpen }: NavbarPorps) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   const { user, logOut } = useAuth();
 
@@ -62,10 +60,10 @@ export function Navbar({ loggedIn, modalIsOpen }: NavbarPorps) {
                 <NavbarLinkContainer>
                   <ButtonContainer>
                     <Link to="/adoption">
-                      <Button variant="primary">Quero Adotar</Button>
+                      <Button variant="primary">Adotar</Button>
                     </Link>
                     <Link to="/signin">
-                      <Button variant="secondary">Entrar</Button>
+                      <Button variant="secondary">Publicar</Button>
                     </Link>
                   </ButtonContainer>
                   <OpenLinksButton
@@ -104,7 +102,11 @@ export function Navbar({ loggedIn, modalIsOpen }: NavbarPorps) {
                 <strong>{user.name}</strong>
                 <AvatarButton onClick={logOut}>
                   <Avatar
-                    src={`https://ui-avatars.com/api/?name=${user.name}&background=random&color=white`}
+                    src={
+                      !user.avatar
+                        ? `https://ui-avatars.com/api/?background=5AA9EF&color=CCF8F9&size=500&name=${user.name}`
+                        : user.avatar
+                    }
                   />
                 </AvatarButton>
               </RightContainer>

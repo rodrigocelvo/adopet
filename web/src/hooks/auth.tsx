@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { api } from '../services/api';
@@ -110,4 +110,10 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
       {children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuth(): AuthContextDataProps {
+  const context = useContext(AuthContext);
+
+  return context;
 }

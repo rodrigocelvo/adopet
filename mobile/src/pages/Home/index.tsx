@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+
 import { useFocusEffect } from '@react-navigation/native';
 
 import { Photo } from '../../components/Photo';

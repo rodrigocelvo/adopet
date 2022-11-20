@@ -1,10 +1,11 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
+import toast, { Toaster } from 'react-hot-toast';
 
 import {
   Container,
@@ -23,7 +24,6 @@ import {
   StyledIndicator,
 } from './styles';
 
-import logoImg from '../../assets/logo.svg';
 import { Navbar } from '../../components/Navbar';
 import {
   RiAddCircleFill,
@@ -41,7 +41,7 @@ import { TextAreaControlled } from '../../components/TextAreaControlled';
 import { InputControlled } from '../../components/InputControlled';
 import { Button } from '../../components/Button';
 import { api } from '../../services/api';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth';
 
 interface PetDataProps {
   name: string;
@@ -54,6 +54,7 @@ interface PetDataProps {
   category: string;
   imgUrl: string;
   adopted: boolean;
+  adoptedBy: string;
 
   author: {
     id: string;
@@ -73,6 +74,10 @@ const createNewPetSchema = yup.object({
   description: yup.string().required('Infome a descrição'),
 });
 
+export function ToastCreatePet() {
+  return <Toaster position="bottom-center" />;
+}
+
 export function CreatePet() {
   const [petSex, setPetSex] = useState('male');
   const [petCategory, setPetCategory] = useState('cat');
@@ -80,8 +85,10 @@ export function CreatePet() {
   const [preview, setPreview] = useState('');
   const [petImageId, setPetImageId] = useState('');
   const [petAdopted, setPetAdopted] = useState(false);
+  const [petAdoptedBy, setPetAdoptedBy] = useState<string | null>(null);
   const [selectImageError, setSelectImageError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [petAuthor, setPetAuthor] = useState('');
 
   const params = useParams();
   const { user } = useAuth();
@@ -115,6 +122,7 @@ export function CreatePet() {
         breed,
         tags,
         adopted: petAdopted,
+        adoptedBy: null,
         sex: petSex,
         category: petCategory,
         imgUrl: `http://192.168.0.9:3333/images/pets/${petImageId}.png`,
@@ -133,15 +141,18 @@ export function CreatePet() {
         .then(() => {
           setLoading(true);
           setPetImageId(id);
+          toast.success('Pet criado.', {
+            duration: 4000,
+          });
           setTimeout(() => {
             navigate('/dashboard');
           }, 1000);
         });
     } catch (err) {
+      toast.error('Não foi possivel criar o anúncio do pet.');
       console.log(err);
       navigate('/dashboard');
       setLoading(false);
-      alert(`Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
     }
   }
 
@@ -163,23 +174,41 @@ export function CreatePet() {
         breed,
         tags,
         adopted: petAdopted,
+        adoptedBy: petAdoptedBy,
         sex: petSex,
         category: petCategory,
         imgUrl: `http://192.168.0.9:3333/images/pets/${params.id}.png`,
         description,
       });
 
-      navigate('/dashboard');
+      toast.success('Salvo.', {
+        duration: 4000,
+      });
+
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1000);
     } catch (err) {
       console.log(err);
-
-      alert(`Edt: Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
+      toast.error('Não foi possível salvar.');
       setLoading(false);
-    } finally {
+    }
+  }
+
+  async function handleAdoptPet() {
+    try {
+      setPetAdopted(!petAdopted);
+
+      await api.post(`/pets/${user.id}/adopt/${params.id}`, {
+        adopted: true,
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 
   async function fetchPet() {
+    setLoading(true);
     try {
       const response = await api.get(`/pets/${params.id}`);
       const petResponse: PetDataProps = response.data;
@@ -194,8 +223,9 @@ export function CreatePet() {
       setValue('description', petResponse.description);
 
       setPhoto(petResponse.imgUrl);
-
       setPetAdopted(petResponse.adopted);
+      setPetAdoptedBy(petResponse.adoptedBy);
+      setPetAuthor(petResponse.author.id);
 
       setPetSex(petResponse.sex);
       setPetCategory(petResponse.category);
@@ -203,6 +233,8 @@ export function CreatePet() {
       console.log(err);
       // alert('Não foi possível encontrar o pet');
       // navigate('/dashboard');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -218,6 +250,18 @@ export function CreatePet() {
     }
   }, []);
 
+  if (params.id) {
+    const storageUser = localStorage.getItem('@Adopet:user');
+
+    if (!storageUser || !petAuthor) return;
+
+    const { id } = JSON.parse(storageUser);
+
+    if (id !== petAuthor) {
+      navigate('/dashboard');
+    }
+  }
+
   function handleImage(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
       const data = new FormData();
@@ -231,7 +275,7 @@ export function CreatePet() {
         setSelectImageError('');
       }
 
-      api
+      const result = api
         .post('/uploads/pet', data)
         .then(response => {
           setPreview(previewImg);
@@ -241,7 +285,14 @@ export function CreatePet() {
           console.log(err);
 
           setSelectImageError('Não foi possível enviar a imagem, tente outra.');
+          throw err;
         });
+
+      toast.promise(result, {
+        loading: 'Salvando...',
+        success: 'Imagem salva.',
+        error: 'Não foi possível fazer o upload.',
+      });
     }
   }
 
@@ -252,7 +303,7 @@ export function CreatePet() {
         <Header>
           <Title>{params.id ? 'Editar' : 'Criar'} pet</Title>
           {params.id && (
-            <Button disabled={petAdopted} onClick={() => setPetAdopted(!petAdopted)}>
+            <Button disabled={petAdopted} onClick={handleAdoptPet}>
               {!petAdopted ? ' Marcar como adotado' : 'Adotado'}
             </Button>
           )}
@@ -265,12 +316,10 @@ export function CreatePet() {
                 {preview || photo ? (
                   <img src={preview || photo} style={{ backgroundColor: '#fff' }} />
                 ) : (
-                  <>
-                    <div>
-                      <RiCameraFill />
-                      <p>Selecione uma imagem</p>
-                    </div>
-                  </>
+                  <div>
+                    <RiCameraFill />
+                    <p>Selecione uma imagem</p>
+                  </div>
                 )}
                 <input
                   name="avatar"
@@ -414,6 +463,7 @@ export function CreatePet() {
           </AnimalFormContainer>
         </Form>
       </Content>
+      <Toaster position="bottom-center" />
     </Container>
   );
 }

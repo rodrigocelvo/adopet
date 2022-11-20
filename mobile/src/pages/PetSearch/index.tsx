@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 

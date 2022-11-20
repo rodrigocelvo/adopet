@@ -3,14 +3,14 @@ import { Navbar } from '../../components/Navbar';
 import { AnimalCard, AnimalCardProps } from '../../components/AnimalCard';
 import { Button } from '../../components/Button';
 
-import { ANIMALS } from '../../utils/animals';
-
 import petAdoptionImg from '../../assets/pet-adoption.svg';
 import { Container, Header, Title, Content, NonePet, AnimalContent } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
-import { Modal } from '../../components/Modal';
-import { useAuth } from '../../hooks/useAuth';
+import { Modal, ToastDeletedPet } from '../../components/Modal';
+import { useAuth } from '../../hooks/auth';
+
+import { ToastCreatePet } from '../CreatePet';
 
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
@@ -78,6 +78,8 @@ export function Dashboard() {
             ))}
           </AnimalContent>
         </Content>
+        <ToastCreatePet />
+        <ToastDeletedPet />
       </Container>
     </>
   );

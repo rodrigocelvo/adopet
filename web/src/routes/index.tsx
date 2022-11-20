@@ -8,6 +8,7 @@ import { Faq } from '../pages/Faq';
 import { Adoption } from '../pages/Adoption';
 import { SignIn } from '../pages/SignIn';
 import { SignUp } from '../pages/SignUp';
+import { NotFound } from '../pages/NotFound';
 
 import { Dashboard } from '../pages/Dashboard';
 import { CreatePet } from '../pages/CreatePet';
@@ -16,6 +17,7 @@ export function Routes() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
         <Route path="/sobre" element={<About />} />
         <Route path="/faq" element={<Faq />} />

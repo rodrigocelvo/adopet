@@ -21,7 +21,8 @@ import {
 
 import logoImg from '../../assets/logo.svg';
 import { useForm } from 'react-hook-form';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth';
+import { ToastCreateAccount } from '../../pages/SignUp';
 
 interface signInFormDataProps {
   code: string;
@@ -97,6 +98,7 @@ export function SignIn() {
           </Links>
         </AnimationContainer>
       </Content>
+      <ToastCreateAccount />
     </Container>
   );
 }

@@ -38,11 +38,15 @@ import { api } from '../../services/api';
 export function Home() {
   const navigate = useNavigate();
   const [pets, setPets] = useState<AnimalCardProps[]>([]);
+  const [petCount, setPetCount] = useState(0);
 
   async function fetchPets() {
     try {
       const response = await api.get('/pets/lasts');
       setPets(response.data);
+
+      const countReponse = await api.get('/pets/count');
+      setPetCount(countReponse.data.count);
     } catch (err) {
       console.log(err);
     }
@@ -101,27 +105,33 @@ export function Home() {
               icon={card3Img}
             />
           </CardContainer>
+          {pets.length > 0 && (
+            <>
+              <SubTitle>Novos bichinhos</SubTitle>
+              <AnimalContainer>
+                <span>+{petCount} bichinhos para adoção</span>
 
-          <SubTitle>Novos bichinhos</SubTitle>
-          <AnimalContainer>
-            <AnimalContent>
-              {pets.map(animal => (
-                <AnimalCard
-                  key={animal.id}
-                  id={animal.id}
-                  name={animal.name}
-                  author={animal.author}
-                  genre={animal.genre}
-                  imgUrl={animal.imgUrl}
-                />
-              ))}
-            </AnimalContent>
-          </AnimalContainer>
+                <AnimalContent>
+                  {pets.map(animal => (
+                    <AnimalCard
+                      key={animal.id}
+                      id={animal.id}
+                      name={animal.name}
+                      author={animal.author}
+                      genre={animal.genre}
+                      imgUrl={animal.imgUrl}
+                    />
+                  ))}
+                </AnimalContent>
+              </AnimalContainer>
+            </>
+          )}
         </Content>
-
-        <ButtonContainer>
-          <Button onClick={() => navigate('/adoption')}>QUERO ADOTAR</Button>
-        </ButtonContainer>
+        {pets.length > 0 && (
+          <ButtonContainer>
+            <Button onClick={() => navigate('/adoption')}>QUERO ADOTAR</Button>
+          </ButtonContainer>
+        )}
 
         <FaqContainer>
           <FaqContent>

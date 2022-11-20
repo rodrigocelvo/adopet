@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { Header } from '../../components/Header';

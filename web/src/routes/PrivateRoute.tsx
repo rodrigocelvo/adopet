@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/auth';
 
 export function PrivateRoute({ children }: { children: JSX.Element }) {
   const { signed } = useAuth();

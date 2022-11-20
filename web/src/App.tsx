@@ -2,7 +2,7 @@ import { ThemeProvider } from 'styled-components';
 import { THEME } from './theme';
 
 import { Routes } from './routes';
-import { AuthContextProvider } from './contexts/AuthContext';
+import { AuthContextProvider } from './hooks/auth';
 
 function App() {
   return (

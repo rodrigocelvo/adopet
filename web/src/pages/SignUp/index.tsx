@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'yup-phone';
 
-import { FiArrowLeft, FiLock, FiMail, FiMap, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
+import { FiArrowLeft, FiMail, FiMap, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
 
 import { Button } from '../../components/Button';
 
@@ -25,7 +25,9 @@ import logoImg from '../../assets/logo.svg';
 import { InputControlled } from '../../components/InputControlled';
 import { useForm } from 'react-hook-form';
 import { api } from '../../services/api';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth';
+
+import toast, { Toaster } from 'react-hot-toast';
 
 interface signUpFormDataProps {
   name: string;
@@ -48,6 +50,10 @@ const signUpSchema = yup.object({
     .max(2, 'Informe a sigla.')
     .required('Informe a sigla.'),
 });
+
+export function ToastCreateAccount() {
+  return <Toaster position="bottom-center" />;
+}
 
 export function SignUp() {
   const navigate = useNavigate();
@@ -75,15 +81,18 @@ export function SignUp() {
 
       await navigator.clipboard.writeText(code);
 
-      alert(
-        `Conta criada com sucesso. O código para login ${code} foi copiado para a área de transferencia.`
+      toast.success(
+        `Conta criada com sucesso. ${'\n'} O código para login: ${code}${'\n'}foi copiado para a área de transferencia.`,
+        {
+          duration: 8000,
+        }
       );
 
       navigate('/signin');
     } catch (err) {
       console.log(err);
 
-      alert(`Oops! Parece que tem algo errado. Já estamos trabalhando para corrigir.`);
+      toast.error('Não foi possível criar a conta.');
     }
   }
 
@@ -167,6 +176,7 @@ export function SignUp() {
         </AnimationContainer>
       </Content>
       <Background />
+      <Toaster position="bottom-center" gutter={24} />
     </Container>
   );
 }
