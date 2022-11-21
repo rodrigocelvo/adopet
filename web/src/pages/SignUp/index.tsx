@@ -82,13 +82,14 @@ export function SignUp() {
       await navigator.clipboard.writeText(code);
 
       toast.success(
-        `Conta criada com sucesso. ${'\n'} O código para login: ${code}${'\n'}foi copiado para a área de transferencia.`,
+        `Conta criada com sucesso.${'\n'} O código para login: ${code}${'\n'}foi copiado para a área de transferência.`,
         {
           duration: 8000,
         }
       );
-
-      navigate('/signin');
+      setTimeout(() => {
+        navigate('/signin');
+      }, 1000);
     } catch (err) {
       console.log(err);
 
