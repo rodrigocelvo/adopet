@@ -37,7 +37,7 @@ interface signUpFormDataProps {
   uf: string;
 }
 
-const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+const phoneRegex = RegExp(/^\(?([0-9]{4})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 
 const signUpSchema = yup.object({
   name: yup.string().max(30, 'Nome muito grande.').required('Infome o seu nome.'),
