@@ -1,5 +1,6 @@
 <div align="center">
-   <img alt="Logo Adopet" src=".github/logo.svg" width="50%"/>
+   <img alt="Logo Adopet" src=".github/logo.png" width="40%"/>
+   <br />
 </div>
 
 ![cover](.github/cover.png?style=flat)
