@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// generator erd {
+//   erDebug  = true
+//   provider = "prisma-erd-generator"
+// }
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String  @id
+  user_name       String
+  user_email      String  @unique
+  user_avatar_url String?
+  user_phone      String
+  user_city       String
+  user_city_uf    String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  Pet        Pet?     @relation(fields: [petId], references: [id])
+  petId      String?
+}
+
+model Pet {
+  id              String  @id @default(cuid())
+  pet_name        String
+  pet_birth_date  String
+  pet_category    String
+  pet_description String
+  pet_img_url     String
+  pet_sex         String
+  pet_tags        String
+  pet_weight      String
+  pet_adopted     Boolean
+  pet_adopted_by  String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  author_id User[]
+}
