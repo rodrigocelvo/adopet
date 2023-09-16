@@ -1,38 +1,29 @@
-import { FastifyInstance } from 'fastify';
-import { prisma } from '../lib/prisma';
-import { z } from 'zod';
+import { FastifyInstance } from "fastify";
+import { prisma } from "../lib/prisma";
+import { z } from "zod";
 
-import {generateUniqueId} from '../../utils/generateUniqueId'
-
-const uniqueId = generateUniqueId();
+import { generateUniqueId } from "../../utils/generateUniqueId";
 
 export async function userRoutes(fastify: FastifyInstance) {
-  fastify.get('/users/count', async () => {
+  fastify.get("/users/count", async () => {
     const count = await prisma.user.count();
 
     return { count };
   });
 
-  fastify.post('/users', async (request, reply) => {
+  fastify.post("/users", async (request, reply) => {
     const createUserBody = z.object({
       name: z.string(),
       email: z.string(),
       phone: z.string(),
       city: z.string(),
       uf: z.string(),
-
     });
 
-    const {
-      name,
-      email,
-      phone,
-      city,
-      uf
-   
-    } = createUserBody.parse(request.body);
+    const { name, email, phone, city, uf } = createUserBody.parse(request.body);
 
     try {
+      const uniqueId = generateUniqueId();
       const userCreated = await prisma.user.create({
         data: {
           id: uniqueId,
@@ -40,7 +31,7 @@ export async function userRoutes(fastify: FastifyInstance) {
           user_email: email,
           user_phone: phone,
           user_city: city,
-          user_city_uf: uf
+          user_city_uf: uf,
         },
       });
 
@@ -49,28 +40,27 @@ export async function userRoutes(fastify: FastifyInstance) {
       return reply.status(201).send({ code: id });
     } catch {
       return reply.status(400).send({
-        message: 'Not possible to create user',
+        message: "Not possible to create user",
       });
     }
   });
 
-  fastify.get('/users', async (request, reply) => {
+  fastify.get("/users", async (request, reply) => {
     const user = await prisma.user.findMany({
       select: {
         id: true,
         user_name: true,
       },
       orderBy: {
-        created_at: 'desc',
-      }
-  
+        created_at: "desc",
+      },
     });
 
     reply.status(200);
     return user;
   });
 
-  fastify.get('/users/:id', async (request, reply) => {
+  fastify.get("/users/:id", async (request, reply) => {
     const idUserParams = z.object({
       id: z.string(),
     });
@@ -85,14 +75,14 @@ export async function userRoutes(fastify: FastifyInstance) {
 
     if (!user) {
       return reply.status(400).send({
-        message: 'User not found',
+        message: "User not found",
       });
     }
 
     return user;
   });
 
-  fastify.delete('/users/:id', async (request, reply) => {
+  fastify.delete("/users/:id", async (request, reply) => {
     const idUserParams = z.object({
       id: z.string(),
     });
@@ -109,12 +99,12 @@ export async function userRoutes(fastify: FastifyInstance) {
       return reply.status(204).send();
     } catch {
       return reply.status(400).send({
-        message: 'User not found.',
+        message: "User not found.",
       });
     }
   });
 
-  fastify.put('/users/:id', async (request, reply) => {
+  fastify.put("/users/:id", async (request, reply) => {
     const idUserParams = z.object({
       id: z.string(),
     });
@@ -129,13 +119,7 @@ export async function userRoutes(fastify: FastifyInstance) {
       uf: z.string(),
     });
 
-    const {
-      name,
-      email,
-      phone,
-      city,
-      uf,
-    } = updateUserBody.parse(request.body);
+    const { name, email, phone, city, uf } = updateUserBody.parse(request.body);
 
     try {
       await prisma.user.update({
@@ -154,12 +138,12 @@ export async function userRoutes(fastify: FastifyInstance) {
       return reply.status(200).send();
     } catch {
       return reply.status(400).send({
-        message: 'User not found.',
+        message: "User not found.",
       });
     }
   });
 
-  fastify.patch('/users/image/:id', async (request, reply) => {
+  fastify.patch("/users/image/:id", async (request, reply) => {
     const idUserParams = z.object({
       id: z.string(),
     });
@@ -185,11 +169,8 @@ export async function userRoutes(fastify: FastifyInstance) {
       return reply.status(200).send();
     } catch {
       return reply.status(400).send({
-        message: 'User not found.',
+        message: "User not found.",
       });
     }
   });
-  
-
-
 }

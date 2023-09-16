@@ -30,7 +30,7 @@ O projeto em sí, tem a finalizade de adoção de pets abandonados, aonde uma pe
 
 ## 🔖 Layout
 
-Você pode visualizar o layout do projeto através [desse link](https://www.figma.com/community/file/1169028343875283461). É necessário ter conta no [Figma](http://figma.com/) para acessá-lo.
+Você pode visualizar o layout do projeto através [desse link](https://www.figma.com/file/N6IKITAT5J5xqL71NVU2Ao/Adopet?node-id=477%3A2105&t=SyociAjY94aLEwz6-1). É necessário ter conta no [Figma](http://figma.com/) para acessá-lo.
 
 ## Executando o projeto
 
