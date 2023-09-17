@@ -16,35 +16,35 @@ datasource db {
 }
 
 model User {
-  id              String  @id
-  user_name       String
-  user_email      String  @unique
-  user_phone      String
-  user_city       String
-  user_city_uf    String
-  user_avatar_url String?
+  id        String  @id
+  name      String
+  email     String  @unique
+  phone     String
+  city      String
+  uf        String
+  avatarUrl String?
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  Pet        Pet[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  Pet       Pet[]
 }
 
 model Pet {
-  id              String  @id @default(cuid())
-  pet_name        String
-  pet_weight      String
-  pet_birth_date  String
-  pet_sex         String
-  pet_breed       String
-  pet_tags        String
-  pet_description String
-  pet_img_url     String
-  pet_category    String
-  pet_adopted     Boolean
-  pet_adopted_by  String?
+  id          String  @id @default(cuid())
+  name        String
+  weight      String
+  birthDate   String
+  sex         String
+  breed       String
+  tags        String
+  description String
+  imgUrl      String?
+  category    String
+  adopted     Boolean
+  adoptedBy   String?
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id])

@@ -27,11 +27,11 @@ export async function userRoutes(fastify: FastifyInstance) {
       const userCreated = await prisma.user.create({
         data: {
           id: uniqueId,
-          user_name: name,
-          user_email: email,
-          user_phone: phone,
-          user_city: city,
-          user_city_uf: uf,
+          name,
+          email,
+          phone,
+          city,
+          uf,
         },
       });
 
@@ -49,10 +49,10 @@ export async function userRoutes(fastify: FastifyInstance) {
     const user = await prisma.user.findMany({
       select: {
         id: true,
-        user_name: true,
+        name: true,
       },
       orderBy: {
-        created_at: "desc",
+        createdAt: "desc",
       },
     });
 
@@ -127,11 +127,11 @@ export async function userRoutes(fastify: FastifyInstance) {
           id,
         },
         data: {
-          user_name: name,
-          user_email: email,
-          user_phone: phone,
-          user_city: city,
-          user_city_uf: uf,
+          name,
+          email,
+          phone,
+          city,
+          uf,
         },
       });
 
@@ -150,11 +150,11 @@ export async function userRoutes(fastify: FastifyInstance) {
 
     const { id } = idUserParams.parse(request.params);
 
-    const createDonorBody = z.object({
+    const createUserBody = z.object({
       avatar: z.string().nullable(),
     });
 
-    const { avatar } = createDonorBody.parse(request.body);
+    const { avatar } = createUserBody.parse(request.body);
 
     try {
       await prisma.user.update({
@@ -162,14 +162,14 @@ export async function userRoutes(fastify: FastifyInstance) {
           id,
         },
         data: {
-          user_avatar_url: avatar,
+          avatarUrl: avatar,
         },
       });
 
       return reply.status(200).send();
     } catch {
       return reply.status(400).send({
-        message: "User not found.",
+        message: "Pet not found.",
       });
     }
   });

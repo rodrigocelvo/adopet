@@ -43,17 +43,17 @@ export async function petRoutes(fastify: FastifyInstance) {
     try {
       await prisma.pet.create({
         data: {
-          pet_name: name,
-          pet_weight: weight,
-          pet_birth_date: birthDate,
-          pet_sex: sex,
-          pet_breed: breed,
-          pet_tags: tags,
-          pet_description: description,
-          pet_img_url: imgUrl,
-          pet_adopted: adopted,
-          pet_adopted_by: adoptedBy,
-          pet_category: category,
+          name: name,
+          weight: weight,
+          birthDate,
+          sex: sex,
+          breed: breed,
+          tags: tags,
+          description: description,
+          imgUrl,
+          adopted: adopted,
+          adoptedBy,
+          category: category,
           authorId,
         },
       });
@@ -85,12 +85,12 @@ export async function petRoutes(fastify: FastifyInstance) {
       include: {
         author: {
           select: {
-            user_name: true,
-            user_email: true,
-            user_city_uf: true,
-            user_city: true,
-            user_phone: true,
-            user_avatar_url: true,
+            name: true,
+            email: true,
+            uf: true,
+            city: true,
+            phone: true,
+            avatarUrl: true,
           },
         },
       },
@@ -166,16 +166,16 @@ export async function petRoutes(fastify: FastifyInstance) {
           id,
         },
         data: {
-          pet_name: name,
-          pet_weight: weight,
-          pet_birth_date: birthDate,
-          pet_sex: sex,
-          pet_breed: breed,
-          pet_tags: tags,
-          pet_description: description,
-          pet_img_url: imgUrl,
-          pet_adopted: adopted,
-          pet_category: category,
+          name,
+          weight,
+          birthDate,
+          sex,
+          breed,
+          tags,
+          description,
+          imgUrl,
+          adopted,
+          category,
         },
       });
 
@@ -190,11 +190,91 @@ export async function petRoutes(fastify: FastifyInstance) {
   fastify.get("/pets/lasts", async (request, reply) => {
     const pets = await prisma.pet.findMany({
       orderBy: {
-        created_at: "desc",
+        createdAt: "desc",
       },
       take: 8,
     });
     reply.status(200);
     return pets;
+  });
+
+  fastify.post("/pets/:userId/adopt/:petId", async (request, response) => {
+    const idPetParams = z.object({
+      userId: z.string(),
+      petId: z.string(),
+    });
+
+    const { userId, petId } = idPetParams.parse(request.params);
+
+    const adoptPetBody = z.object({
+      adopted: z.boolean(),
+    });
+
+    try {
+      const petVerify = await prisma.pet.findUnique({
+        where: {
+          id: petId,
+        },
+        select: {
+          adopted: true,
+        },
+      });
+
+      console.log(petVerify);
+
+      if (petVerify?.adopted)
+        return response.status(400).send({
+          message: "Pet already adopted.",
+        });
+
+      const { adopted } = adoptPetBody.parse(request.body);
+
+      await prisma.pet.update({
+        where: {
+          id: petId,
+        },
+        data: {
+          adoptedBy: userId,
+          adopted: adopted,
+        },
+      });
+
+      return response.status(200).send();
+    } catch (error) {
+      return response.status(400).send({
+        message: "Pet not found or invalid request body.",
+      });
+    }
+  });
+
+  fastify.patch("/pets/image/:id", async (request, reply) => {
+    const idPetParams = z.object({
+      id: z.string(),
+    });
+
+    const { id } = idPetParams.parse(request.params);
+
+    const createPetBody = z.object({
+      imgUrl: z.string().nullable(),
+    });
+
+    const { imgUrl } = createPetBody.parse(request.body);
+
+    try {
+      await prisma.pet.update({
+        where: {
+          id,
+        },
+        data: {
+          imgUrl,
+        },
+      });
+
+      return reply.status(200).send();
+    } catch {
+      return reply.status(400).send({
+        message: "Pet not found.",
+      });
+    }
   });
 }
