@@ -3,6 +3,7 @@ import multer from "fastify-multer";
 import fs from "fs";
 import path from "path";
 import { z } from "zod";
+import { prisma } from "../lib/prisma";
 
 const upload = multer({ dest: "uploads/" });
 
@@ -84,4 +85,73 @@ export async function uploadRoutes(fastify: FastifyInstance) {
       reply.code(201).send({ image: newFileName });
     }
   );
+
+  fastify.delete("/pets/image/:id", async (request, reply) => {
+    const idUPetParams = z.object({
+      id: z.string(),
+    });
+
+    const { id } = idUPetParams.parse(request.params);
+
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        imgUrl: true,
+      },
+    });
+
+    const imagePath = `uploads/pets/${pet?.imgUrl}`;
+
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(err);
+        reply.code(500).send({ error: "Error deleting the image" });
+        return;
+      }
+
+      reply.code(200).send();
+    });
+  });
+
+  fastify.delete("/pets/image/notused", async (request, reply) => {
+    try {
+      const imgUrlsFromDatabase = await prisma.pet.findMany({
+        select: {
+          imgUrl: true,
+        },
+      });
+
+      const imgUrlList = imgUrlsFromDatabase.map((pet) => pet.imgUrl);
+
+      fs.readdir("uploads/pets", (err, files) => {
+        if (err) {
+          console.error(err);
+          reply.code(500).send({ error: "Error listing image files" });
+          return;
+        }
+
+        const unusedImageFiles = files.filter((file) => {
+          return !imgUrlList.includes(file);
+        });
+
+        unusedImageFiles.forEach((file) => {
+          const imagePath = `uploads/pets/${file}`;
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              console.error(err);
+            }
+          });
+        });
+
+        reply.code(204).send();
+      });
+    } catch (error) {
+      console.error(error);
+      reply
+        .code(500)
+        .send({ error: "Error fetching image URLs from the database" });
+    }
+  });
 }

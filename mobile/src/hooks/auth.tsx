@@ -11,9 +11,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../services/api';
 
 interface UserProps {
+  avatarUrl?: any;
   id: string;
   name: string;
-  avatar: string;
 }
 interface ResponseUserProps {
   data: UserProps;
@@ -75,7 +75,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
       const userData = {
         id: response.data.id,
         name: response.data.name,
-        avatar: response.data.avatar,
+        avatarUrl: response.data.avatarUrl,
       };
 
       await AsyncStorage.setItem('@Adopet:user', JSON.stringify(userData));
@@ -116,7 +116,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
       const fakeData = {
         id: response.data.id,
         name: response.data.name,
-        avatar: 'image.png',
+        avatarUrl: null,
       };
 
       setUser(fakeData);
@@ -124,7 +124,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
       const userData = {
         id: response.data.id,
         name: response.data.name,
-        avatar: response.data.avatar,
+        avatarUrl: response.data.avatarUrl,
       };
 
       await AsyncStorage.setItem('@Adopet:user', JSON.stringify(userData));

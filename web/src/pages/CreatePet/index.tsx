@@ -56,9 +56,7 @@ interface PetDataProps {
   adopted: boolean;
   adoptedBy: string;
 
-  author: {
-    id: string;
-  };
+  authorId: string;
 }
 
 const createNewPetSchema = yup.object({
@@ -115,7 +113,7 @@ export function CreatePet() {
         return setSelectImageError('Selecione uma imagem.');
       }
 
-      const response = await api.post('/pets', {
+      await api.post('/pets', {
         name,
         birthDate,
         weight,
@@ -125,33 +123,22 @@ export function CreatePet() {
         adoptedBy: null,
         sex: petSex,
         category: petCategory,
-        imgUrl: `http://192.168.0.9:3333/images/pets/${petImageId}.png`,
         description,
-        author: {
-          id: user.id,
-        },
+        authorId: user.id,
+        imgUrl: photo,
       });
 
-      const { id } = response.data;
-
-      await api
-        .patch(`/pets/image/${petImageId}/${id}`, {
-          imgUrl: `http://192.168.0.9:3333/images/pets/${id}.png`,
-        })
-        .then(() => {
-          setLoading(true);
-          setPetImageId(id);
-          toast.success('Pet criado.', {
-            duration: 4000,
-          });
-          setTimeout(() => {
-            navigate('/dashboard');
-          }, 1000);
-        });
+      toast.success('Pet criado.', {
+        duration: 4000,
+      });
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1000);
     } catch (err) {
       toast.error('Não foi possivel criar o anúncio do pet.');
       console.log(err);
       navigate('/dashboard');
+    } finally {
       setLoading(false);
     }
   }
@@ -177,7 +164,6 @@ export function CreatePet() {
         adoptedBy: petAdoptedBy,
         sex: petSex,
         category: petCategory,
-        imgUrl: `http://192.168.0.9:3333/images/pets/${params.id}.png`,
         description,
       });
 
@@ -222,10 +208,10 @@ export function CreatePet() {
       setValue('tags', petResponse.tags);
       setValue('description', petResponse.description);
 
-      setPhoto(petResponse.imgUrl);
+      setPhoto(`http://localhost:3333/public/images/pets/${petResponse.imgUrl}`);
       setPetAdopted(petResponse.adopted);
       setPetAdoptedBy(petResponse.adoptedBy);
-      setPetAuthor(petResponse.author.id);
+      setPetAuthor(petResponse.authorId);
 
       setPetSex(petResponse.sex);
       setPetCategory(petResponse.category);
@@ -262,12 +248,11 @@ export function CreatePet() {
     }
   }
 
-  function handleImage(event: React.ChangeEvent<HTMLInputElement>) {
+  async function handleImage(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
       const data = new FormData();
 
       data.append('photo', event.target.files[0]);
-      data.append('id', petImageId);
 
       const previewImg = URL.createObjectURL(event.target.files[0]);
 
@@ -275,11 +260,23 @@ export function CreatePet() {
         setSelectImageError('');
       }
 
-      const result = api
+      setPreview(previewImg);
+
+      await api
         .post('/uploads/pet', data)
         .then(response => {
-          setPreview(previewImg);
-          setPhoto(response.data.image_url);
+          if (!params.id) {
+            setPhoto(response.data.image);
+          } else {
+            try {
+              api.delete(`/pets/image/${params.id}`);
+            } catch {}
+
+            setPhoto(response.data.image);
+            api.patch(`/pets/image/${params.id}`, {
+              imgUrl: response.data.image,
+            });
+          }
         })
         .catch(err => {
           console.log(err);
@@ -287,12 +284,6 @@ export function CreatePet() {
           setSelectImageError('Não foi possível enviar a imagem, tente outra.');
           throw err;
         });
-
-      toast.promise(result, {
-        loading: 'Salvando...',
-        success: 'Imagem salva.',
-        error: 'Não foi possível fazer o upload.',
-      });
     }
   }
 

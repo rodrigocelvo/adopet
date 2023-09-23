@@ -46,7 +46,7 @@ Em seguida, inicie o projeto.
 Back-end:
 
 ```
- Em seu application.properties configure o usuário e senha do seu banco de dados.
+ No arquivo .env configure o usuário e senha do seu banco de dados.
 ```
 
 ## 🤔 Como contribuir

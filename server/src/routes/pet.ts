@@ -9,7 +9,7 @@ export async function petRoutes(fastify: FastifyInstance) {
     return { count };
   });
 
-  fastify.post("/pets/new", async (request, response) => {
+  fastify.post("/pets", async (request, response) => {
     const createPetBody = z.object({
       name: z.string(),
       weight: z.string(),
@@ -18,7 +18,7 @@ export async function petRoutes(fastify: FastifyInstance) {
       breed: z.string(),
       tags: z.string(),
       description: z.string(),
-      imgUrl: z.string(),
+      imgUrl: z.string().nullable(),
       category: z.string(),
       adopted: z.boolean(),
       adoptedBy: z.string().nullable(),
@@ -58,7 +58,16 @@ export async function petRoutes(fastify: FastifyInstance) {
         },
       });
 
-      return response.status(201).send();
+      const lastPet = await prisma.pet.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+      });
+
+      return response.status(201).send({
+        id: lastPet[0].id,
+      });
     } catch {
       return response.status(400).send({
         message: "Not possible to create pet",
@@ -67,7 +76,20 @@ export async function petRoutes(fastify: FastifyInstance) {
   });
 
   fastify.get("/pets", async () => {
-    const pets = await prisma.pet.findMany();
+    const pets = await prisma.pet.findMany({
+      include: {
+        author: {
+          select: {
+            name: true,
+            email: true,
+            uf: true,
+            city: true,
+            phone: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
     return pets;
   });
 
@@ -142,7 +164,6 @@ export async function petRoutes(fastify: FastifyInstance) {
       breed: z.string(),
       tags: z.string(),
       description: z.string(),
-      imgUrl: z.string(),
       category: z.string(),
       adopted: z.boolean(),
     });
@@ -155,7 +176,6 @@ export async function petRoutes(fastify: FastifyInstance) {
       breed,
       tags,
       description,
-      imgUrl,
       category,
       adopted,
     } = createPetBody.parse(request.body);
@@ -173,7 +193,6 @@ export async function petRoutes(fastify: FastifyInstance) {
           breed,
           tags,
           description,
-          imgUrl,
           adopted,
           category,
         },
@@ -193,6 +212,18 @@ export async function petRoutes(fastify: FastifyInstance) {
         createdAt: "desc",
       },
       take: 8,
+      include: {
+        author: {
+          select: {
+            name: true,
+            email: true,
+            uf: true,
+            city: true,
+            phone: true,
+            avatarUrl: true,
+          },
+        },
+      },
     });
     reply.status(200);
     return pets;

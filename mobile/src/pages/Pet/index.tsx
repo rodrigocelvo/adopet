@@ -282,7 +282,10 @@ export function Pet() {
 
   return (
     <Container>
-      <PetImage source={{ uri: `${pet.imgUrl}` }}>
+      <PetImage
+        source={{
+          uri: `http://localhost:3333/public/images/pets/${pet.imgUrl}`,
+        }}>
         <Header
           title="Adoção"
           showBackButton

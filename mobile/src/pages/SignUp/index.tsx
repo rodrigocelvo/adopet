@@ -74,7 +74,7 @@ export function SignUp() {
     uf,
   }: signUpFormDataProps) {
     try {
-      const response = await api.post('/users/', {
+      const response = await api.post('/users', {
         name,
         email,
         phone,

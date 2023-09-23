@@ -32,7 +32,7 @@ interface profileUpdateDataProps {
   phone: number;
   city: string;
   uf: string;
-  avatar?: string;
+  avatarUrl: string;
 }
 
 const updateUserSchema = yup.object({
@@ -83,7 +83,6 @@ export function Profile() {
         phone,
         city: city.toUpperCase(),
         uf: uf.toUpperCase(),
-        avatar,
       });
 
       updateUser(user.id);
@@ -109,7 +108,7 @@ export function Profile() {
       setLoading(true);
       const response = await api.get(`/users/${user.id}`);
 
-      const userResponse: profileUpdateDataProps = response.data;
+      const userResponse: profileUpdateDataProps = await response.data;
 
       setValue('name', userResponse.name);
       setValue('email', userResponse.email);
@@ -119,8 +118,10 @@ export function Profile() {
 
       setName(userResponse.name);
 
-      if (!!userResponse.avatar) {
-        setAvatar(userResponse.avatar);
+      if (userResponse.avatarUrl !== null) {
+        setAvatar(
+          `http://localhost:3333/public/images/users/${userResponse.avatarUrl}`,
+        );
       }
 
       setLoading(false);
@@ -142,18 +143,20 @@ export function Profile() {
         setAvatar(result.uri);
         const newUpload = new FormData();
 
-        newUpload.append('avatar', {
+        const fileExtension = result.uri.split('.').pop();
+
+        newUpload.append('image', {
           // @ts-ignore
-          name: 'avatar',
+          name: `.${fileExtension}`, // Define o nome do arquivo com a extensão original
           uri: result.uri,
         });
 
-        const response = await api.post(`/uploads/user/${user.id}`, newUpload);
+        const response = await api.post(`/uploads/users/${user.id}`, newUpload);
 
-        const { image_url } = response.data;
+        const { image } = response.data;
 
         await api.patch(`/users/image/${user.id}`, {
-          avatar: image_url,
+          avatar: image,
         });
 
         Alert.alert('Perfil', 'Imagem atualizada com sucesso!');
@@ -182,7 +185,7 @@ export function Profile() {
           <Container>
             <Header title="Editar Perfil" showBackButton />
             <AvatarContainer onPress={handleImage}>
-              <Photo name={user.name} avatar={user.avatar} size={200} />
+              <Photo name={user.name} avatar={avatar} size={200} />
             </AvatarContainer>
             <UserName>{name}</UserName>
 

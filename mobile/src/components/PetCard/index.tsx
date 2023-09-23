@@ -39,7 +39,12 @@ export function PetCard({ data, sm = false, ...rest }: Props) {
   return (
     <Container {...rest}>
       <Content sm={sm}>
-        <PetImage sm={sm} source={{ uri: `${data.imgUrl}` }} />
+        <PetImage
+          sm={sm}
+          source={{
+            uri: `http://localhost:3333/public/images/pets/${data.imgUrl}`,
+          }}
+        />
         <Details>
           <Title>{data.name}</Title>
           <Information>

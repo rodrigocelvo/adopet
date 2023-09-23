@@ -35,6 +35,7 @@ async function bootstrap() {
   await fastify.register(petRoutes);
   await fastify.register(uploadRoutes);
 
+  fastify.log.level = "error";
   await fastify.listen({ port: 3333 });
 }
 

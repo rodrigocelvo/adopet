@@ -43,7 +43,7 @@ export function AnimalCard({ imgUrl, name, genre, loggedIn, author, id }: Props)
     <>
       {!loggedIn ? (
         <Container>
-          <Photo src={imgUrl} />
+          <Photo src={`http://localhost:3333/public/images/pets/${imgUrl}`} />
           <Content>
             <Name>{name}</Name>
             <Info>
@@ -56,7 +56,7 @@ export function AnimalCard({ imgUrl, name, genre, loggedIn, author, id }: Props)
         </Container>
       ) : (
         <Container>
-          <Photo src={imgUrl} />
+          <Photo src={`http://localhost:3333/public/images/pets/${imgUrl}`} />
           <LoggedContent>
             <Name>{name}</Name>
 

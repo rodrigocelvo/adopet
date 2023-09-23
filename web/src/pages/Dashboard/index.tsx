@@ -19,9 +19,9 @@ interface PetProps {
   imgUrl: string;
   name: string;
   genre?: string;
+  authorId: string;
 
   author: {
-    id: string;
     city?: string;
     uf?: string;
   };
@@ -39,7 +39,7 @@ export function Dashboard() {
       const response = await api.get('/pets');
       const responsePetData = response.data;
 
-      const myPets = responsePetData.filter((pet: PetProps) => pet.author.id === user.id);
+      const myPets = responsePetData.filter((pet: PetProps) => pet.authorId === user.id);
       setPets(myPets);
     } catch (err) {
       console.log(err);

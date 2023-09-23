@@ -20,6 +20,7 @@ interface Props {
 async function handleDelete(petId: string) {
   try {
     await api.delete(`/pets/${petId}`);
+    await api.delete(`/pets/image/${petId}`);
     toast.success('Pet deletado com sucesso.');
   } catch (err) {
     console.log(err);

@@ -34,10 +34,11 @@ import {
 } from './styles';
 
 import bannerImg from '../../assets/banner.png';
+import { GetStringOptions } from 'expo-clipboard';
 
 export function Home() {
   const [pets, setPets] = useState<PetCardProps[]>([]);
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState<null | string>(null);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(true);
 
@@ -71,11 +72,17 @@ export function Home() {
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setAvatar(user.avatar);
-    }, 10);
+    setTimeout(
+      () =>
+        setAvatar(
+          !user.avatarUrl
+            ? null
+            : `http://localhost:3333/public/images/users/${user.avatarUrl}`,
+        ),
+      10,
+    );
     setLoading(false);
-  }, [user.avatar]);
+  }, [user.avatarUrl]);
 
   if (loading) {
     return <Loading />;

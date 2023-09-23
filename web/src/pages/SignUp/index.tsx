@@ -69,7 +69,7 @@ export function SignUp() {
 
   async function handleCreateAccount({ name, email, phone, city, uf }: signUpFormDataProps) {
     try {
-      const response = await api.post('/users/', {
+      const response = await api.post('/users', {
         name,
         email,
         phone,
