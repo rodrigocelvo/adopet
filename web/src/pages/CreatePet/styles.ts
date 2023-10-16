@@ -81,11 +81,18 @@ export const Form = styled.form`
 
 export const FormGroup = styled.div`
   display: flex;
+  align-items: top;
   flex-direction: row;
   justify-content: space-between;
   max-width: 300px;
 
   margin: 8px 0;
+
+  div:first-child {
+    div {
+      max-width: 160px;
+    }
+  }
 `;
 
 export const AvatarInput = styled.div`

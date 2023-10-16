@@ -61,7 +61,26 @@ interface PetDataProps {
 
 const createNewPetSchema = yup.object({
   name: yup.string().max(30, 'Nome muito grande').required('Infome o nome do pet.'),
-  birthDate: yup.date().required('Infome a data.'),
+  birthDate: yup
+    .date()
+    .required('Informe a data.')
+    .test('is-valid-age', 'A idade do pet deve estar entre 1 dia e 10 anos.', value => {
+      if (!value) {
+        return false;
+      }
+
+      const petBirthDate = typeof value === 'string' ? new Date(value) : value;
+
+      if (isNaN(petBirthDate.getTime())) {
+        return false;
+      }
+
+      const currentDate = new Date();
+      const ageInMilliseconds = currentDate.getTime() - petBirthDate.getTime();
+      const ageInDays = ageInMilliseconds / (1000 * 60 * 60 * 24);
+
+      return ageInDays >= 1 && ageInDays <= 3652;
+    }),
   weight: yup
     .string()
     .max(2, 'Apenas dois caracteres')
@@ -341,12 +360,16 @@ export function CreatePet() {
                 label="Data de nascimento"
                 control={control}
                 name="birthDate"
-                placeholder="Date de nascimento"
                 type="date"
                 icon={RiCalendar2Fill}
-                error={errors.birthDate?.message}
+                error={
+                  errors.birthDate?.message ==
+                  'birthDate must be a `date` type, but the final value was: `Invalid Date` (cast from the value `""`).'
+                    ? 'Data inválida'
+                    : errors.birthDate?.message
+                }
                 isErrored={!!errors.birthDate?.message}
-                style={{ width: '70px' }}
+                style={{ width: '100px' }}
               />
 
               <InputControlled
@@ -359,7 +382,7 @@ export function CreatePet() {
                 maxLength={2}
                 error={errors.weight?.message}
                 isErrored={!!errors.weight?.message}
-                style={{ width: '30px', marginTop: '0px' }}
+                style={{ width: '20px' }}
               />
             </FormGroup>
 
@@ -447,6 +470,7 @@ export function CreatePet() {
               icon={RiEdit2Fill}
               error={errors.description?.message}
               isErrored={!!errors.description?.message}
+              maxLength={3000}
             />
             <Button type="submit" disabled={loading} loading={!!loading}>
               {!params.id ? 'Cadastrar' : 'Editar'} pet

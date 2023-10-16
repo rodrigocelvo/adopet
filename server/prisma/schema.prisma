@@ -42,7 +42,7 @@ model Pet {
   sex         String
   breed       String
   tags        String
-  description String
+  description String  @db.VarChar(3000)
   imgUrl      String?
   category    String
   adopted     Boolean

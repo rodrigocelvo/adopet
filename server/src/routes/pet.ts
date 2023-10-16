@@ -40,6 +40,26 @@ export async function petRoutes(fastify: FastifyInstance) {
       authorId,
     } = createPetBody.parse(request.body);
 
+    const currentDate = new Date();
+    const petBirthDate = new Date(birthDate);
+
+    const ageInDays = Math.floor(
+      (currentDate.getTime() - petBirthDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (ageInDays < 1) {
+      return response.status(400).send({
+        message: "The pet must be at least 1 day old.",
+      });
+    }
+
+    const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
+    if (ageInYears > 10) {
+      return response.status(400).send({
+        message: "The pet must be no more than 10 years old.",
+      });
+    }
+
     try {
       await prisma.pet.create({
         data: {
@@ -179,6 +199,26 @@ export async function petRoutes(fastify: FastifyInstance) {
       category,
       adopted,
     } = createPetBody.parse(request.body);
+
+    const currentDate = new Date();
+    const petBirthDate = new Date(birthDate);
+
+    const ageInDays = Math.floor(
+      (currentDate.getTime() - petBirthDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (ageInDays < 1) {
+      return response.status(400).send({
+        message: "The pet must be at least 1 day old.",
+      });
+    }
+
+    const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
+    if (ageInYears > 10) {
+      return response.status(400).send({
+        message: "The pet must be no more than 10 years old.",
+      });
+    }
 
     try {
       await prisma.pet.update({
