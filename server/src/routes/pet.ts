@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
+import { format, parse } from "date-fns";
 
 export async function petRoutes(fastify: FastifyInstance) {
   fastify.get("/pets/count", async () => {
@@ -41,7 +42,13 @@ export async function petRoutes(fastify: FastifyInstance) {
     } = createPetBody.parse(request.body);
 
     const currentDate = new Date();
-    const petBirthDate = new Date(birthDate);
+    const petBirthDate = parse(birthDate, "dd/MM/yyyy", new Date());
+
+    if (isNaN(petBirthDate.getTime())) {
+      return response.status(400).send({
+        message: "Date format is not valid.",
+      });
+    }
 
     const ageInDays = Math.floor(
       (currentDate.getTime() - petBirthDate.getTime()) / (1000 * 60 * 60 * 24)
@@ -65,7 +72,7 @@ export async function petRoutes(fastify: FastifyInstance) {
         data: {
           name: name,
           weight: weight,
-          birthDate,
+          birthDate: format(petBirthDate, "yyyy-MM-dd"),
           sex: sex,
           breed: breed,
           tags: tags,

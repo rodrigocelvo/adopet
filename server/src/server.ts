@@ -37,6 +37,8 @@ async function bootstrap() {
 
   fastify.log.level = "error";
   await fastify.listen({ port: 3333 });
+
+  console.log("Server run on port 3333");
 }
 
 bootstrap();
