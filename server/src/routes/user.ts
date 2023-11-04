@@ -3,6 +3,7 @@ import { prisma } from "../lib/prisma";
 import { z } from "zod";
 
 import { generateUniqueId } from "../../utils/generateUniqueId";
+import bcrypt from "bcrypt";
 
 export async function userRoutes(fastify: FastifyInstance) {
   fastify.get("/users/count", async () => {
@@ -15,20 +16,24 @@ export async function userRoutes(fastify: FastifyInstance) {
     const createUserBody = z.object({
       name: z.string(),
       email: z.string(),
+      password: z.string(),
       phone: z.string(),
       city: z.string(),
       uf: z.string(),
     });
 
-    const { name, email, phone, city, uf } = createUserBody.parse(request.body);
+    const { name, email, password, phone, city, uf } = createUserBody.parse(
+      request.body
+    );
 
     try {
-      const uniqueId = generateUniqueId();
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       const userCreated = await prisma.user.create({
         data: {
-          id: uniqueId,
           name,
           email,
+          password: hashedPassword,
           phone,
           city,
           uf,

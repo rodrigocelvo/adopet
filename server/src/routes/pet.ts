@@ -10,7 +10,7 @@ export async function petRoutes(fastify: FastifyInstance) {
     return { count };
   });
 
-  fastify.post("/pets", async (request, response) => {
+  fastify.post("/pets", async (request, reply) => {
     const createPetBody = z.object({
       name: z.string(),
       weight: z.string(),
@@ -45,7 +45,7 @@ export async function petRoutes(fastify: FastifyInstance) {
     const petBirthDate = parse(birthDate, "dd/MM/yyyy", new Date());
 
     if (isNaN(petBirthDate.getTime())) {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "Date format is not valid.",
       });
     }
@@ -55,14 +55,14 @@ export async function petRoutes(fastify: FastifyInstance) {
     );
 
     if (ageInDays < 1) {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "The pet must be at least 1 day old.",
       });
     }
 
     const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
     if (ageInYears > 10) {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "The pet must be no more than 10 years old.",
       });
     }
@@ -92,11 +92,11 @@ export async function petRoutes(fastify: FastifyInstance) {
         take: 1,
       });
 
-      return response.status(201).send({
+      return reply.status(201).send({
         id: lastPet[0].id,
       });
     } catch {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "Not possible to create pet",
       });
     }
@@ -120,7 +120,7 @@ export async function petRoutes(fastify: FastifyInstance) {
     return pets;
   });
 
-  fastify.get("/pets/:id", async (request, response) => {
+  fastify.get("/pets/:id", async (request, reply) => {
     const idPetParams = z.object({
       id: z.string(),
     });
@@ -146,7 +146,7 @@ export async function petRoutes(fastify: FastifyInstance) {
     });
 
     if (!pet) {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "Pet not found",
       });
     }
@@ -154,7 +154,7 @@ export async function petRoutes(fastify: FastifyInstance) {
     return pet;
   });
 
-  fastify.delete("/pets/:id", async (request, response) => {
+  fastify.delete("/pets/:id", async (request, reply) => {
     const idPetParams = z.object({
       id: z.string(),
     });
@@ -168,15 +168,15 @@ export async function petRoutes(fastify: FastifyInstance) {
         },
       });
 
-      return response.status(204).send();
+      return reply.status(204).send();
     } catch {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "Pet not found.",
       });
     }
   });
 
-  fastify.put("/pets/:id", async (request, response) => {
+  fastify.put("/pets/:id", async (request, reply) => {
     const idPetParams = z.object({
       id: z.string(),
     });
@@ -215,14 +215,14 @@ export async function petRoutes(fastify: FastifyInstance) {
     );
 
     if (ageInDays < 1) {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "The pet must be at least 1 day old.",
       });
     }
 
     const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
     if (ageInYears > 10) {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "The pet must be no more than 10 years old.",
       });
     }
@@ -245,9 +245,9 @@ export async function petRoutes(fastify: FastifyInstance) {
         },
       });
 
-      return response.status(200).send();
+      return reply.status(200).send();
     } catch {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "Pet not found.",
       });
     }
@@ -276,7 +276,7 @@ export async function petRoutes(fastify: FastifyInstance) {
     return pets;
   });
 
-  fastify.post("/pets/:userId/adopt/:petId", async (request, response) => {
+  fastify.post("/pets/:userId/adopt/:petId", async (request, reply) => {
     const idPetParams = z.object({
       userId: z.string(),
       petId: z.string(),
@@ -301,7 +301,7 @@ export async function petRoutes(fastify: FastifyInstance) {
       console.log(petVerify);
 
       if (petVerify?.adopted)
-        return response.status(400).send({
+        return reply.status(400).send({
           message: "Pet already adopted.",
         });
 
@@ -317,9 +317,9 @@ export async function petRoutes(fastify: FastifyInstance) {
         },
       });
 
-      return response.status(200).send();
+      return reply.status(200).send();
     } catch (error) {
-      return response.status(400).send({
+      return reply.status(400).send({
         message: "Pet not found or invalid request body.",
       });
     }

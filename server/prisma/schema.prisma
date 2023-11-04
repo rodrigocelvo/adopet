@@ -21,13 +21,14 @@ datasource db {
 }
 
 model User {
-  id        String  @id
+  id        String  @id @default(cuid())
   name      String
   email     String  @unique
   phone     String
   city      String
   uf        String
   avatarUrl String?
+  password  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

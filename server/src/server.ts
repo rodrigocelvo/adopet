@@ -3,6 +3,8 @@ import fastifyStatic from "@fastify/static";
 import formBody from "@fastify/formbody";
 import cors from "@fastify/cors";
 import multer from "fastify-multer";
+import { z } from "zod";
+import fastifyBcrypt from "fastify-bcrypt";
 
 import path from "path";
 
@@ -28,6 +30,10 @@ async function bootstrap() {
   fastify.register(fastifyStatic, {
     root: path.join(__dirname, "uploads"),
     prefix: "/public/images/",
+  });
+
+  await fastify.register(fastifyBcrypt, {
+    saltWorkFactor: 10,
   });
 
   await fastify.register(sessionRoutes);
