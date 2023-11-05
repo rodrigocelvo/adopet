@@ -5,6 +5,7 @@ import cors from "@fastify/cors";
 import multer from "fastify-multer";
 import { z } from "zod";
 import fastifyBcrypt from "fastify-bcrypt";
+import jwt from "@fastify/jwt";
 
 import path from "path";
 
@@ -38,6 +39,11 @@ async function bootstrap() {
 
   await fastify.register(sessionRoutes);
   await fastify.register(userRoutes);
+
+  await fastify.register(jwt, {
+    secret: `${process.env.TOKEN}`,
+  });
+
   await fastify.register(petRoutes);
   await fastify.register(uploadRoutes);
 

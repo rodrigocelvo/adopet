@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
+import { authenticate } from "../plugins/authenticate";
 
 const upload = multer({ dest: "uploads/" });
 
@@ -24,7 +25,8 @@ export async function uploadRoutes(fastify: FastifyInstance) {
 
   fastify.post(
     "/uploads/pet",
-    { preHandler: upload.single("photo") },
+    { preHandler: upload.single("photo"), onRequest: [authenticate] },
+
     async (request: any, reply) => {
       const file = request.file;
 
@@ -53,7 +55,7 @@ export async function uploadRoutes(fastify: FastifyInstance) {
 
   fastify.post(
     "/uploads/users/:id",
-    { preHandler: upload.single("image") },
+    { preHandler: upload.single("image"), onRequest: [authenticate] },
     async (request: any, reply) => {
       const file = request.file;
 
@@ -86,34 +88,38 @@ export async function uploadRoutes(fastify: FastifyInstance) {
     }
   );
 
-  fastify.delete("/pets/image/:id", async (request, reply) => {
-    const idUPetParams = z.object({
-      id: z.string(),
-    });
+  fastify.delete(
+    "/pets/image/:id",
+    { onRequest: [authenticate] },
+    async (request, reply) => {
+      const idUPetParams = z.object({
+        id: z.string(),
+      });
 
-    const { id } = idUPetParams.parse(request.params);
+      const { id } = idUPetParams.parse(request.params);
 
-    const pet = await prisma.pet.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        imgUrl: true,
-      },
-    });
+      const pet = await prisma.pet.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          imgUrl: true,
+        },
+      });
 
-    const imagePath = `uploads/pets/${pet?.imgUrl}`;
+      const imagePath = `uploads/pets/${pet?.imgUrl}`;
 
-    fs.unlink(imagePath, (err) => {
-      if (err) {
-        console.error(err);
-        reply.code(500).send({ error: "Error deleting the image" });
-        return;
-      }
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(err);
+          reply.code(500).send({ error: "Error deleting the image" });
+          return;
+        }
 
-      reply.code(200).send();
-    });
-  });
+        reply.code(200).send();
+      });
+    }
+  );
 
   fastify.delete("/pets/image/notused", async (request, reply) => {
     try {

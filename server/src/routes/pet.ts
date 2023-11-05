@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { format, parse } from "date-fns";
+import { authenticate } from "../plugins/authenticate";
 
 export async function petRoutes(fastify: FastifyInstance) {
   fastify.get("/pets/count", async () => {
@@ -10,109 +11,107 @@ export async function petRoutes(fastify: FastifyInstance) {
     return { count };
   });
 
-  fastify.post("/pets", async (request, reply) => {
-    const createPetBody = z.object({
-      name: z.string(),
-      weight: z.string(),
-      birthDate: z.string(),
-      sex: z.string(),
-      breed: z.string(),
-      tags: z.string(),
-      description: z.string(),
-      imgUrl: z.string().nullable(),
-      category: z.string(),
-      adopted: z.boolean(),
-      adoptedBy: z.string().nullable(),
-      authorId: z.string(),
-    });
-
-    const {
-      name,
-      weight,
-      birthDate,
-      sex,
-      breed,
-      tags,
-      description,
-      imgUrl,
-      category,
-      adopted,
-      adoptedBy,
-      authorId,
-    } = createPetBody.parse(request.body);
-
-    const currentDate = new Date();
-    const petBirthDate = parse(birthDate, "dd/MM/yyyy", new Date());
-
-    if (isNaN(petBirthDate.getTime())) {
-      return reply.status(400).send({
-        message: "Date format is not valid.",
+  fastify.post(
+    "/pets",
+    { onRequest: [authenticate] },
+    async (request, reply) => {
+      const createPetBody = z.object({
+        name: z.string(),
+        weight: z.string(),
+        birthDate: z.string(),
+        sex: z.string(),
+        breed: z.string(),
+        tags: z.string(),
+        description: z.string(),
+        imgUrl: z.string().nullable(),
+        category: z.string(),
+        adopted: z.boolean(),
+        adoptedBy: z.string().nullable(),
       });
+
+      const {
+        name,
+        weight,
+        birthDate,
+        sex,
+        breed,
+        tags,
+        description,
+        imgUrl,
+        category,
+        adopted,
+        adoptedBy,
+      } = createPetBody.parse(request.body);
+
+      const currentDate = new Date();
+      const petBirthDate = parse(birthDate, "dd/MM/yyyy", new Date());
+
+      if (isNaN(petBirthDate.getTime())) {
+        return reply.status(400).send({
+          message: "Date format is not valid.",
+        });
+      }
+
+      const ageInDays = Math.floor(
+        (currentDate.getTime() - petBirthDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      if (ageInDays < 1) {
+        return reply.status(400).send({
+          message: "The pet must be at least 1 day old.",
+        });
+      }
+
+      const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
+      if (ageInYears > 10) {
+        return reply.status(400).send({
+          message: "The pet must be no more than 10 years old.",
+        });
+      }
+
+      try {
+        await prisma.pet.create({
+          data: {
+            name: name,
+            weight: weight,
+            birthDate: format(petBirthDate, "yyyy-MM-dd"),
+            sex: sex,
+            breed: breed,
+            tags: tags,
+            description: description,
+            imgUrl,
+            adopted: adopted,
+            adoptedBy,
+            category: category,
+            authorId: request.user.sub,
+          },
+        });
+
+        const lastPet = await prisma.pet.findMany({
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 1,
+        });
+
+        return reply.status(201).send({
+          id: lastPet[0].id,
+        });
+      } catch {
+        return reply.status(400).send({
+          message: "Not possible to create pet",
+        });
+      }
     }
-
-    const ageInDays = Math.floor(
-      (currentDate.getTime() - petBirthDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    if (ageInDays < 1) {
-      return reply.status(400).send({
-        message: "The pet must be at least 1 day old.",
-      });
-    }
-
-    const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
-    if (ageInYears > 10) {
-      return reply.status(400).send({
-        message: "The pet must be no more than 10 years old.",
-      });
-    }
-
-    try {
-      await prisma.pet.create({
-        data: {
-          name: name,
-          weight: weight,
-          birthDate: format(petBirthDate, "yyyy-MM-dd"),
-          sex: sex,
-          breed: breed,
-          tags: tags,
-          description: description,
-          imgUrl,
-          adopted: adopted,
-          adoptedBy,
-          category: category,
-          authorId,
-        },
-      });
-
-      const lastPet = await prisma.pet.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 1,
-      });
-
-      return reply.status(201).send({
-        id: lastPet[0].id,
-      });
-    } catch {
-      return reply.status(400).send({
-        message: "Not possible to create pet",
-      });
-    }
-  });
+  );
 
   fastify.get("/pets", async () => {
     const pets = await prisma.pet.findMany({
       include: {
         author: {
           select: {
-            name: true,
-            email: true,
             uf: true,
             city: true,
-            phone: true,
-            avatarUrl: true,
           },
         },
       },
@@ -120,138 +119,186 @@ export async function petRoutes(fastify: FastifyInstance) {
     return pets;
   });
 
-  fastify.get("/pets/:id", async (request, reply) => {
+  fastify.get("/pets/author/:userId", async (request, reply) => {
     const idPetParams = z.object({
-      id: z.string(),
+      userId: z.string(),
     });
 
-    const { id } = idPetParams.parse(request.params);
+    const { userId } = idPetParams.parse(request.params);
 
-    const pet = await prisma.pet.findUnique({
+    const pets = await prisma.pet.findMany({
       where: {
-        id,
+        authorId: userId,
       },
       include: {
         author: {
           select: {
-            name: true,
-            email: true,
             uf: true,
             city: true,
-            phone: true,
-            avatarUrl: true,
           },
         },
       },
     });
-
-    if (!pet) {
-      return reply.status(400).send({
-        message: "Pet not found",
-      });
-    }
-
-    return pet;
+    return pets;
   });
 
-  fastify.delete("/pets/:id", async (request, reply) => {
-    const idPetParams = z.object({
-      id: z.string(),
-    });
+  fastify.get(
+    "/pets/:id",
+    { onRequest: [authenticate] },
+    async (request, reply) => {
+      const idPetParams = z.object({
+        id: z.string(),
+      });
 
-    const { id } = idPetParams.parse(request.params);
+      const { id } = idPetParams.parse(request.params);
 
-    try {
-      await prisma.pet.delete({
+      const pet = await prisma.pet.findUnique({
         where: {
           id,
         },
-      });
-
-      return reply.status(204).send();
-    } catch {
-      return reply.status(400).send({
-        message: "Pet not found.",
-      });
-    }
-  });
-
-  fastify.put("/pets/:id", async (request, reply) => {
-    const idPetParams = z.object({
-      id: z.string(),
-    });
-
-    const { id } = idPetParams.parse(request.params);
-
-    const createPetBody = z.object({
-      name: z.string(),
-      weight: z.string(),
-      birthDate: z.string(),
-      sex: z.string(),
-      breed: z.string(),
-      tags: z.string(),
-      description: z.string(),
-      category: z.string(),
-      adopted: z.boolean(),
-    });
-
-    const {
-      name,
-      weight,
-      birthDate,
-      sex,
-      breed,
-      tags,
-      description,
-      category,
-      adopted,
-    } = createPetBody.parse(request.body);
-
-    const currentDate = new Date();
-    const petBirthDate = new Date(birthDate);
-
-    const ageInDays = Math.floor(
-      (currentDate.getTime() - petBirthDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    if (ageInDays < 1) {
-      return reply.status(400).send({
-        message: "The pet must be at least 1 day old.",
-      });
-    }
-
-    const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
-    if (ageInYears > 10) {
-      return reply.status(400).send({
-        message: "The pet must be no more than 10 years old.",
-      });
-    }
-
-    try {
-      await prisma.pet.update({
-        where: {
-          id,
-        },
-        data: {
-          name,
-          weight,
-          birthDate,
-          sex,
-          breed,
-          tags,
-          description,
-          adopted,
-          category,
+        include: {
+          author: {
+            select: {
+              name: true,
+              email: true,
+              uf: true,
+              city: true,
+              phone: true,
+              avatarUrl: true,
+            },
+          },
         },
       });
 
-      return reply.status(200).send();
-    } catch {
-      return reply.status(400).send({
-        message: "Pet not found.",
-      });
+      if (!pet) {
+        return reply.status(400).send({
+          message: "Pet not found",
+        });
+      }
+
+      return pet;
     }
-  });
+  );
+
+  fastify.delete(
+    "/pets/:id",
+    { onRequest: [authenticate] },
+    async (request, reply) => {
+      const idPetParams = z.object({
+        id: z.string(),
+      });
+
+      const { id } = idPetParams.parse(request.params);
+      const userLogged = request.user.sub;
+
+      try {
+        await prisma.pet.delete({
+          where: {
+            id,
+          },
+        });
+
+        return reply.status(204).send();
+      } catch {
+        return reply.status(400).send({
+          message: "Pet not found.",
+        });
+      }
+    }
+  );
+
+  fastify.put(
+    "/pets/:id",
+    {
+      onRequest: [authenticate],
+    },
+    async (request, reply) => {
+      const idPetParams = z.object({
+        id: z.string(),
+      });
+
+      const { id } = idPetParams.parse(request.params);
+
+      const createPetBody = z.object({
+        name: z.string(),
+        weight: z.string(),
+        birthDate: z.string(),
+        sex: z.string(),
+        breed: z.string(),
+        tags: z.string(),
+        description: z.string(),
+        category: z.string(),
+        adopted: z.boolean(),
+        authorId: z.string(),
+      });
+
+      const {
+        name,
+        weight,
+        birthDate,
+        sex,
+        breed,
+        tags,
+        description,
+        category,
+        adopted,
+        authorId,
+      } = createPetBody.parse(request.body);
+
+      const userLogged = request.user.sub;
+
+      if (!userLogged || userLogged !== authorId) {
+        return reply.status(400).send({
+          message: "Cannot edit this pet.",
+        });
+      }
+
+      const currentDate = new Date();
+      const petBirthDate = new Date(birthDate);
+
+      const ageInDays = Math.floor(
+        (currentDate.getTime() - petBirthDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      if (ageInDays < 1) {
+        return reply.status(400).send({
+          message: "The pet must be at least 1 day old.",
+        });
+      }
+
+      const ageInYears = currentDate.getFullYear() - petBirthDate.getFullYear();
+      if (ageInYears > 10) {
+        return reply.status(400).send({
+          message: "The pet must be no more than 10 years old.",
+        });
+      }
+
+      try {
+        await prisma.pet.update({
+          where: {
+            id,
+          },
+          data: {
+            name,
+            weight,
+            birthDate,
+            sex,
+            breed,
+            tags,
+            description,
+            adopted,
+            category,
+          },
+        });
+
+        return reply.status(200).send();
+      } catch {
+        return reply.status(400).send({
+          message: "Pet not found.",
+        });
+      }
+    }
+  );
 
   fastify.get("/pets/lasts", async (request, reply) => {
     const pets = await prisma.pet.findMany({
@@ -262,12 +309,8 @@ export async function petRoutes(fastify: FastifyInstance) {
       include: {
         author: {
           select: {
-            name: true,
-            email: true,
             uf: true,
             city: true,
-            phone: true,
-            avatarUrl: true,
           },
         },
       },

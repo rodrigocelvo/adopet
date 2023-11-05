@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { generateUniqueId } from "../../utils/generateUniqueId";
 import bcrypt from "bcrypt";
+import { authenticate } from "../plugins/authenticate";
 
 export async function userRoutes(fastify: FastifyInstance) {
   fastify.get("/users/count", async () => {
@@ -29,7 +30,7 @@ export async function userRoutes(fastify: FastifyInstance) {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const userCreated = await prisma.user.create({
+      await prisma.user.create({
         data: {
           name,
           email,
@@ -40,12 +41,11 @@ export async function userRoutes(fastify: FastifyInstance) {
         },
       });
 
-      const { id } = userCreated;
-
-      return reply.status(201).send({ code: id });
-    } catch {
+      return reply.status(201).send();
+    } catch (err) {
+      console.log(err);
       return reply.status(400).send({
-        message: "Not possible to create user",
+        message: "Not possible to create user.",
       });
     }
   });
@@ -75,6 +75,17 @@ export async function userRoutes(fastify: FastifyInstance) {
     const user = await prisma.user.findUnique({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        city: true,
+        uf: true,
+        avatarUrl: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
@@ -109,44 +120,58 @@ export async function userRoutes(fastify: FastifyInstance) {
     }
   });
 
-  fastify.put("/users/:id", async (request, reply) => {
-    const idUserParams = z.object({
-      id: z.string(),
-    });
-
-    const { id } = idUserParams.parse(request.params);
-
-    const updateUserBody = z.object({
-      name: z.string(),
-      email: z.string(),
-      phone: z.string(),
-      city: z.string(),
-      uf: z.string(),
-    });
-
-    const { name, email, phone, city, uf } = updateUserBody.parse(request.body);
-
-    try {
-      await prisma.user.update({
-        where: {
-          id,
-        },
-        data: {
-          name,
-          email,
-          phone,
-          city,
-          uf,
-        },
+  fastify.put(
+    "/users/:id",
+    { onRequest: [authenticate] },
+    async (request, reply) => {
+      const idUserParams = z.object({
+        id: z.string(),
       });
 
-      return reply.status(200).send();
-    } catch {
-      return reply.status(400).send({
-        message: "User not found.",
+      const { id } = idUserParams.parse(request.params);
+
+      const userLogged = request.user.sub;
+
+      if (!userLogged || userLogged !== id) {
+        return reply.status(400).send({
+          message: "Cannot edit this user.",
+        });
+      }
+
+      const updateUserBody = z.object({
+        name: z.string(),
+        email: z.string(),
+        phone: z.string(),
+        city: z.string(),
+        uf: z.string(),
       });
+
+      const { name, email, phone, city, uf } = updateUserBody.parse(
+        request.body
+      );
+
+      try {
+        await prisma.user.update({
+          where: {
+            id,
+          },
+          data: {
+            name,
+            email,
+            phone,
+            city,
+            uf,
+          },
+        });
+
+        return reply.status(200).send();
+      } catch {
+        return reply.status(400).send({
+          message: "User not found.",
+        });
+      }
     }
-  });
+  );
 
   fastify.patch("/users/image/:id", async (request, reply) => {
     const idUserParams = z.object({
@@ -174,7 +199,7 @@ export async function userRoutes(fastify: FastifyInstance) {
       return reply.status(200).send();
     } catch {
       return reply.status(400).send({
-        message: "Pet not found.",
+        message: "User not found.",
       });
     }
   });

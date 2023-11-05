@@ -55,3 +55,10 @@ model Pet {
   authorId String
   author   User   @relation(fields: [authorId], references: [id])
 }
+
+model RevokedToken {
+  id    String @id @default(cuid())
+  token String @unique @db.VarChar(500)
+
+  revokedAt DateTime @default(now())
+}
