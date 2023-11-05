@@ -4,18 +4,19 @@ import signInBackgroundImg from '../../assets/sign-up-background.jpeg';
 import { THEME } from '../../theme';
 
 export const Container = styled.div`
-  height: 150vh;
+  min-height: 150vh;
   display: flex;
   align-items: stretch;
+  justify-content: center;
 `;
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   width: 100%;
   max-width: 700px;
+  margin: 30px 0 100px 0;
 `;
 
 export const Logo = styled.img`

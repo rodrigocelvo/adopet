@@ -5,7 +5,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'yup-phone';
 
-import { FiArrowLeft, FiMail, FiMap, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
+import {
+  FiArrowLeft,
+  FiKey,
+  FiLock,
+  FiMail,
+  FiMap,
+  FiMapPin,
+  FiPhone,
+  FiUser,
+} from 'react-icons/fi';
 
 import { Button } from '../../components/Button';
 
@@ -32,17 +41,36 @@ import toast, { Toaster } from 'react-hot-toast';
 interface signUpFormDataProps {
   name: string;
   email: string;
+  password: string;
+  confirm_password: string;
   phone: string;
   city: string;
   uf: string;
 }
 
 const phoneRegex = RegExp(/^\(?([0-9]{4})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const signUpSchema = yup.object({
-  name: yup.string().max(30, 'Nome muito grande.').required('Infome o seu nome.'),
-  email: yup.string().email().required('Insira seu e-mail.'),
-  phone: yup.string().matches(phoneRegex, 'Número inválido. ').required('Informe seu WhatsApp'),
+  name: yup
+    .string()
+    .max(30, 'Nome muito grande.')
+    .required('Infome o seu nome.')
+    .min(2, 'Nome muito curto.'),
+  email: yup.string().email('É preciso de um e-mail válido.').required('Insira seu e-mail.'),
+  password: yup
+    .string()
+    .required('Digite uma senha.')
+    .min(8, 'No mínimo 8 caracteres.')
+    .matches(
+      passwordRegex,
+      'A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais (@, $, !, %, *, ?, &).'
+    ),
+  confirm_password: yup.string().oneOf([yup.ref('password'), null], 'A senhas não coincidem.'),
+  phone: yup
+    .string()
+    .matches(phoneRegex, 'Número inválido. ')
+    .required('Informe seu número do WhatsApp.'),
   city: yup.string().required('Insira sua cidade.'),
   uf: yup
     .string()
@@ -67,26 +95,27 @@ export function SignUp() {
     resolver: yupResolver(signUpSchema),
   });
 
-  async function handleCreateAccount({ name, email, phone, city, uf }: signUpFormDataProps) {
+  async function handleCreateAccount({
+    name,
+    email,
+    password,
+    phone,
+    city,
+    uf,
+  }: signUpFormDataProps) {
     try {
       const response = await api.post('/users', {
         name,
         email,
+        password,
         phone,
         city: city.toUpperCase(),
         uf: uf.toUpperCase(),
       });
 
-      const { code } = response.data;
-
-      await navigator.clipboard.writeText(code);
-
-      toast.success(
-        `Conta criada com sucesso.${'\n'} O código para login: ${code}${'\n'}foi copiado para a área de transferência.`,
-        {
-          duration: 8000,
-        }
-      );
+      toast.success(`Conta criada com sucesso.`, {
+        duration: 8000,
+      });
       setTimeout(() => {
         navigate('/signin');
       }, 1000);
@@ -132,6 +161,29 @@ export function SignUp() {
               error={errors.email?.message}
               isErrored={!!errors.email?.message}
             />
+
+            <InputControlled
+              label="Senha"
+              control={control}
+              name="password"
+              placeholder="Senha"
+              type="password"
+              icon={FiLock}
+              error={errors.password?.message}
+              isErrored={!!errors.password?.message}
+            />
+
+            <InputControlled
+              label="Confirmação senha"
+              control={control}
+              name="confirm_password"
+              placeholder="Confirme sua senha"
+              type="password"
+              icon={FiKey}
+              error={errors.confirm_password?.message}
+              isErrored={!!errors.confirm_password?.message}
+            />
+
             <InputControlled
               label="WhatsApp"
               control={control}

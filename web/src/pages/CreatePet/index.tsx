@@ -110,6 +110,10 @@ export function CreatePet() {
   const params = useParams();
   const { user } = useAuth();
 
+  const headers = {
+    Authorization: `Bearer ${user.token}`,
+  };
+
   const {
     control,
     handleSubmit,
@@ -132,25 +136,32 @@ export function CreatePet() {
         return setSelectImageError('Selecione uma imagem.');
       }
 
-      await api.post('/pets', {
-        name,
-        birthDate,
-        weight,
-        breed,
-        tags,
-        adopted: petAdopted,
-        adoptedBy: null,
-        sex: petSex,
-        category: petCategory,
-        description,
-        authorId: user.id,
-        imgUrl: photo,
-      });
+      await api.post(
+        '/pets',
+        {
+          name,
+          birthDate: format(new Date(birthDate), 'dd/MM/yyyy'),
+          weight,
+          breed,
+          tags,
+          adopted: petAdopted,
+          adoptedBy: null,
+          sex: petSex,
+          category: petCategory,
+          description,
+          authorId: user.id,
+          imgUrl: photo,
+        },
+        { headers }
+      );
 
+      setLoading(true);
       toast.success('Pet criado.', {
         duration: 4000,
       });
+
       setTimeout(() => {
+        setLoading(true);
         navigate('/dashboard');
       }, 1000);
     } catch (err) {
@@ -158,7 +169,9 @@ export function CreatePet() {
       console.log(err);
       navigate('/dashboard');
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     }
   }
 
@@ -173,18 +186,23 @@ export function CreatePet() {
     setLoading(true);
 
     try {
-      await api.put(`/pets/${params.id}`, {
-        name,
-        birthDate,
-        weight,
-        breed,
-        tags,
-        adopted: petAdopted,
-        adoptedBy: petAdoptedBy,
-        sex: petSex,
-        category: petCategory,
-        description,
-      });
+      await api.put(
+        `/pets/${params.id}`,
+        {
+          name,
+          birthDate,
+          weight,
+          breed,
+          tags,
+          adopted: petAdopted,
+          adoptedBy: petAdoptedBy,
+          sex: petSex,
+          category: petCategory,
+          description,
+          authorId: petAuthor,
+        },
+        { headers }
+      );
 
       toast.success('Salvo.', {
         duration: 4000,
@@ -204,9 +222,13 @@ export function CreatePet() {
     try {
       setPetAdopted(!petAdopted);
 
-      await api.post(`/pets/${user.id}/adopt/${params.id}`, {
-        adopted: true,
-      });
+      await api.post(
+        `/pets/${user.id}/adopt/${params.id}`,
+        {
+          adopted: true,
+        },
+        { headers }
+      );
     } catch (e) {
       console.log(e);
     }
@@ -215,7 +237,7 @@ export function CreatePet() {
   async function fetchPet() {
     setLoading(true);
     try {
-      const response = await api.get(`/pets/${params.id}`);
+      const response = await api.get(`/pets/${params.id}`, { headers });
       const petResponse: PetDataProps = response.data;
 
       const birthDateFormatted = format(new Date(petResponse.birthDate), 'yyyy-MM-dd');
@@ -237,7 +259,7 @@ export function CreatePet() {
     } catch (err) {
       console.log(err);
       // alert('Não foi possível encontrar o pet');
-      // navigate('/dashboard');
+      navigate('/dashboard');
     } finally {
       setLoading(false);
     }
@@ -282,19 +304,23 @@ export function CreatePet() {
       setPreview(previewImg);
 
       await api
-        .post('/uploads/pet', data)
+        .post('/uploads/pet', data, { headers })
         .then(response => {
           if (!params.id) {
             setPhoto(response.data.image);
           } else {
             try {
-              api.delete(`/pets/image/${params.id}`);
+              api.delete(`/pets/image/${params.id}`, { headers });
             } catch {}
 
             setPhoto(response.data.image);
-            api.patch(`/pets/image/${params.id}`, {
-              imgUrl: response.data.image,
-            });
+            api.patch(
+              `/pets/image/${params.id}`,
+              {
+                imgUrl: response.data.image,
+              },
+              { headers }
+            );
           }
         })
         .catch(err => {

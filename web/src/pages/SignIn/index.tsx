@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiLock, FiLogIn, FiMail, FiUser } from 'react-icons/fi';
+import { FiArrowLeft, FiKey, FiLock, FiLogIn, FiMail, FiUser } from 'react-icons/fi';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -25,11 +25,13 @@ import { useAuth } from '../../hooks/auth';
 import { ToastCreateAccount } from '../../pages/SignUp';
 
 interface signInFormDataProps {
-  code: string;
+  email: string;
+  password: string;
 }
 
 const signInSchema = yup.object({
-  code: yup.string().required('Infome o código'),
+  email: yup.string().required('Infome seu e-mail'),
+  password: yup.string().required('Infome sua senha'),
 });
 
 export function SignIn() {
@@ -48,7 +50,8 @@ export function SignIn() {
   async function handleSignIn(data: signInFormDataProps) {
     try {
       await signIn({
-        id: data.code,
+        email: data.email,
+        password: data.password,
       });
 
       navigate('/dashboard');
@@ -75,13 +78,25 @@ export function SignIn() {
             <Title>Faça seu login</Title>
 
             <InputControlled
-              label="Código"
+              label="E-mail"
               control={control}
-              name="code"
-              placeholder="Sua ID"
+              name="email"
+              placeholder="Seu email"
               icon={FiUser}
-              error={errors.code?.message}
-              isErrored={!!errors.code?.message}
+              error={errors.email?.message}
+              isErrored={!!errors.email?.message}
+              autoComplete="on"
+            />
+
+            <InputControlled
+              label="Senha"
+              control={control}
+              name="password"
+              placeholder="Sua senha"
+              type="password"
+              icon={FiLock}
+              error={errors.password?.message}
+              isErrored={!!errors.password?.message}
             />
             <Button type="submit">Entrar</Button>
           </form>

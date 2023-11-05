@@ -31,18 +31,22 @@ export function Dashboard() {
   const [pets, setPets] = useState<AnimalCardProps[]>([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   async function fetchPets() {
     try {
-      const response = await api.get('/pets');
-      const responsePetData = response.data;
+      setLoading(true);
 
-      const myPets = responsePetData.filter((pet: PetProps) => pet.authorId === user.id);
+      const response = await api.get(`/pets/author/${user.id}`);
+      const myPets = response.data;
+
       setPets(myPets);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -73,7 +77,7 @@ export function Dashboard() {
               <AlertDialog.Root key={animal.id} onOpenChange={() => setModalIsOpen(!modalIsOpen)}>
                 <AnimalCard id={animal.id} name={animal.name} imgUrl={animal.imgUrl} loggedIn />
 
-                <Modal petId={animal.id} />
+                <Modal petId={animal.id} userToken={user.token} />
               </AlertDialog.Root>
             ))}
           </AnimalContent>

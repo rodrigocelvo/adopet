@@ -13,6 +13,7 @@ export const Content = styled.div`
   align-items: center;
 
   padding: 40px 30px;
+  min-height: calc(100vh - 480px);
 `;
 
 export const Title = styled.h1`

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   AlertDialogPortal,
@@ -15,12 +15,22 @@ import { api } from '../../services/api';
 
 interface Props {
   petId: string;
+  userToken: string;
 }
 
-async function handleDelete(petId: string) {
+async function handleDelete(petId: string, userToken: string) {
   try {
-    await api.delete(`/pets/${petId}`);
-    await api.delete(`/pets/image/${petId}`);
+    await api.delete(`/pets/${petId}`, {
+      headers: {
+        Authorization: `Bearer ${userToken}}`,
+      },
+    });
+
+    await api.delete(`/pets/image/${petId}`, {
+      headers: {
+        Authorization: `Bearer ${userToken}}`,
+      },
+    });
     toast.success('Pet deletado com sucesso.');
   } catch (err) {
     console.log(err);
@@ -32,7 +42,7 @@ export function ToastDeletedPet() {
   return <Toaster position="bottom-center" />;
 }
 
-export function Modal({ petId }: Props) {
+export function Modal({ petId, userToken }: Props) {
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />
@@ -43,7 +53,7 @@ export function Modal({ petId }: Props) {
         </AlertDialogDescription>
         <div style={{ display: 'flex', gap: 25, justifyContent: 'flex-end' }}>
           <AlertDialogAction asChild>
-            <button onClick={() => handleDelete(petId)}>Sim, deletar</button>
+            <button onClick={() => handleDelete(petId, userToken)}>Sim, deletar</button>
           </AlertDialogAction>
           <AlertDialogCancel asChild>
             <button>Cancelar</button>

@@ -1,5 +1,5 @@
 import { Navbar } from '../../components/Navbar';
-import { Accordion } from '../../components/Accordtion';
+import { Accordion } from '../../components/Accordion';
 import { Footer } from '../../components/Footer';
 
 import { QUESTIONS } from '../../utils/questions';

@@ -7,6 +7,15 @@ interface UserProps {
   id: string;
   name: string;
   avatar: string;
+  token: string;
+}
+
+interface UserResponseProps {
+  user: {
+    sub: string;
+    name: string;
+    avatar: string;
+  };
 }
 
 interface AuthProviderProps {
@@ -14,13 +23,14 @@ interface AuthProviderProps {
 }
 
 interface SignInProps {
-  id: string;
+  email: string;
+  password: string;
 }
 
 export interface AuthContextDataProps {
   user: UserProps;
   isUserLoading: boolean;
-  signIn: (id: SignInProps) => Promise<void>;
+  signIn: (login: SignInProps) => Promise<void>;
   logOut: () => Promise<void>;
   signed: boolean;
 }
@@ -30,6 +40,7 @@ export const AuthContext = createContext({} as AuthContextDataProps);
 export function AuthContextProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState(({} as UserProps) || null);
   const [isUserLoading, setIsUserLoading] = useState(true);
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     getUser();
@@ -54,19 +65,29 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function signIn({ id }: SignInProps) {
+  async function signIn({ email, password }: SignInProps) {
     try {
       setIsUserLoading(true);
-      const response = await api.post('/me', {
-        id,
+      await api
+        .post('/login', {
+          email,
+          password,
+        })
+        .then(res => {
+          setToken(res.data.token);
+        });
+
+      const responseToken = await api.get('/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      const responseData: UserProps = response.data;
-
       const userData = {
-        id: responseData.id,
-        name: responseData.name,
-        avatar: responseData.avatar,
+        id: responseToken.data.user.sub,
+        name: responseToken.data.user.name,
+        avatar: responseToken.data.user.avatar,
+        token: token,
       };
 
       localStorage.setItem('@Adopet:user', JSON.stringify(userData));

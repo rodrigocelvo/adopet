@@ -80,11 +80,15 @@ export function Home() {
         <Content>
           <SubTitle>Conheça a Adopet</SubTitle>
           <Text>
-            Nós fazemos a conexão entre quem deseja adotar um pet com às ongs. Aqui você pode
-            encontrar seu amiguinho. Adote seu pet e torne seu mundo mais feliz Lorem ipsum dolor,
-            sit amet consectetur adipisicing elit. Veniam at, neque sed reprehenderit delectus
-            dolores, minima ducimus ipsa asperiores nulla molestiae nam laboriosam possimus eos.
-            Ipsa iusto labore eius quam!
+            bem-vindo à plataforma dedicada a unir corações e patinhas! Somos a ponte que conecta
+            aqueles que desejam encontrar seu companheiro peludo perfeito às ONGs dedicadas ao
+            resgate e cuidado de animais. No nosso espaço, você pode descobrir seu futuro amiguinho
+            de quatro patas e fazer uma diferença real na vida de um animal necessitado. Adotar um
+            pet não apenas enche sua vida de alegria, mas também aquece o coração de um bichinho que
+            precisa de amor e cuidado. Nossa missão é tornar essa jornada de adoção simples e
+            gratificante para todos os envolvidos. Junte-se a nós e faça parte dessa maravilhosa
+            jornada de amor e compaixão. Adote seu pet hoje e torne o mundo mais feliz, um abraço de
+            gratidão e amor espera por você!
           </Text>
 
           <SubTitle>Por quê adotar?</SubTitle>
