@@ -30,10 +30,15 @@ import logoImg from '../../assets/logo.png';
 interface signUpFormDataProps {
   name: string;
   email: string;
+  password: string;
+  confirm_password: string;
   phone: number;
   city: string;
   uf: string;
 }
+
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const signInSchema = yup.object({
   name: yup.string().max(30).required('Informe seu nome'),
@@ -41,6 +46,17 @@ const signInSchema = yup.object({
     .string()
     .email('Informe um email válido.')
     .required('Informe seu email.'),
+  password: yup
+    .string()
+    .required('Digite uma senha.')
+    .min(8, 'No mínimo 8 caracteres.')
+    .matches(
+      passwordRegex,
+      'A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais (@, $, !, %, *, ?, &).',
+    ),
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'A senhas não coincidem.'),
   phone: yup
     .string()
     .min(8, 'Número inválido.')
@@ -69,27 +85,22 @@ export function SignUp() {
   async function handleSignUp({
     name,
     email,
+    password,
     phone,
     city,
     uf,
   }: signUpFormDataProps) {
     try {
-      const response = await api.post('/users', {
+      await api.post('/users', {
         name,
         email,
+        password,
         phone,
         city: city.toUpperCase(),
         uf: uf.toUpperCase(),
       });
 
-      const { code } = response.data;
-
-      await Clipboard.setStringAsync(code);
-
-      Alert.alert(
-        'Conta criada!',
-        `Conta criada com sucesso. O código para login ${code} foi copiado para a área de transferencia.`,
-      );
+      Alert.alert('Conta criada!', `Conta criada com sucesso.`);
 
       navigation.navigate('signin');
     } catch (err) {
@@ -136,6 +147,26 @@ export function SignUp() {
                 autoComplete="email"
                 icon="mail-fill"
                 error={errors.email?.message}
+              />
+
+              <InputForm
+                name="password"
+                control={control}
+                placeholder="Senha"
+                autoCapitalize="none"
+                autoComplete="password"
+                icon="lock-fill"
+                error={errors.password?.message}
+              />
+
+              <InputForm
+                name="confirm_password"
+                control={control}
+                placeholder="Confirme a senha"
+                autoCapitalize="none"
+                autoComplete="password"
+                icon="key-fill"
+                error={errors.confirm_password?.message}
               />
 
               <InputForm

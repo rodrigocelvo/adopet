@@ -77,13 +77,21 @@ export function Profile() {
     uf,
   }: profileUpdateDataProps) {
     try {
-      await api.put(`/users/${user.id}`, {
-        name,
-        email,
-        phone,
-        city: city.toUpperCase(),
-        uf: uf.toUpperCase(),
-      });
+      await api.put(
+        `/users/${user.id}`,
+        {
+          name,
+          email,
+          phone,
+          city: city.toUpperCase(),
+          uf: uf.toUpperCase(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        },
+      );
 
       updateUser(user.id);
 
@@ -106,7 +114,11 @@ export function Profile() {
   async function fetchUser() {
     try {
       setLoading(true);
-      const response = await api.get(`/users/${user.id}`);
+      const response = await api.get(`/users/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
       const userResponse: profileUpdateDataProps = await response.data;
 
@@ -151,13 +163,29 @@ export function Profile() {
           uri: result.uri,
         });
 
-        const response = await api.post(`/uploads/users/${user.id}`, newUpload);
+        const response = await api.post(
+          `/uploads/users/${user.id}`,
+          newUpload,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          },
+        );
 
         const { image } = response.data;
 
-        await api.patch(`/users/image/${user.id}`, {
-          avatar: image,
-        });
+        await api.patch(
+          `/users/image/${user.id}`,
+          {
+            avatar: image,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          },
+        );
 
         Alert.alert('Perfil', 'Imagem atualizada com sucesso!');
 

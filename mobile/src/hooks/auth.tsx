@@ -9,14 +9,33 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { api } from '../services/api';
+import { Alert } from 'react-native';
 
 interface UserProps {
-  avatarUrl?: any;
-  id: string;
-  name: string;
+  token: string;
+  user: {
+    sub: string;
+    name: string;
+    avatar: string | null;
+  };
 }
 interface ResponseUserProps {
   data: UserProps;
+}
+
+interface ResponseUpdateProps {
+  data: {
+    id: string;
+    name: string;
+    avatarUrl: string;
+  };
+}
+
+interface UserPropsData {
+  id: string;
+  name: string;
+  avatarUrl: string | null;
+  token: string;
 }
 
 interface AuthProviderProps {
@@ -24,11 +43,12 @@ interface AuthProviderProps {
 }
 
 interface SignInProps {
-  id: string;
+  email: string;
+  password: string;
 }
 
 export interface AuthContextDataProps {
-  user: UserProps;
+  user: UserPropsData;
   isUserLoading: boolean;
   signIn: (id: SignInProps) => Promise<void>;
   logOut: () => Promise<void>;
@@ -39,8 +59,9 @@ export interface AuthContextDataProps {
 export const AuthContext = createContext({} as AuthContextDataProps);
 
 export function AuthContextProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState(({} as UserProps) || null);
+  const [user, setUser] = useState(({} as UserPropsData) || null);
   const [isUserLoading, setIsUserLoading] = useState(true);
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     getUser();
@@ -65,22 +86,42 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function signIn({ id }: SignInProps) {
+  async function signIn({ email, password }: SignInProps) {
     try {
       setIsUserLoading(true);
-      const response: ResponseUserProps = await api.post('/me', {
-        id,
-      });
 
-      const userData = {
-        id: response.data.id,
-        name: response.data.name,
-        avatarUrl: response.data.avatarUrl,
-      };
+      await api
+        .post('/login', {
+          email,
+          password,
+        })
+        .then(async res => {
+          const response: ResponseUserProps = await api.get('/me', {
+            headers: {
+              Authorization: `Bearer ${res.data.token}`,
+            },
+          });
 
-      await AsyncStorage.setItem('@Adopet:user', JSON.stringify(userData));
+          const userData: UserPropsData = {
+            id: response.data.user.sub,
+            name: response.data.user.name,
+            avatarUrl: response.data.user.avatar,
+            token: res.data.token,
+          };
 
-      setUser(userData);
+          await AsyncStorage.setItem('@Adopet:user', JSON.stringify(userData));
+
+          setUser(userData);
+
+          setToken(res.data.token);
+        })
+        .catch(err => {
+          Alert.alert(
+            'Erro!',
+            `Não foi possível realizar o login, tente novamente.`,
+          );
+          return;
+        });
     } catch (error) {
       console.log(error);
 
@@ -92,6 +133,29 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
   async function logOut() {
     try {
+      const storageUser: any = await AsyncStorage.getItem('@Adopet:user');
+
+      const parsedDate = JSON.parse(storageUser);
+
+      await api
+        .post('/revoketoken', {
+          headers: {
+            Authorization: `Bearer ${parsedDate.token}`,
+          },
+        })
+        .then()
+        .catch(error => {});
+
+      setToken('');
+
+      setIsUserLoading(true);
+      AsyncStorage.clear();
+      // @ts-ignore
+      setUser(null);
+      setIsUserLoading(false);
+
+      setToken('');
+
       setIsUserLoading(true);
       AsyncStorage.clear();
       // @ts-ignore
@@ -106,25 +170,20 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function updateUser(id: string) {
+  async function updateUser(userId: string) {
     try {
       setIsUserLoading(true);
-      const response: ResponseUserProps = await api.post('/me', {
-        id,
+      const response: ResponseUpdateProps = await api.get(`/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       });
-
-      const fakeData = {
-        id: response.data.id,
-        name: response.data.name,
-        avatarUrl: null,
-      };
-
-      setUser(fakeData);
 
       const userData = {
         id: response.data.id,
         name: response.data.name,
         avatarUrl: response.data.avatarUrl,
+        token: token,
       };
 
       await AsyncStorage.setItem('@Adopet:user', JSON.stringify(userData));

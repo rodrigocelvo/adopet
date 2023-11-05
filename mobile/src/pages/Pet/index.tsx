@@ -118,7 +118,11 @@ export function Pet() {
   async function fetchPet() {
     setLoading(true);
     try {
-      const response = await api.get(`/pets/${id}`);
+      const response = await api.get(`/pets/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
       setPet(response.data);
       setTags(response.data.tags.split(','));

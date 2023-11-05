@@ -27,11 +27,13 @@ import {
 import logoImg from '../../assets/logo.png';
 
 interface signInFormDataProps {
-  code: string;
+  email: string;
+  password: string;
 }
 
 const signInSchema = yup.object({
-  code: yup.string().required('Informe seu código.'),
+  email: yup.string().required('Infome seu e-mail'),
+  password: yup.string().required('Infome sua senha'),
 });
 
 export function SignIn() {
@@ -48,10 +50,11 @@ export function SignIn() {
 
   const { signIn } = useAuth();
 
-  async function handleSignIn(data: signInFormDataProps) {
+  async function handleSignIn({ email, password }: signInFormDataProps) {
     try {
       await signIn({
-        id: data.code,
+        email,
+        password,
       });
     } catch (err) {
       console.log(err);
@@ -73,13 +76,23 @@ export function SignIn() {
               <AppName>Adopet</AppName>
 
               <InputForm
-                name="code"
+                name="email"
                 control={control}
-                placeholder="Sua ID"
+                placeholder="E-mail"
                 autoCapitalize="none"
                 autoComplete="off"
                 icon="mail-fill"
-                error={errors.code?.message}
+                error={errors.email?.message}
+              />
+
+              <InputForm
+                name="password"
+                control={control}
+                placeholder="Senha"
+                autoCapitalize="none"
+                autoComplete="off"
+                icon="lock-fill"
+                error={errors.password?.message}
               />
 
               <Button onPress={handleSubmit(handleSignIn)}>Entrar</Button>
