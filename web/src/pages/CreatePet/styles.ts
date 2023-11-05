@@ -136,9 +136,10 @@ export const AvatarInput = styled.div`
         color: ${THEME.COLORS.TEXT};
         opacity: 0.6;
       }
-    }
 
-    &:hover {
+      &:hover {
+        background-color: #f4ffff;
+      }
     }
   }
 `;
