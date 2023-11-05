@@ -105,7 +105,7 @@ export function Navbar({ loggedIn, modalIsOpen }: NavbarPorps) {
                     src={
                       !user.avatar
                         ? `https://ui-avatars.com/api/?background=5AA9EF&color=CCF8F9&size=500&name=${user.name}`
-                        : user.avatar
+                        : `http://localhost:3333/public/images/users/${user.avatar}`
                     }
                   />
                 </AvatarButton>
