@@ -155,6 +155,7 @@ export function SignUp() {
                 placeholder="Senha"
                 autoCapitalize="none"
                 autoComplete="password"
+                secureTextEntry
                 icon="lock-fill"
                 error={errors.password?.message}
               />
@@ -165,6 +166,7 @@ export function SignUp() {
                 placeholder="Confirme a senha"
                 autoCapitalize="none"
                 autoComplete="password"
+                secureTextEntry
                 icon="key-fill"
                 error={errors.confirm_password?.message}
               />

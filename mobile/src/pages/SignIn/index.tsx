@@ -91,6 +91,7 @@ export function SignIn() {
                 placeholder="Senha"
                 autoCapitalize="none"
                 autoComplete="off"
+                secureTextEntry
                 icon="lock-fill"
                 error={errors.password?.message}
               />
